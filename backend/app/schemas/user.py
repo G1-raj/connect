@@ -38,10 +38,12 @@ class UserCreateResponse(BaseModel):
     data: UserOut
 
 class UserLogin(BaseModel):
-    pass
+    email: EmailStr
+    password: str
 
 class TokenResponse(BaseModel):
-    pass
+    access_token: str
+    refresh_token: str
 
 class LoginResponse(BaseModel):
     message: str
