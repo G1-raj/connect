@@ -1,23 +1,21 @@
-from pydantic import EmailStr, BaseModel
+from pydantic import EmailStr, BaseModel, Field
 from typing import List
+from datetime import date
 
 class UserSignUp(BaseModel):
     email: EmailStr
     full_name: str
 
 class VerifyOtp(BaseModel):
-    otp: str
+    email: EmailStr
+    otp: str = Field(..., min_length=6)
 
 class PasswordCreate(BaseModel):
-    password: str
+    password: str = Field(..., min_length=6)
 
 
 class UserCreate(BaseModel):
-    email: EmailStr
-    full_name: str
-    date_of_birth: str
-    age: int
-    is_email_verified: bool
+    date_of_birth: date
     latitude: float
     longitude: float
     interests: List[str]
@@ -26,12 +24,12 @@ class UserOut(BaseModel):
     id: int
     email: EmailStr
     full_name: str
-    date_of_birth: str
+    date_of_birth: date
     age: int
     is_email_verified: bool
     latitude: float
     longitude: float
-    interestes: List[str]
+    interests: List[str]
 
 class UserCreateResponse(BaseModel):
     message: str
