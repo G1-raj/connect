@@ -2,19 +2,25 @@ from pydantic import EmailStr, BaseModel, Field
 from typing import List
 from datetime import date
 
+class ImageData(BaseModel):
+    public_id: str
+    image_url: str
+
+
 class UserSignUp(BaseModel):
     email: EmailStr
     full_name: str
 
 class VerifyOtp(BaseModel):
     email: EmailStr
-    otp: str = Field(..., min_length=6)
+    otp: str = Field(..., min_length=6, max_length=6)
 
 class PasswordCreate(BaseModel):
     password: str = Field(..., min_length=6)
 
 
 class UserCreate(BaseModel):
+    description: str
     date_of_birth: date
     latitude: float
     longitude: float
@@ -24,12 +30,14 @@ class UserOut(BaseModel):
     id: int
     email: EmailStr
     full_name: str
+    description: str
     date_of_birth: date
     age: int
     is_email_verified: bool
     latitude: float
     longitude: float
     interests: List[str]
+    images: List[ImageData]
 
 class UserCreateResponse(BaseModel):
     message: str
