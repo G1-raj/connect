@@ -2,10 +2,6 @@ from pydantic import EmailStr, BaseModel, Field
 from typing import List
 from datetime import date
 
-class ImageData(BaseModel):
-    public_id: str
-    image_url: str
-
 
 class UserSignUp(BaseModel):
     email: EmailStr
@@ -25,6 +21,10 @@ class UserCreate(BaseModel):
     latitude: float
     longitude: float
     interests: List[str]
+
+class ImageData(BaseModel):
+    public_id: str
+    image_url: str
 
 class UserOut(BaseModel):
     id: int
