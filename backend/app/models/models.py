@@ -16,7 +16,7 @@ class User(Base):
         Date,
         nullable=True
     )
-    age = Column(Integer, nullable=True)
+    # age = Column(Integer, nullable=True)
     is_email_verified = Column(Boolean, nullable=False, default=False)
     longitude = Column(Float, nullable=True)
     latitude = Column(Float, nullable=True)
@@ -35,12 +35,15 @@ class User(Base):
         nullable=False
     )
 
+    email_otps = relationship("EmailOtp", back_populates="owner", cascade="all, delete-orphan")
+    user_images = relationship("UserImages", back_populates="owner", cascade="all, delete-orphan")
+
 
 class EmailOtp(Base):
     __tablename__ = "email_otps"
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, index=True, nullable=False)
+    # email = Column(String, index=True, nullable=False)
     otp_hash = Column(String, nullable=False)
     expires_at = Column(DateTime(timezone=True), nullable=False)
     attempts = Column(Integer, default=0)
@@ -49,11 +52,14 @@ class EmailOtp(Base):
         default= lambda: datetime.now(timezone.utc)
     )
 
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    owner = relationship("User", back_populates="email_otps")
+
 class UserImages(Base):
     __tablename__ = "user_images"
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, nullable=False, index=True)
+    # email = Column(String, nullable=False, index=True)
     image_url = Column(String, nullable=False)
     public_id = Column(String, nullable=False)
     created_at = Column(
@@ -65,5 +71,8 @@ class UserImages(Base):
         default= lambda: datetime.now(timezone.utc),
         onupdate= lambda: datetime.now(timezone.utc)
     )
+
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    owner = relationship("User", back_populates="user_images")
 
 
