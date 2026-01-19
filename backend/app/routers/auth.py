@@ -12,7 +12,16 @@ router = APIRouter(prefix="/auth", tags=["signup", "login", "user verification",
 
 @router.post("/signup", response_model=MessageResponse, status_code=status.HTTP_200_OK)
 def signup(user: UserSignUp, db: Session = Depends(get_db)):
-    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+
+    email = user.email.strip().lower()
+
+    if not email.endswith("@gmail.com"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid email, we support only @gmail.com"
+        )
+
+    existing_user = db.query(models.User).filter(models.User.email == email).first()
 
     if existing_user and existing_user.is_email_verified:
         raise HTTPException(
@@ -22,7 +31,7 @@ def signup(user: UserSignUp, db: Session = Depends(get_db)):
     
     if not existing_user:
         new_user = models.User(
-            email = user.email,
+            email = email,
             full_name = user.full_name
         )
 
@@ -49,16 +58,18 @@ def signup(user: UserSignUp, db: Session = Depends(get_db)):
     db.commit()
 
     return {
-        "message": "Otp sent successfully, please verify your email"
+        "message": "Otp sent successfully, Please verify your email"
     }
 
 
 @router.post("/verify-otp", response_model=MessageResponse, status_code=status.HTTP_200_OK)
 def verify_otp(otp: VerifyOtp, db: Session = Depends(get_db)):
+
+    email = otp.email.strip().lower()
     
     existing_user = (
         db.query(models.User)
-        .filter(models.User.email == otp.email)
+        .filter(models.User.email == email)
         .first()
     )
 
@@ -87,12 +98,20 @@ def verify_otp(otp: VerifyOtp, db: Session = Depends(get_db)):
         if check_otp:
             db.delete(get_otp)
             existing_user.is_email_verified = True
+            db.commit()
         else:
             get_otp.attempts += 1
+            db.commit()
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Otp expired or invalid"
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Otp is invalid"
             )
+    else:
+        db.delete(get_otp)
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="You have exceeded the maximum OTP attempts"
+        )
         
     return {
         "message": "Email verified successfully"
