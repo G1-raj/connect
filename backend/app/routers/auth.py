@@ -4,8 +4,9 @@ from models import models
 from sqlalchemy.orm import Session
 from utils.generate_otp import generate_otp
 from utils.security import create_hash, verify_hash
+from utils.jwt import create_access_token, create_refresh_token
 from datetime import datetime, timezone, timedelta
-from schemas.user import UserSignUp, VerifyOtp, PasswordCreate, UserCreate, UserCreateResponse, UserLogin, LoginResponse, MessageResponse
+from schemas.user import UserSignUp, VerifyOtp, PasswordCreate, UserCreate, UserCreateResponse, UserLogin, LoginResponse, MessageResponse, VerifyOtpResponse
 
 
 router = APIRouter(prefix="/auth", tags=["signup", "login", "user verification", "otp"])
@@ -62,7 +63,7 @@ def signup(user: UserSignUp, db: Session = Depends(get_db)):
     }
 
 
-@router.post("/verify-otp", response_model=MessageResponse, status_code=status.HTTP_200_OK)
+@router.post("/verify-otp", response_model=VerifyOtpResponse, status_code=status.HTTP_200_OK)
 def verify_otp(otp: VerifyOtp, db: Session = Depends(get_db)):
 
     email = otp.email.strip().lower()
@@ -98,6 +99,9 @@ def verify_otp(otp: VerifyOtp, db: Session = Depends(get_db)):
         if check_otp:
             db.delete(get_otp)
             existing_user.is_email_verified = True
+            onboarding_token = create_access_token(
+                data = { "sub": existing_user.id }
+            )
             db.commit()
         else:
             get_otp.attempts += 1
@@ -114,6 +118,7 @@ def verify_otp(otp: VerifyOtp, db: Session = Depends(get_db)):
         )
         
     return {
+        "onboarding_token": onboarding_token,
         "message": "Email verified successfully"
     }
 
@@ -159,5 +164,35 @@ def create_password(user: PasswordCreate, db: Session = Depends(get_db)):
      return {
          "message": "Password set successfully"
      }
+
+@router.post("/create-profile", response_model=UserCreateResponse, status_code=status.HTTP_201_CREATED)
+def create_profile(user: UserCreate, db: Session = Depends(get_db)):
+    
+    email = user.email.strip().lower()
+
+    existing_user = (
+        db.query(models.User)
+        .filter(
+            models.User.email == email,
+            models.User.is_email_verified == True
+        )
+        .first()
+    )
+
+    if not existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User does not exist please signup"
+        )
+    
+    existing_user.description = user.description
+    existing_user.date_of_birth = user.date_of_birth
+    existing_user.longitude = user.longitude
+    existing_user.latitude = user.latitude
+    existing_user.interests = user.interests
+
+    db.commit()
+
+    return existing_user
      
 

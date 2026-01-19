@@ -17,6 +17,7 @@ class PasswordCreate(BaseModel):
 
 
 class UserCreate(BaseModel):
+    email: EmailStr
     description: str
     date_of_birth: date
     latitude: float
@@ -58,4 +59,8 @@ class LoginResponse(BaseModel):
     token: TokenResponse
 
 class MessageResponse(BaseModel):
+    message: str
+
+class VerifyOtpResponse(BaseModel):
+    onboarding_token: str
     message: str
