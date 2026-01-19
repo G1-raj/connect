@@ -8,7 +8,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, unique=True, nullable=False)
+    email = Column(String, unique=True, nullable=False, index=True)
     full_name = Column(String, nullable=False)
     hashed_password = Column(String, nullable=True)
     description = Column(String, nullable=True)
@@ -33,6 +33,20 @@ class User(Base):
         default= lambda: datetime.now(timezone.utc),
         onupdate= lambda: datetime.now(timezone.utc),
         nullable=False
+    )
+
+
+class EmailOtp(Base):
+    __tablename__ = "email_otps"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String, index=True, nullable=False)
+    otp_hash = Column(String, nullable=False)
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+    attempts = Column(Integer, default=0)
+    created_at = Column(
+        DateTime(timezone=True),
+        default= lambda: datetime.now(timezone.utc)
     )
 
 
