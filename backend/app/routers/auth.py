@@ -116,3 +116,48 @@ def verify_otp(otp: VerifyOtp, db: Session = Depends(get_db)):
     return {
         "message": "Email verified successfully"
     }
+
+@router.post("/create-password", response_model=MessageResponse, status_code=status.HTTP_201_CREATED)
+def create_password(user: PasswordCreate, db: Session = Depends(get_db)):
+     
+     email = user.email.strip().lower()
+
+
+     existing_user = (
+         db.query(models.User)
+         .filter(
+             models.User.email == email,
+             models.User.is_email_verified == True
+         )
+         .first()
+     )
+
+     if not existing_user:
+         raise HTTPException(
+             status_code=status.HTTP_400_BAD_REQUEST,
+             detail="Invalid request"
+         )
+     
+     if existing_user.hashed_password is not None:
+         raise HTTPException(
+             status_code=status.HTTP_400_BAD_REQUEST,
+             detail="Password already exist"
+         )
+     
+     if len(user.password) < 7 or len(user.password) > 12:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password length should between 7 to 12 characters"
+        )
+     
+     hashed_password = create_hash(user.password)
+
+     existing_user.hashed_password = hashed_password
+
+     db.commit()
+
+     return {
+         "message": "Password set successfully"
+     }
+     
+
