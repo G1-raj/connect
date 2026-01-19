@@ -49,4 +49,21 @@ class EmailOtp(Base):
         default= lambda: datetime.now(timezone.utc)
     )
 
+class UserImages(Base):
+    __tablename__ = "user_images"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String, nullable=False, index=True)
+    image_url = Column(String, nullable=False)
+    public_id = Column(String, nullable=False)
+    created_at = Column(
+        DateTime(timezone=True),
+        default= lambda: datetime.now(timezone.utc)
+    )
+    updated_at = Column(
+        DateTime(timezone=True),
+        default= lambda: datetime.now(timezone.utc),
+        onupdate= lambda: datetime.now(timezone.utc)
+    )
+
 
