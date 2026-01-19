@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Float, Integer, JSON, String
+from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Float, Integer, JSON, String
 from sqlalchemy.orm import relationship
 from database.db import Base
 from datetime import datetime, timezone
@@ -13,7 +13,7 @@ class User(Base):
     hashed_password = Column(String, nullable=True)
     description = Column(String, nullable=True)
     date_of_birth = Column(
-        DateTime(timezone=True),
+        Date,
         nullable=True
     )
     age = Column(Integer, nullable=True)
@@ -21,3 +21,18 @@ class User(Base):
     longitude = Column(Float, nullable=True)
     latitude = Column(Float, nullable=True)
     interests = Column(JSON, nullable=True)
+
+    created_at = Column(
+        DateTime(timezone=True),
+        default= lambda: datetime.now(timezone.utc),
+        nullable=False
+    )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        default= lambda: datetime.now(timezone.utc),
+        onupdate= lambda: datetime.now(timezone.utc),
+        nullable=False
+    )
+
+
