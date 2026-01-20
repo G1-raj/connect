@@ -4,7 +4,8 @@ from models import models
 from sqlalchemy.orm import Session
 from utils.generate_otp import generate_otp
 from utils.security import create_hash, verify_hash
-from utils.jwt import create_access_token, create_refresh_token
+from utils.jwt import create_access_token, create_refresh_token, create_onboarding_token
+from utils.dependencies import get_onboarding_user
 from datetime import datetime, timezone, timedelta
 from schemas.user import UserSignUp, VerifyOtp, PasswordCreate, UserCreate, UserCreateResponse, UserLogin, LoginResponse, MessageResponse, VerifyOtpResponse
 
@@ -99,8 +100,8 @@ def verify_otp(otp: VerifyOtp, db: Session = Depends(get_db)):
         if check_otp:
             db.delete(get_otp)
             existing_user.is_email_verified = True
-            onboarding_token = create_access_token(
-                data = { "sub": existing_user.id }
+            onboarding_token = create_onboarding_token(
+                data = { "sub": str(existing_user.id) }
             )
             db.commit()
         else:
@@ -112,6 +113,7 @@ def verify_otp(otp: VerifyOtp, db: Session = Depends(get_db)):
             )
     else:
         db.delete(get_otp)
+        db.commit()
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
             detail="You have exceeded the maximum OTP attempts"
@@ -123,27 +125,17 @@ def verify_otp(otp: VerifyOtp, db: Session = Depends(get_db)):
     }
 
 @router.post("/create-password", response_model=MessageResponse, status_code=status.HTTP_201_CREATED)
-def create_password(user: PasswordCreate, db: Session = Depends(get_db)):
-     
-     email = user.email.strip().lower()
+def create_password(user: PasswordCreate, db: Session = Depends(get_db), onboarding_user: models.User = Depends(get_onboarding_user)):
 
+     current_user = onboarding_user
 
-     existing_user = (
-         db.query(models.User)
-         .filter(
-             models.User.email == email,
-             models.User.is_email_verified == True
-         )
-         .first()
-     )
-
-     if not existing_user:
+     if not current_user:
          raise HTTPException(
              status_code=status.HTTP_400_BAD_REQUEST,
              detail="Invalid request"
          )
      
-     if existing_user.hashed_password is not None:
+     if current_user.hashed_password is not None:
          raise HTTPException(
              status_code=status.HTTP_400_BAD_REQUEST,
              detail="Password already exist"
@@ -157,7 +149,7 @@ def create_password(user: PasswordCreate, db: Session = Depends(get_db)):
      
      hashed_password = create_hash(user.password)
 
-     existing_user.hashed_password = hashed_password
+     current_user.hashed_password = hashed_password
 
      db.commit()
 

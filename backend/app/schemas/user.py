@@ -12,12 +12,10 @@ class VerifyOtp(BaseModel):
     otp: str = Field(..., min_length=6, max_length=6)
 
 class PasswordCreate(BaseModel):
-    email: EmailStr
     password: str = Field(..., min_length=6)
 
 
 class UserCreate(BaseModel):
-    email: EmailStr
     description: str
     date_of_birth: date
     latitude: float
