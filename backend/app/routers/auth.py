@@ -5,9 +5,20 @@ from sqlalchemy.orm import Session
 from utils.generate_otp import generate_otp
 from utils.security import create_hash, verify_hash
 from utils.jwt import create_access_token, create_refresh_token, create_onboarding_token
-from utils.dependencies import get_onboarding_user
+from utils.dependencies import get_onboarding_user, validate_refresh_token
 from datetime import datetime, timezone, timedelta
-from schemas.user import UserSignUp, VerifyOtp, PasswordCreate, UserCreate, UserCreateResponse, UserLogin, LoginResponse, MessageResponse, VerifyOtpResponse
+from schemas.user import (
+    UserSignUp, 
+    VerifyOtp, 
+    PasswordCreate, 
+    UserCreate, 
+    UserCreateResponse, 
+    UserLogin, 
+    LoginResponse, 
+    MessageResponse, 
+    VerifyOtpResponse,
+    TokenResponse
+)
 
 
 router = APIRouter(prefix="/auth", tags=["signup", "login", "user verification", "otp"])
@@ -235,5 +246,29 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
             "refresh_token": refresh_token
         }
     }
-     
 
+     
+@router.post("/refresh-token", response_model=TokenResponse, status_code=status.HTTP_200_OK)
+def refresh_token(db: Session = Depends(get_db), user: models.User = Depends(validate_refresh_token)):
+    token = "m"
+    if not user.hashed_refresh_token or not verify_hash(token, user.hashed_refresh_token):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token is invalid or revoked"
+        )
+    
+    new_access_token = create_access_token(
+        data= { "sub": str(user.id) }
+    )
+
+    new_refresh_token = create_refresh_token(
+        data = { "sub": str(user.id) }
+    )
+
+    user.hashed_refresh_token = new_refresh_token
+    db.commit()
+    
+    return {
+        "access_token": new_access_token,
+        "refresh_token": new_refresh_token
+    }
