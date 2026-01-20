@@ -22,6 +22,7 @@ class User(Base):
     latitude = Column(Float, nullable=True)
     interests = Column(JSON, nullable=True)
     is_profile_created = Column(Boolean, default=False)
+    hashed_refresh_token = Column(String, nullable=True)
 
     created_at = Column(
         DateTime(timezone=True),

@@ -187,5 +187,57 @@ def create_profile(user: UserCreate, db: Session = Depends(get_db), onboarding_u
         "message": "Profile created successfully",
         "data": current_user
     }
+
+
+@router.post("/upload-pictures", response_model=UserCreateResponse, status_code=status.HTTP_201_CREATED)
+def upload_profile_pictures(db: Session = Depends(get_db), onboarding_user: models.User = Depends(get_onboarding_user)):
+
+    current_user = onboarding_user
+
+
+@router.post("/login", response_model=LoginResponse, status_code=status.HTTP_200_OK)
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    email = user.email.strip().lower()
+
+    existing_user = (
+        db.query(models.User)
+        .filter(
+            models.User.email == email,
+            models.User.is_email_verified == True,
+        )
+        .first()
+    )
+
+    if not existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User does not exist please create a new account"
+        )
+    
+    if not verify_hash(user.password, existing_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid credentials"
+        )
+    
+    access_token = create_access_token(
+        data = { "sub": str(existing_user.id) }
+    )
+
+    refresh_token = create_refresh_token(
+        data= { "sub": str(existing_user.id) }
+    )
+
+    existing_user.hashed_refresh_token = create_hash(refresh_token)
+    db.commit()
+
+    return {
+        "message": "User login successful",
+        "data": existing_user,
+        "token": {
+            "access_token": access_token,
+            "refresh_token": refresh_token
+        }
+    }
      
 
