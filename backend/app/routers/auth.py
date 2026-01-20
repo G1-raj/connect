@@ -204,19 +204,15 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         .filter(
             models.User.email == email,
             models.User.is_email_verified == True,
+            models.User.is_profile_created == True,
+            models.User.hashed_password.isnot(None)
         )
         .first()
     )
-
-    if not existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User does not exist please create a new account"
-        )
     
-    if not verify_hash(user.password, existing_user.hashed_password):
+    if not existing_user or not verify_hash(user.password, existing_user.hashed_password):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials"
         )
     
