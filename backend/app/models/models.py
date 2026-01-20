@@ -21,6 +21,7 @@ class User(Base):
     longitude = Column(Float, nullable=True)
     latitude = Column(Float, nullable=True)
     interests = Column(JSON, nullable=True)
+    is_profile_created = Column(Boolean, default=False)
 
     created_at = Column(
         DateTime(timezone=True),

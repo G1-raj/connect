@@ -158,33 +158,34 @@ def create_password(user: PasswordCreate, db: Session = Depends(get_db), onboard
      }
 
 @router.post("/create-profile", response_model=UserCreateResponse, status_code=status.HTTP_201_CREATED)
-def create_profile(user: UserCreate, db: Session = Depends(get_db)):
+def create_profile(user: UserCreate, db: Session = Depends(get_db), onboarding_user: models.User = Depends(get_onboarding_user)):
     
-    email = user.email.strip().lower()
+    current_user = onboarding_user
 
-    existing_user = (
-        db.query(models.User)
-        .filter(
-            models.User.email == email,
-            models.User.is_email_verified == True
-        )
-        .first()
-    )
-
-    if not existing_user:
+    if current_user.hashed_password is None:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User does not exist please signup"
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Please create password"
         )
     
-    existing_user.description = user.description
-    existing_user.date_of_birth = user.date_of_birth
-    existing_user.longitude = user.longitude
-    existing_user.latitude = user.latitude
-    existing_user.interests = user.interests
+    if current_user.is_profile_created:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Profile already created"
+        )
+    
+    current_user.description = user.description
+    current_user.date_of_birth = user.date_of_birth
+    current_user.longitude = user.longitude
+    current_user.latitude = user.latitude
+    current_user.interests = user.interests
 
     db.commit()
+    db.refresh(current_user)
 
-    return existing_user
+    return {
+        "message": "Profile created successfully",
+        "data": current_user
+    }
      
 
