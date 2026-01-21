@@ -18,6 +18,7 @@ class PasswordCreate(BaseModel):
 class UserCreate(BaseModel):
     description: str
     date_of_birth: date
+    gender: str
     latitude: float
     longitude: float
     interests: List[str]
