@@ -1,6 +1,6 @@
 from datetime import datetime, timezone, timedelta
 from jose import jwt
-from core.config import JWT_SECRET, JWT_ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_DAYS
+from app.core.config import JWT_SECRET, JWT_ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_DAYS
 
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()

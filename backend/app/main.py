@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from routers import auth
-from database.db import Base, engine
+from app.routers import auth
+from app.database.db import Base, engine
 
 app = FastAPI(
     title="Connect a Dating app",

@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from database.db import get_db
-from models import models
+from app.database.db import get_db
+from app.models import models
 from sqlalchemy.orm import Session
-from utils.generate_otp import generate_otp
-from utils.security import create_hash, verify_hash
-from utils.jwt import create_access_token, create_refresh_token, create_onboarding_token
-from utils.dependencies import get_onboarding_user, validate_refresh_token, get_current_user
+from app.utils.generate_otp import generate_otp
+from app.utils.security import create_hash, verify_hash
+from app.utils.jwt import create_access_token, create_refresh_token, create_onboarding_token
+from app.utils.dependencies import get_onboarding_user, validate_refresh_token, get_current_user
 from datetime import datetime, timezone, timedelta
-from schemas.user import (
+from app.schemas.user import (
     UserSignUp, 
     VerifyOtp, 
     PasswordCreate, 
