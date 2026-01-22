@@ -1,7 +1,8 @@
-from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Float, Integer, JSON, String
+from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Float, Integer, JSON, String, Enum as SQLEnum
 from sqlalchemy.orm import relationship
 from app.database.db import Base
 from datetime import datetime, timezone
+from app.core.enum import UserGender, UserSexuality
 
 
 class User(Base):
@@ -17,6 +18,14 @@ class User(Base):
         nullable=True
     )
     # age = Column(Integer, nullable=True)
+    gender = Column(
+        SQLEnum(UserGender),
+        nullable=True
+    )
+    sexuality = Column(
+        SQLEnum(UserSexuality),
+        default=UserSexuality.straignt
+    )
     is_email_verified = Column(Boolean, nullable=False, default=False)
     longitude = Column(Float, nullable=True)
     latitude = Column(Float, nullable=True)

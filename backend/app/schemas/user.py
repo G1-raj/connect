@@ -1,6 +1,7 @@
 from pydantic import EmailStr, BaseModel, Field
 from typing import List
 from datetime import date
+from app.core.enum import UserGender, UserSexuality
 
 
 class UserSignUp(BaseModel):
@@ -18,8 +19,8 @@ class PasswordCreate(BaseModel):
 class UserCreate(BaseModel):
     description: str
     date_of_birth: date
-    gender: str
-    sexuality: str
+    gender: UserGender
+    sexuality: UserSexuality
     latitude: float
     longitude: float
     interests: List[str]
@@ -34,6 +35,8 @@ class UserOut(BaseModel):
     full_name: str
     description: str
     date_of_birth: date
+    gender: UserGender
+    sexuality: UserSexuality
     age: int
     is_email_verified: bool
     latitude: float
