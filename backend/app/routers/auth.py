@@ -6,7 +6,6 @@ from app.utils.generate_otp import generate_otp
 from app.utils.security import create_hash, verify_hash
 from app.utils.jwt import create_access_token, create_refresh_token, create_onboarding_token
 from app.utils.dependencies import get_onboarding_user, validate_refresh_token, get_current_user
-from app.utils.calculate_age import calculate_age
 from datetime import datetime, timezone, timedelta
 from app.schemas.user import (
     UserSignUp, 
@@ -193,25 +192,6 @@ def create_profile(user: UserCreate, db: Session = Depends(get_db), onboarding_u
     current_user.longitude = user.longitude
     current_user.latitude = user.latitude
     current_user.interests = user.interests
-
-
-    user_age = calculate_age(current_user.date_of_birth)
-
-    created_user = {
-        "id": current_user.id,
-        "email": current_user.email,
-        "full_name": current_user.full_name,
-        "description": current_user.description,
-        "date_of_birth": current_user.date_of_birth,
-        "gender": current_user.gender,
-        "sexuality": current_user.sexuality,
-        "age": user_age,
-        "is_email_verified": current_user.is_email_verified,
-        "latitude": current_user.latitude,
-        "longitude": current_user.longitude,
-        "interests": current_user.interests,
-        "images": current_user.user_images
-    }
 
 
     db.commit()

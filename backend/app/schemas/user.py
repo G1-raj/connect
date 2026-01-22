@@ -1,7 +1,8 @@
-from pydantic import EmailStr, BaseModel, Field
+from pydantic import EmailStr, BaseModel, Field, computed_field
 from typing import List
 from datetime import date
 from app.core.enum import UserGender, UserSexuality
+from app.utils.calculate_age import calculate_age
 
 
 class UserSignUp(BaseModel):
@@ -37,12 +38,15 @@ class UserOut(BaseModel):
     date_of_birth: date
     gender: UserGender
     sexuality: UserSexuality
-    age: int
     is_email_verified: bool
     latitude: float
     longitude: float
     interests: List[str]
     images: List[ImageData]
+
+    @computed_field
+    def age(self) -> int:
+        return calculate_age(self.date_of_birth)
 
 class UserCreateResponse(BaseModel):
     message: str
