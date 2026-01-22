@@ -199,7 +199,7 @@ def create_profile(user: UserCreate, db: Session = Depends(get_db), onboarding_u
 
     return {
         "message": "Profile created successfully",
-        "data": created_user
+        "data": current_user
     }
 
 
