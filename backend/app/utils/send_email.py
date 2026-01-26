@@ -8,3 +8,5 @@ def send_mail(to_email: str, subject: str, body: str):
     msg["From"] = EMAIL_FROM
     msg["To"] = to_email
     msg["Subject"] = subject
+
+    msg.attach(MIMEText(body, 'html'))
