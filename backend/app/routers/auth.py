@@ -72,6 +72,12 @@ def signup(user: UserSignUp, db: Session = Depends(get_db)):
     db.add(new_otp)
     db.commit()
 
+    send_mail(
+        to_email=email,
+        subject="Verify your email",
+        body=otp_email_template(otp)
+    )
+
     return {
         "message": "Otp sent successfully, Please verify your email"
     }
