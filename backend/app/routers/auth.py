@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from app.database.db import get_db
 from app.models import models
 from sqlalchemy.orm import Session
@@ -26,7 +26,7 @@ from app.schemas.user import (
 router = APIRouter(prefix="/auth", tags=["signup", "login", "user verification", "otp"])
 
 @router.post("/signup", response_model=MessageResponse, status_code=status.HTTP_200_OK)
-def signup(user: UserSignUp, db: Session = Depends(get_db)):
+def signup(user: UserSignUp, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
 
     email = user.email.strip().lower()
 
@@ -72,11 +72,13 @@ def signup(user: UserSignUp, db: Session = Depends(get_db)):
     db.add(new_otp)
     db.commit()
 
-    send_mail(
-        to_email=email,
-        subject="Verify your email",
-        body=otp_email_template(otp)
-    )
+    background_tasks.tasks(send_mail, to_email = email, subject = "Verify your email", body = otp_email_template(otp))
+
+    # send_mail(
+    #     to_email=email,
+    #     subject="Verify your email",
+    #     body=otp_email_template(otp)
+    # )
 
     return {
         "message": "Otp sent successfully, Please verify your email"
