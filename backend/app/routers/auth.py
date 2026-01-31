@@ -6,6 +6,8 @@ from app.utils.generate_otp import generate_otp
 from app.utils.security import create_hash, verify_hash
 from app.utils.jwt import create_access_token, create_refresh_token, create_onboarding_token
 from app.utils.dependencies import get_onboarding_user, validate_refresh_token, get_current_user
+from app.utils.send_email import send_mail
+from app.utils.email_template import otp_email_template
 from datetime import datetime, timezone, timedelta
 from app.schemas.user import (
     UserSignUp, 
