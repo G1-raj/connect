@@ -72,13 +72,7 @@ def signup(user: UserSignUp, background_tasks: BackgroundTasks, db: Session = De
     db.add(new_otp)
     db.commit()
 
-    background_tasks.tasks(send_mail, to_email = email, subject = "Verify your email", body = otp_email_template(otp))
-
-    # send_mail(
-    #     to_email=email,
-    #     subject="Verify your email",
-    #     body=otp_email_template(otp)
-    # )
+    background_tasks.add_task(send_mail, to_email = email, subject = "Verify your email", body = otp_email_template(otp))
 
     return {
         "message": "Otp sent successfully, Please verify your email"
