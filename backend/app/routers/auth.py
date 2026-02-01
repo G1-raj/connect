@@ -8,7 +8,9 @@ from app.utils.jwt import create_access_token, create_refresh_token, create_onbo
 from app.utils.dependencies import get_onboarding_user, validate_refresh_token, get_current_user
 from app.utils.send_email import send_mail
 from app.utils.email_template import otp_email_template
+from app.utils.cloudinary_service import upload_image, delete_image
 from datetime import datetime, timezone, timedelta
+from typing import List
 from app.schemas.user import (
     UserSignUp, 
     VerifyOtp, 
@@ -208,9 +210,37 @@ def create_profile(user: UserCreate, db: Session = Depends(get_db), onboarding_u
 
 
 @router.post("/upload-pictures", response_model=UserCreateResponse, status_code=status.HTTP_201_CREATED)
-def upload_profile_pictures(db: Session = Depends(get_db), onboarding_user: models.User = Depends(get_onboarding_user)):
+def upload_profile_pictures(files: List[UploadFile] = File(...),db: Session = Depends(get_db), onboarding_user: models.User = Depends(get_onboarding_user)):
 
     current_user = onboarding_user
+
+
+@router.delete("/delete-image/{image_id}", response_model=MessageResponse, status_code=status.HTTP_200_OK)
+def delete_image(image_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    image = (
+        db.query(models.UserImages)
+        .filter(
+            models.UserImages.id == image_id,
+            models.UserImages.user_id == current_user.id
+        )
+        .first()
+    )
+
+    if not image:
+        raise HTTPException(
+            status_code = status.HTTP_404_NOT_FOUND,
+            detail = "Image not found"
+        )
+    
+    delete_image(image.public_id)
+    db.delete(image.id)
+    db.commit()
+
+    return {
+        "message": "Image deleted"
+    }
+
+
 
 
 @router.post("/login", response_model=LoginResponse, status_code=status.HTTP_200_OK)
