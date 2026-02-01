@@ -225,6 +225,16 @@ def upload_profile_pictures(files: List[UploadFile] = File(...),db: Session = De
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Maximum 6 images are allowed"
         )
+    
+    existing_count = len(current_user.user_images)
+
+    if existing_count + len(files) > 6:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Image limit exceeded"
+        )
+    
+    uploaded_images = []
 
 
 @router.delete("/delete-image/{image_id}", response_model=MessageResponse, status_code=status.HTTP_200_OK)
