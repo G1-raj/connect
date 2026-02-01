@@ -214,6 +214,18 @@ def upload_profile_pictures(files: List[UploadFile] = File(...),db: Session = De
 
     current_user = onboarding_user
 
+    if len(files) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="At least one image is required"
+        )
+    
+    if len(files) > 6:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Maximum 6 images are allowed"
+        )
+
 
 @router.delete("/delete-image/{image_id}", response_model=MessageResponse, status_code=status.HTTP_200_OK)
 def delete_image(image_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
