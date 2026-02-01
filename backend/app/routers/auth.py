@@ -236,6 +236,25 @@ def upload_profile_pictures(files: List[UploadFile] = File(...),db: Session = De
     
     uploaded_images = []
 
+    for file in files:
+        upload_result = upload_image(
+            file.file,
+            folder = f"connect/users/{current_user.id}"
+        )
+
+        image = models.UserImages(
+            user_id = current_user.id,
+            image_url=upload_result["image_url"],
+            public_id=upload_result["public_id"]
+        )
+
+        db.add(image)
+        uploaded_images.append(image)
+
+    db.commit()
+
+    return current_user
+
 
 @router.delete("/delete-image/{image_id}", response_model=MessageResponse, status_code=status.HTTP_200_OK)
 def delete_image(image_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
