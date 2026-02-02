@@ -1,3 +1,4 @@
+import 'package:connect/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
@@ -7,8 +8,9 @@ class AppButton extends StatelessWidget {
   final Color buttonColor;
   final Color textColor;
   final double fontSize;
+  bool? isButtonTransparent;
   final VoidCallback? onPress;
-  const AppButton(
+  AppButton(
     {
       super.key,
       required this.height,
@@ -17,7 +19,8 @@ class AppButton extends StatelessWidget {
       required this.buttonColor,
       required this.textColor,
       required this.fontSize,
-      this.onPress
+      this.onPress,
+      this.isButtonTransparent = false
     }
   );
 
@@ -32,7 +35,8 @@ class AppButton extends StatelessWidget {
           backgroundColor: buttonColor,
           elevation: 4,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.circular(0)
+            borderRadius: BorderRadiusGeometry.circular(0),
+            side: BorderSide(width: 1, color: isButtonTransparent! ? AppTheme.whiteBackground : buttonColor)
           )
         ).copyWith(
           backgroundColor: WidgetStatePropertyAll(buttonColor),

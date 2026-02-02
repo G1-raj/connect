@@ -1,4 +1,5 @@
 import 'package:connect/core/theme/theme.dart';
+import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/features/auth/presentation/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -65,9 +66,45 @@ class AuthNavigationScreen extends StatelessWidget {
             top: screenHeight * 0.5,
             left: screenWidth * 0.02,
             child: sloganSection(screenHeight, screenWidth)
+          ),
+
+          Positioned(
+            top: screenHeight * 0.75,
+            left: screenWidth * 0.02,
+            child: buttonSection(screenHeight, screenWidth)
           )
         ],
       ),
+    );
+  }
+
+  Widget buttonSection(double screenHeight, double screenWidth) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+         AppButton(
+          width: screenWidth * 0.95,
+          height: screenHeight * 0.06,
+          text: "Login",
+          buttonColor: AppTheme.themeRed,
+          textColor: AppTheme.whiteBackground,
+          fontSize: screenWidth * 0.04,
+        ),
+
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+
+        AppButton(
+          width: screenWidth * 0.95,
+          height: screenHeight * 0.06,
+          text: "Signup",
+          buttonColor: Colors.transparent,
+          textColor: AppTheme.whiteBackground,
+          fontSize: screenWidth * 0.04,
+          isButtonTransparent: true,
+        ),
+      ],
     );
   }
 
