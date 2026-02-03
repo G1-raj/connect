@@ -43,6 +43,15 @@ class VerifyOtpScreen extends StatelessWidget {
                 },
               ),
 
+              SizedBox(
+                height: screenHeight * 0.04,
+              ),
+
+              Text("Retry in 45s", style: TextStyle(
+                color: AppTheme.themeRed,
+                fontWeight: FontWeight.w600
+              ),),
+
               Spacer(),
 
               AppButton(
