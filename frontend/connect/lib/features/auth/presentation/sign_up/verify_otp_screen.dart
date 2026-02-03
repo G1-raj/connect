@@ -33,6 +33,16 @@ class VerifyOtpScreen extends StatelessWidget {
                 ),
               ),
 
+              SizedBox(
+                height: screenHeight * 0.06,
+              ),
+
+              OtpField(
+                onChanged: (otp) {
+                  print("OTP is: $otp");
+                },
+              ),
+
               Spacer(),
 
               AppButton(
@@ -56,15 +66,80 @@ class VerifyOtpScreen extends StatelessWidget {
 }
 
 class OtpField extends StatefulWidget {
-  const OtpField({super.key});
+  final Function(String) onChanged;
+  const OtpField({super.key, required this.onChanged});
 
   @override
   State<OtpField> createState() => _OtpFieldState();
 }
 
 class _OtpFieldState extends State<OtpField> {
+
+  final List<TextEditingController> controllers = List.generate(6, (_) => TextEditingController());
+  final List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
+
+  @override
+  void dispose() {
+    for(final c in controllers) {
+      c.dispose();
+    }
+    for(final f in focusNodes) {
+      f.dispose();
+    }
+    super.dispose();
+  }
+
+  void _onChanged(int index, String value) {
+    if(value.isNotEmpty && index < 5) {
+      focusNodes[index + 1].requestFocus();
+    }
+
+    if(value.isEmpty && index > 0) {
+      focusNodes[index - 1].requestFocus();
+    }
+
+    final otp = controllers.map((c) => c.text).join();
+    widget.onChanged(otp);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: List.generate(6, (index) {
+        return SizedBox(
+          width: screenWidth * 0.12,
+          child: TextField(
+            controller: controllers[index],
+            focusNode: focusNodes[index],
+            keyboardType: TextInputType.number,
+            textAlign: TextAlign.center,
+            maxLength: 1,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold
+            ),
+
+            decoration: InputDecoration(
+              counterText: "",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide(color: AppTheme.themeRed)
+              ),
+
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide(color: AppTheme.themeRed)
+              ),
+            ),
+
+            onChanged: (value) => _onChanged(index, value),
+          ),
+        );
+      })
+    );
   }
 }
