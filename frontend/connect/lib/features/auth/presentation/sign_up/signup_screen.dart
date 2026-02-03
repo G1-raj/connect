@@ -1,6 +1,7 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
+import 'package:connect/core/widgets/pop_up_dialog/pop_up_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -155,6 +156,20 @@ class SignupScreen extends StatelessWidget {
                   buttonColor: AppTheme.themeRed,
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
+                  onPress: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (context) => PopUpDialog(
+                        title: "Verify Email",
+                        body: "Confirm your email address",
+                        email: _emailController.text,
+                        onConfirm: () {
+                           context.push("/verify-otp");    
+                        },
+                      ),
+                    );
+                  },
                 ),
           
                 SizedBox(
