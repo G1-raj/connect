@@ -2,14 +2,15 @@ import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class LoginScreen extends StatelessWidget {
-   LoginScreen({super.key});
+class SignupScreen extends StatelessWidget {
+  SignupScreen({super.key});
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +19,17 @@ class LoginScreen extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: AppTheme.whiteBackground,
-
       body: SafeArea(
         child: Form(
           key: _formKey,
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: screenHeight * 0.04,
                 ),
                 //Logo
-                Container(
+                 Container(
                   width: screenWidth * 0.4,
                   height: screenWidth * 0.35,
                   decoration: BoxDecoration(
@@ -50,12 +48,12 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-          
+
                 SizedBox(
                   height: screenHeight * 0.01,
                 ),
           
-                Text("Login", style: TextStyle(
+                Text("Signup", style: TextStyle(
                   fontSize: screenWidth * 0.06,
                   fontWeight: FontWeight.w600
                 ),),
@@ -77,10 +75,9 @@ class LoginScreen extends StatelessWidget {
                 ),
 
                 InputField(
-                  hintText: "Password", 
-                  prefixIcon: Icon(Icons.lock),
-                  isPassword: true, 
-                  textController: _passwordController,
+                  hintText: "Full Name", 
+                  prefixIcon: Icon(Icons.person), 
+                  textController: _nameController,
                   width: screenWidth * 0.85,
                   height: screenHeight * 0.07,
                 ),
@@ -92,22 +89,69 @@ class LoginScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have an account?"),
-                    TextButton(onPressed: () {}, child: Text("Signup", style: TextStyle(
+                    Text("Already have an account?"),
+                    TextButton(onPressed: () {
+                      context.pop();
+                    }, child: Text("Login", style: TextStyle(
                       color: AppTheme.themeRed,
                       fontWeight: FontWeight.bold
                     ),))
                   ],
                 ),
-          
-                
-          
+
                 Spacer(),
+
+                SizedBox(
+                  width: screenWidth * 0.85,
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: AppTheme.blackBackground,
+                        fontWeight: FontWeight.w500,
+                        wordSpacing: 0.6
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "By continuing, you agree to our ",
+                        ),
+                  
+                        TextSpan(
+                          text: "User Agreement",
+                          style: TextStyle(
+                            color: AppTheme.themeRed,
+                            fontWeight: FontWeight.w700,
+                            decoration: TextDecoration.underline
+                          )
+                        ),
+                  
+                        TextSpan(
+                          text: " and acknowledge that you understand the "
+                        ),
+                  
+                        TextSpan(
+                          text: "Privacy Policy",
+                          style: TextStyle(
+                            color: AppTheme.themeRed,
+                            fontWeight: FontWeight.w700,
+                            decoration: TextDecoration.underline
+                          )
+                        ),
+                  
+                  
+                      ]
+                    ),
+                  ),
+                ),
+
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
           
                 AppButton(
                   width: screenWidth * 0.95,
                   height: screenHeight * 0.06,
-                  text: "Login",
+                  text: "Signup",
                   buttonColor: AppTheme.themeRed,
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
@@ -120,8 +164,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      )
     );
   }
 }
-

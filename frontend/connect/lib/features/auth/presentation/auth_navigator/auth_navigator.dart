@@ -93,6 +93,9 @@ class AuthNavigationScreen extends StatelessWidget {
           textColor: AppTheme.whiteBackground,
           fontSize: screenWidth * 0.04,
           isButtonTransparent: true,
+          onPress: () {
+            context.push("/signup");
+          },
         ),
       ],
     );

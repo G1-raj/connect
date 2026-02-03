@@ -1,3 +1,4 @@
+import 'package:connect/features/auth/presentation/sign_up/signup_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:connect/features/auth/presentation/auth_navigator/auth_navigator.dart';
 import 'package:connect/features/auth/presentation/login_screen/login_screen.dart';
@@ -13,6 +14,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: "/login",
       builder: (context, state) => LoginScreen()
+    ),
+
+    GoRoute(
+      path: "/signup",
+      builder: (context, state) => SignupScreen()
     )
   ]
 );
