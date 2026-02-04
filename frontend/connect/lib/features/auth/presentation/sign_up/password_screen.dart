@@ -2,6 +2,7 @@ import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PasswordScreen extends StatelessWidget {
   PasswordScreen({super.key});
@@ -87,7 +88,7 @@ class PasswordScreen extends StatelessWidget {
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
                   onPress: () {
-                    
+                    context.push("/gender");
                   },
                 ),
           

@@ -1,3 +1,4 @@
+import 'package:connect/features/auth/presentation/sign_up/gender_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/password_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/signup_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/verify_otp_screen.dart';
@@ -31,6 +32,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: "/password",
       builder: (context, state) => PasswordScreen()
+    ),
+
+    GoRoute(
+      path: "/gender",
+      builder: (context, state) => GenderScreen()
     )
   ]
 );
