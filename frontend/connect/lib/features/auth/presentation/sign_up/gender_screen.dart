@@ -1,4 +1,5 @@
 import 'package:connect/core/theme/theme.dart';
+import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:flutter/material.dart';
 
 class GenderScreen extends StatelessWidget {
@@ -27,9 +28,26 @@ class GenderScreen extends StatelessWidget {
                   padding: EdgeInsets.only(left: screenWidth * 0.06),
                   child: heading(screenWidth, screenHeight),
                 )
-              )
+              ),
+
+
         
-              
+              Spacer(),
+              AppButton(
+                width: screenWidth * 0.95,
+                height: screenHeight * 0.06,
+                text: "Next",
+                buttonColor: AppTheme.themeRed,
+                textColor: AppTheme.whiteBackground,
+                fontSize: screenWidth * 0.04,
+                onPress: () {
+                  
+                },
+              ),
+        
+              SizedBox(
+                height: screenHeight * 0.02,
+              )
             ],
           ),
         ),
