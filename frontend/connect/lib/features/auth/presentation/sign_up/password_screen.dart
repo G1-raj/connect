@@ -19,81 +19,84 @@ class PasswordScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
       body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: screenHeight * 0.04,
-              ),
-              
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.06),
-                  child: Text("Create Password", style: TextStyle(
-                    fontSize: screenWidth * 0.05,
-                    fontWeight: FontWeight.w700
-                  ),),
+        child: Form(
+          key: formKey,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: screenHeight * 0.04,
                 ),
-              ),
-              SizedBox(
-                height: screenHeight * 0.01,
-              ),
-              InputField(
-                hintText: "Password", 
-                prefixIcon: Icon(Icons.lock),
-                isPassword: true, 
-                textController: _passwordController,
-                width: screenWidth * 0.85,
-                height: screenHeight * 0.07,
-              ),
-
-              SizedBox(
-                height: screenHeight * 0.04,
-              ),
-
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.06),
-                  child: Text("Confirm Password", style: TextStyle(
-                    fontSize: screenWidth * 0.05,
-                    fontWeight: FontWeight.w700
-                  ),),
+                
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: screenWidth * 0.06),
+                    child: Text("Create Password", style: TextStyle(
+                      fontSize: screenWidth * 0.05,
+                      fontWeight: FontWeight.w700
+                    ),),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: screenHeight * 0.01,
-              ),
-              InputField(
-                hintText: "Confirm Password", 
-                prefixIcon: Icon(Icons.lock),
-                isPassword: true, 
-                textController: _passwordController,
-                width: screenWidth * 0.85,
-                height: screenHeight * 0.07,
-              ),
-
-              Spacer(),
-
-               AppButton(
-                width: screenWidth * 0.95,
-                height: screenHeight * 0.06,
-                text: "Create Password",
-                buttonColor: AppTheme.themeRed,
-                textColor: AppTheme.whiteBackground,
-                fontSize: screenWidth * 0.04,
-                onPress: () {
-                  
-                },
-              ),
-        
-              SizedBox(
-                height: screenHeight * 0.02,
-              )
-              
-            ],
+                SizedBox(
+                  height: screenHeight * 0.01,
+                ),
+                InputField(
+                  hintText: "Password", 
+                  prefixIcon: Icon(Icons.lock),
+                  isPassword: true, 
+                  textController: _passwordController,
+                  width: screenWidth * 0.85,
+                  height: screenHeight * 0.07,
+                ),
+          
+                SizedBox(
+                  height: screenHeight * 0.04,
+                ),
+          
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: screenWidth * 0.06),
+                    child: Text("Confirm Password", style: TextStyle(
+                      fontSize: screenWidth * 0.05,
+                      fontWeight: FontWeight.w700
+                    ),),
+                  ),
+                ),
+                SizedBox(
+                  height: screenHeight * 0.01,
+                ),
+                InputField(
+                  hintText: "Confirm Password", 
+                  prefixIcon: Icon(Icons.lock),
+                  isPassword: true, 
+                  textController: _cnfPasswordController,
+                  width: screenWidth * 0.85,
+                  height: screenHeight * 0.07,
+                ),
+          
+                Spacer(),
+          
+                 AppButton(
+                  width: screenWidth * 0.95,
+                  height: screenHeight * 0.06,
+                  text: "Create Password",
+                  buttonColor: AppTheme.themeRed,
+                  textColor: AppTheme.whiteBackground,
+                  fontSize: screenWidth * 0.04,
+                  onPress: () {
+                    
+                  },
+                ),
+          
+                SizedBox(
+                  height: screenHeight * 0.02,
+                )
+                
+              ],
+            ),
           ),
         ),
       ),
