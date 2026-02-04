@@ -1,6 +1,7 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class VerifyOtpScreen extends StatelessWidget {
   const VerifyOtpScreen({super.key});
@@ -61,6 +62,9 @@ class VerifyOtpScreen extends StatelessWidget {
                 buttonColor: AppTheme.themeRed,
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
+                onPress: () {
+                  context.push("/password");
+                },
               ),
         
               SizedBox(

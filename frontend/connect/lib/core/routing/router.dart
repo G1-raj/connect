@@ -1,3 +1,4 @@
+import 'package:connect/features/auth/presentation/sign_up/password_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/signup_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/verify_otp_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -25,6 +26,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: "/verify-otp",
       builder: (context, state) => VerifyOtpScreen()
+    ),
+
+    GoRoute(
+      path: "/password",
+      builder: (context, state) => PasswordScreen()
     )
   ]
 );
