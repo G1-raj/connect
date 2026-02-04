@@ -30,6 +30,8 @@ class GenderScreen extends StatelessWidget {
                 )
               ),
 
+              Text("Malw"),
+
 
         
               Spacer(),
