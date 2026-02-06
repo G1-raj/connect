@@ -1,3 +1,4 @@
+import 'package:connect/features/auth/presentation/sign_up/date_of_birth_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/description_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/gender_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/interests_screen.dart';
@@ -55,6 +56,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: "/images",
       builder: (context, state) => ProfileImages(),
+    ),
+
+    GoRoute(
+      path: "/date-of-birth",
+      builder: (context, state) => DateOfBirthScreen(),
     )
   ]
 );
