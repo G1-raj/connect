@@ -4,6 +4,7 @@ import 'package:connect/features/auth/presentation/sign_up/gender_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/interests_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/password_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/profile_images.dart';
+import 'package:connect/features/auth/presentation/sign_up/sexuality_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/signup_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/verify_otp_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -61,6 +62,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: "/date-of-birth",
       builder: (context, state) => DateOfBirthScreen(),
+    ),
+
+    GoRoute(
+      path: "/sexuality",
+      builder: (context, state) => SexualityScreen(),
     )
   ]
 );
