@@ -1,3 +1,4 @@
+import 'package:connect/features/auth/presentation/sign_up/description_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/gender_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/interests_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/password_screen.dart';
@@ -43,6 +44,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: "/interests",
       builder: (context, state) => InterestsScreen(),
+    ),
+
+    GoRoute(
+      path: "/description",
+      builder: (context, state) => DescriptionScreen(),
     )
   ]
 );
