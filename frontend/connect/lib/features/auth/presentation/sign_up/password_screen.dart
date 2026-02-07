@@ -88,7 +88,7 @@ class PasswordScreen extends StatelessWidget {
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
                   onPress: () {
-                    context.push("/gender");
+                    context.push("/profile");
                   },
                 ),
           
