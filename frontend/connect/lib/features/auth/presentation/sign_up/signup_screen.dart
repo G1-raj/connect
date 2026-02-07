@@ -20,6 +20,7 @@ class SignupScreen extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: AppTheme.whiteBackground,
       body: SafeArea(
         child: Form(
           key: _formKey,

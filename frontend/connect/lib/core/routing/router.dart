@@ -1,13 +1,8 @@
-import 'package:connect/features/auth/presentation/sign_up/date_of_birth_screen.dart';
-import 'package:connect/features/auth/presentation/sign_up/description_screen.dart';
-import 'package:connect/features/auth/presentation/sign_up/gender_screen.dart';
-import 'package:connect/features/auth/presentation/sign_up/interests_screen.dart';
+import 'package:connect/features/auth/presentation/sign_up/profile_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:connect/features/auth/presentation/sign_up/password_screen.dart';
-import 'package:connect/features/auth/presentation/sign_up/profile_images.dart';
-import 'package:connect/features/auth/presentation/sign_up/sexuality_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/signup_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/verify_otp_screen.dart';
-import 'package:go_router/go_router.dart';
 import 'package:connect/features/auth/presentation/auth_navigator/auth_navigator.dart';
 import 'package:connect/features/auth/presentation/login_screen/login_screen.dart';
 
@@ -40,33 +35,8 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(
-      path: "/gender",
-      builder: (context, state) => GenderScreen()
-    ),
-
-    GoRoute(
-      path: "/interests",
-      builder: (context, state) => InterestsScreen(),
-    ),
-
-    GoRoute(
-      path: "/description",
-      builder: (context, state) => DescriptionScreen(),
-    ),
-
-    GoRoute(
-      path: "/images",
-      builder: (context, state) => ProfileImages(),
-    ),
-
-    GoRoute(
-      path: "/date-of-birth",
-      builder: (context, state) => DateOfBirthScreen(),
-    ),
-
-    GoRoute(
-      path: "/sexuality",
-      builder: (context, state) => SexualityScreen(),
+      path: "/profile",
+      builder: (context, state) => ProfileScreen(),
     )
   ]
 );

@@ -19,7 +19,7 @@ class PopUpDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
+
 
     return AlertDialog(
       backgroundColor: AppTheme.whiteBackground,
