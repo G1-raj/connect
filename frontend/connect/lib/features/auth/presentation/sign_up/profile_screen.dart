@@ -93,3 +93,12 @@ class GenderSelector extends StatelessWidget {
     return const Placeholder();
   }
 }
+
+class DateOfBirth extends StatelessWidget {
+  const DateOfBirth({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
