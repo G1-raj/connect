@@ -63,6 +63,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
     } else {
       //code of submit profile will go here
+      print("User Gender is: ${genderController.text}");
+      print("User date of birth is: ${dateOfBirthController.text}");
     }
   }
 
