@@ -240,8 +240,111 @@ class DateOfBirth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Date of birth selector page"),
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return Column(
+      children: [
+        Text("What's your date of birth", style: TextStyle(
+          fontWeight: FontWeight.w800,
+          fontSize: screenWidth * 0.05
+        ),),
+
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+
+        Container(
+          width: screenWidth * 0.85,
+          height: screenHeight * 0.3,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(254, 240, 237, 1),
+            borderRadius: BorderRadius.circular(18.0),
+            border: Border.all(
+              color: AppTheme.themeRed,
+              width: 1
+            )
+          ),
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  dateGrid(label: "Month", parameter: "April", width: screenWidth, height: screenHeight),
+                  dateGrid(label: "Day", parameter: "18", width: screenWidth, height: screenHeight),
+                  dateGrid(label: "Year", parameter: "2001", width: screenWidth, height: screenHeight),
+                ],
+              ),
+
+              Spacer(),
+
+              banner(screenWidth, screenHeight)
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget dateGrid({required String label, required String parameter, required double width, required double height}) {
+    return Column(
+      children: [
+        Text(label, style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: AppTheme.themeRed,
+          fontSize: width * 0.05,
+          letterSpacing: 0.7
+        ),),
+
+        SizedBox(
+          height: height * 0.01,
+        ),
+
+        Container(
+          width: width * 0.2,
+          height: 80,
+          decoration: BoxDecoration(
+            color: AppTheme.whiteBackground
+          ),
+          child: Center(child: Text(parameter)),
+        )
+      ],
+    );
+  }
+
+  Widget banner(double width, double height) {
+    return Container(
+      width: width,
+      height: height * 0.08,
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(253, 221, 222, 1),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(18.0), 
+          bottomRight: Radius.circular(18.0)
+        ),
+        border: Border.all(
+          color: Color.fromRGBO(254, 240, 237, 1),
+          width: 1
+        )
+      ),
+
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.calendar_month, color: AppTheme.themeRed, size: 38,),
+          Text("Date of Birth", style: TextStyle(
+            color: AppTheme.themeRed,
+            fontWeight: FontWeight.w700,
+            fontSize: width * 0.04
+          ),)
+        ],
+      ),
     );
   }
 }
