@@ -21,18 +21,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final List<TextEditingController> interestsController = [];
   late PageController _pageController;
 
-  final List<Widget> _pages = [
-    GenderSelector(),
-    DateOfBirth()
-  ]; 
+  late List<Widget> _pages;
 
-  int _currentPage = 0;
+  int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
     interestsController.add(TextEditingController());
     _pageController = PageController();
+
+    _pages = [
+      GenderSelector(genderController: genderController),
+      DateOfBirth(dateOfBirthController: dateOfBirthController)
+    ];
   }
 
   @override
@@ -54,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void changePage() {
-    if(_currentPage < _pages.length - 1) {
+    if(currentPage < _pages.length - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300), 
         curve: Curves.easeInOut
@@ -123,7 +125,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class GenderSelector extends StatelessWidget {
-  const GenderSelector({super.key});
+  final TextEditingController genderController;
+  const GenderSelector(
+    {
+      super.key,
+      required this.genderController
+    }
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +142,13 @@ class GenderSelector extends StatelessWidget {
 }
 
 class DateOfBirth extends StatelessWidget {
-  const DateOfBirth({super.key});
+  final TextEditingController dateOfBirthController;
+  const DateOfBirth(
+    {
+      super.key,
+      required this.dateOfBirthController
+    }
+  );
 
   @override
   Widget build(BuildContext context) {
