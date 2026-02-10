@@ -96,11 +96,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   controller: _pageController,
                   itemCount: _pages.length,
                   physics: const NeverScrollableScrollPhysics(),
-                  onPageChanged: (index) {},
+                  onPageChanged: (index) {
+                    setState(() {
+                      currentPage = index;
+                    });
+                  },
                   itemBuilder: (context, index) {
                     return _pages[index];
                   },
                 ),
+              ),
+
+              SizedBox(
+                height: screenHeight * 0.02,
               ),
 
               AppButton(
@@ -124,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-class GenderSelector extends StatelessWidget {
+class GenderSelector extends StatefulWidget {
   final TextEditingController genderController;
   const GenderSelector(
     {
@@ -134,9 +142,89 @@ class GenderSelector extends StatelessWidget {
   );
 
   @override
+  State<GenderSelector> createState() => _GenderSelectorState();
+}
+
+class _GenderSelectorState extends State<GenderSelector> {
+
+  final AssetImage _maleImage = AssetImage("lib/assets/male_gender.png");
+  final AssetImage _femaleImage = AssetImage("lib/assets/female_gender.png");
+  final AssetImage _otherImage = AssetImage("lib/assets/other_gender.png");
+
+  String? selected;
+
+  void select(String value) {
+    setState(() {
+      selected = value;
+      widget.genderController.text = value;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Gender selector page"),
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return Column(
+      children: [
+        Text("Select your gender", style: TextStyle(
+          fontWeight: FontWeight.w800,
+          fontSize: screenWidth * 0.05
+        ),),
+        
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+        
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            genderCard(label: "Male", image: _maleImage, width: screenWidth * 0.15),
+            genderCard(label: "Female", image: _femaleImage, width: screenWidth * 0.15),
+          ],
+        ),
+        
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+        
+        genderCard(label: "Other", image: _otherImage, width: screenWidth * 0.15),
+      ],
+    );
+  }
+
+  Widget genderCard({required String label, required AssetImage image, required double width}) {
+
+    final isSelected = selected == label;
+
+    return GestureDetector(
+      onTap: () => select(label),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected ? AppTheme.themeRed : Colors.grey.shade300,
+            width: isSelected ? 3 : 1
+          ),
+          color: isSelected ? AppTheme.themeRed : Colors.white
+        ),
+        child: Column(
+          children: [
+            Image(
+              image: image,
+              width: width,
+            ),
+            const SizedBox(height: 8),
+            Text(label, style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: isSelected ? AppTheme.whiteBackground : Colors.black,
+            ),)
+          ],
+        ),
+      ),
     );
   }
 }
