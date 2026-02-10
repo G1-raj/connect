@@ -19,6 +19,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController latitudeController = TextEditingController();
   final TextEditingController longitudeController = TextEditingController();
   final List<TextEditingController> interestsController = [];
+  late PageController _pageController;
+
+  final List<Widget> _pages = [
+    GenderSelector(),
+    DateOfBirth()
+  ]; 
+
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    interestsController.add(TextEditingController());
+    _pageController = PageController();
+  }
 
   @override
   void dispose() {
@@ -28,7 +43,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     dateOfBirthController.dispose();
     latitudeController.dispose();
     longitudeController.dispose();
+
+
+    _pageController.dispose();
+
+    for(final i in interestsController) {
+      i.dispose();
+    }
     super.dispose();
+  }
+
+  void changePage() {
+    if(_currentPage < _pages.length - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300), 
+        curve: Curves.easeInOut
+      );
+    } else {
+      //code of submit profile will go here
+    }
   }
 
   @override
@@ -56,11 +89,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: screenHeight * 0.04,
               ),
 
-              // Expanded(
-              //   child: PageView.builder(),
-              // ),
-
-              Spacer(),
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: _pages.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  onPageChanged: (index) {},
+                  itemBuilder: (context, index) {
+                    return _pages[index];
+                  },
+                ),
+              ),
 
               AppButton(
                 width: screenWidth * 0.95,
@@ -69,9 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 buttonColor: AppTheme.themeRed,
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
-                onPress: () {
-                 
-                },
+                onPress: changePage
               ),
         
               SizedBox(
@@ -90,7 +127,9 @@ class GenderSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Center(
+      child: Text("Gender selector page"),
+    );
   }
 }
 
@@ -99,6 +138,8 @@ class DateOfBirth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Center(
+      child: Text("Date of birth selector page"),
+    );
   }
 }
