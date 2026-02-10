@@ -285,9 +285,11 @@ class _DateOfBirthState extends State<DateOfBirth> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    final month = selectedDate != null ? selectedDate!.month : "__";
+    final int? month = selectedDate?.month;
     final day = selectedDate != null ? selectedDate!.day : "__";
     final year = selectedDate != null ? selectedDate!.year : "__";
+
+    final monthName = month != null ? months[month]! : "__";
 
     return Column(
       children: [
@@ -323,7 +325,7 @@ class _DateOfBirthState extends State<DateOfBirth> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    dateGrid(label: "Month", value: months[month]!, width: screenWidth),
+                    dateGrid(label: "Month", value: monthName, width: screenWidth),
                     dateGrid(label: "Day", value: day.toString(), width: screenWidth),
                     dateGrid(label: "Year", value: year.toString(), width: screenWidth)
                   ],
