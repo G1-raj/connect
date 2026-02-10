@@ -229,7 +229,7 @@ class _GenderSelectorState extends State<GenderSelector> {
   }
 }
 
-class DateOfBirth extends StatelessWidget {
+class DateOfBirth extends StatefulWidget {
   final TextEditingController dateOfBirthController;
   const DateOfBirth(
     {
@@ -239,10 +239,53 @@ class DateOfBirth extends StatelessWidget {
   );
 
   @override
+  State<DateOfBirth> createState() => _DateOfBirthState();
+}
+
+class _DateOfBirthState extends State<DateOfBirth> {
+
+  DateTime? selectedDate;
+
+   Map<int, String> months = {
+      1: "January",
+      2: "February",
+      3: "March",
+      4: "April",
+      5: "May",
+      6: "June",
+      7: "July",
+      8: "August",
+      9: "September",
+      10: "October",
+      11: "November",
+      12: "December"
+    };
+
+  Future<void> pickDate() async {
+    final picked = await showDatePicker(
+      context: context, 
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1950), 
+      lastDate: DateTime.now()
+    );
+
+    if(picked != null) {
+      setState(() {
+        selectedDate = picked;
+        widget.dateOfBirthController.text = "${picked.year}-${picked.month}-${picked.day}";
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    final month = selectedDate != null ? selectedDate!.month : "__";
+    final day = selectedDate != null ? selectedDate!.day : "__";
+    final year = selectedDate != null ? selectedDate!.year : "__";
 
     return Column(
       children: [
@@ -255,44 +298,47 @@ class DateOfBirth extends StatelessWidget {
           height: screenHeight * 0.02,
         ),
 
-        Container(
-          width: screenWidth * 0.85,
-          height: screenHeight * 0.3,
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(254, 240, 237, 1),
-            borderRadius: BorderRadius.circular(18.0),
-            border: Border.all(
-              color: AppTheme.themeRed,
-              width: 1
-            )
-          ),
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: screenHeight * 0.03,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  dateGrid(label: "Month", parameter: "April", width: screenWidth, height: screenHeight),
-                  dateGrid(label: "Day", parameter: "18", width: screenWidth, height: screenHeight),
-                  dateGrid(label: "Year", parameter: "2001", width: screenWidth, height: screenHeight),
-                ],
-              ),
-
-              Spacer(),
-
-              banner(screenWidth, screenHeight)
-            ],
+        GestureDetector(
+          onTap: pickDate,
+          child: Container(
+            width: screenWidth * 0.85,
+            height: screenHeight * 0.3,
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(254, 240, 237, 1),
+              borderRadius: BorderRadius.circular(18.0),
+              border: Border.all(
+                color: AppTheme.themeRed,
+                width: 1
+              )
+            ),
+          
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    dateGrid(label: "Month", value: months[month]!, width: screenWidth),
+                    dateGrid(label: "Day", value: day.toString(), width: screenWidth),
+                    dateGrid(label: "Year", value: year.toString(), width: screenWidth)
+                  ],
+                ),
+          
+                Spacer(),
+          
+                banner(screenWidth, screenHeight)
+              ],
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget dateGrid({required String label, required String parameter, required double width, required double height}) {
+  Widget dateGrid({required String label, required String value, required double width}) {
     return Column(
       children: [
         Text(label, style: TextStyle(
@@ -303,16 +349,23 @@ class DateOfBirth extends StatelessWidget {
         ),),
 
         SizedBox(
-          height: height * 0.01,
+          height: 8
         ),
 
         Container(
           width: width * 0.2,
           height: 80,
           decoration: BoxDecoration(
-            color: AppTheme.whiteBackground
+            color: AppTheme.whiteBackground,
+            borderRadius: BorderRadius.circular(18.0)
           ),
-          child: Center(child: Text(parameter)),
+          child: Center(child: Text(
+            value,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: width * 0.05
+            ),
+          )),
         )
       ],
     );
