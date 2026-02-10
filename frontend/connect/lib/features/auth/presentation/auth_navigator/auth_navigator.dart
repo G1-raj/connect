@@ -38,14 +38,10 @@ class AuthNavigationScreen extends StatelessWidget {
           Positioned(
             left: screenWidth * 0.3,
             top: screenHeight * 0.1,
-            child: Container(
-              width: screenWidth * 0.4,
-              height: screenWidth * 0.35,
-              decoration: BoxDecoration(
-                  color: AppTheme.themeRed,
-                  shape: BoxShape.circle
-              ),
-            ),
+            child: Image(
+              image: AssetImage("lib/assets/logo.png"),
+              width: 180,
+            )
           ),
 
           //Slogan
