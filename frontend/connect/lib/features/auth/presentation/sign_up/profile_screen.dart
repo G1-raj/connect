@@ -406,29 +406,3 @@ class _DateOfBirthState extends State<DateOfBirth> {
   }
 }
 
-class Interests extends StatelessWidget {
-  const Interests({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
-
-class Sexuality extends StatelessWidget {
-  const Sexuality({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
-
-class Description extends StatelessWidget {
-  const Description({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
