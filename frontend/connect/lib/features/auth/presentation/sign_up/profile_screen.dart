@@ -405,3 +405,12 @@ class _DateOfBirthState extends State<DateOfBirth> {
     );
   }
 }
+
+class Interests extends StatelessWidget {
+  const Interests({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
