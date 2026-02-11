@@ -423,3 +423,12 @@ class Sexuality extends StatelessWidget {
     return const Placeholder();
   }
 }
+
+class Description extends StatelessWidget {
+  const Description({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
