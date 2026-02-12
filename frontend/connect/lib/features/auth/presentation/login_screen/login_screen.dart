@@ -145,6 +145,7 @@ class LoginScreen extends StatelessWidget {
                   fontSize: screenWidth * 0.04,
                   onPress: () {
                     if(_formKey!.currentState!.validate()) {
+                      _formKey.currentState!.save();
                       print("Login successful");
                     }
                   },

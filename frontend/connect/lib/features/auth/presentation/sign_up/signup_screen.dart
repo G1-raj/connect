@@ -59,6 +59,17 @@ class SignupScreen extends StatelessWidget {
                   textController: _emailController,
                   width: screenWidth * 0.85,
                   height: screenHeight * 0.07,
+                  validator: (value) {
+                    if(value == null || value.isEmpty) {
+                      return "Please provide the email";
+                    }
+
+                    if(!value.contains("@")) {
+                      return "Please provide the valid gmail address";
+                    }
+
+                    return null;
+                  },
                 ),
 
                 SizedBox(
@@ -71,6 +82,13 @@ class SignupScreen extends StatelessWidget {
                   textController: _nameController,
                   width: screenWidth * 0.85,
                   height: screenHeight * 0.07,
+                  validator: (value) {
+                    if(value == null || value.isEmpty) {
+                      return "Please provide your full name";
+                    }
+
+                    return null;
+                  },
                 ),
 
                 SizedBox(
@@ -147,18 +165,22 @@ class SignupScreen extends StatelessWidget {
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
                   onPress: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (context) => PopUpDialog(
-                        title: "Verify Email",
-                        body: "Confirm your email address",
-                        email: _emailController.text,
-                        onConfirm: () {
-                           context.push("/verify-otp");    
-                        },
-                      ),
-                    );
+                    if(_formKey!.currentState!.validate()) {
+                      _formKey.currentState!.save();
+
+                      showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) => PopUpDialog(
+                          title: "Verify Email",
+                          body: "Confirm your email address",
+                          email: _emailController.text,
+                          onConfirm: () {
+                            context.push("/verify-otp");    
+                          },
+                        ),
+                      );
+                    }
                   },
                 ),
           

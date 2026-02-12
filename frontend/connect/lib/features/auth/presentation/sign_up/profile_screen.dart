@@ -70,6 +70,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         curve: Curves.easeInOut
       );
     } else {
+
+      if(
+        genderController.text.isEmpty || dateOfBirthController.text.isEmpty || sexualityController.text.isEmpty || descriptionController.text.isEmpty
+      ) {
+        return;
+      }
       //first profile data sending function will call
       //sendProfileData();
 

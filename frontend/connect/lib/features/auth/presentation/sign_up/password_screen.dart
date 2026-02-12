@@ -50,6 +50,38 @@ class PasswordScreen extends StatelessWidget {
                   textController: _passwordController,
                   width: screenWidth * 0.85,
                   height: screenHeight * 0.07,
+                  validator: (value) {
+                    if(value == null || value.isEmpty) {
+                      return "Please provide the password";
+                    }
+
+                    if(value.length < 6 || value.length > 12) {
+                      return "Password length must between 6 to 12 characters";
+                    }
+
+                    final hasUpper = RegExp(r'[A-Z]');
+                    final hasLower = RegExp(r'[a-z]');
+                    final hasDigit = RegExp(r'[0-9]');
+                    final hasSpecial = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+
+                    if (!hasUpper.hasMatch(value)) {
+                      return "Must contain at least one capital letter";
+                    }
+
+                    if (!hasLower.hasMatch(value)) {
+                      return "Must contain at least one small letter";
+                    }
+
+                    if (!hasDigit.hasMatch(value)) {
+                      return "Must contain at least one number";
+                    }
+
+                    if (!hasSpecial.hasMatch(value)) {
+                      return "Must contain at least one special character";
+                    }
+
+                    return null;
+                  },
                 ),
           
                 SizedBox(
@@ -76,6 +108,17 @@ class PasswordScreen extends StatelessWidget {
                   textController: _cnfPasswordController,
                   width: screenWidth * 0.85,
                   height: screenHeight * 0.07,
+                  validator: (value) {
+                    if(value == null || value.isEmpty) {
+                      return "Please provide the confirmation password";
+                    }
+
+                    if(_passwordController.text != _cnfPasswordController.text) {
+                      return "Password and Confirmation password should be same";
+                    }
+
+                    return null;
+                  },
                 ),
           
                 Spacer(),
@@ -88,7 +131,10 @@ class PasswordScreen extends StatelessWidget {
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
                   onPress: () {
-                    context.push("/profile");
+                    if(formKey!.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      context.push("/profile");
+                    } 
                   },
                 ),
           

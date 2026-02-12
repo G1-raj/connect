@@ -3,9 +3,11 @@ import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+// ignore: must_be_immutable
 class VerifyOtpScreen extends StatelessWidget {
-  const VerifyOtpScreen({super.key});
+  VerifyOtpScreen({super.key});
 
+  String otp = "";
   @override
   Widget build(BuildContext context) {
 
@@ -40,6 +42,7 @@ class VerifyOtpScreen extends StatelessWidget {
 
               OtpField(
                 onChanged: (otp) {
+                  otp = otp;
                   print("OTP is: $otp");
                 },
               ),
@@ -63,7 +66,17 @@ class VerifyOtpScreen extends StatelessWidget {
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
                 onPress: () {
-                  context.push("/password");
+                  if(otp.isEmpty) {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        content: const Text("Please provide the otp")
+                      )
+                    );
+                  } else {
+                     context.push("/password");
+                  }
                 },
               ),
         
