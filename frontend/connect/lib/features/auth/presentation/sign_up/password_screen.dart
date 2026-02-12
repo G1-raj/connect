@@ -131,7 +131,7 @@ class PasswordScreen extends StatelessWidget {
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
                   onPress: () {
-                    if(formKey!.currentState!.validate()) {
+                    if(formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                       context.push("/profile");
                     } 

@@ -165,7 +165,7 @@ class SignupScreen extends StatelessWidget {
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
                   onPress: () {
-                    if(_formKey!.currentState!.validate()) {
+                    if(_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
 
                       showDialog(
