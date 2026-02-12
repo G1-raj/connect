@@ -132,7 +132,8 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
                         );
                       },
                       child: imageInputCard(
-                        index < images.length ? images[index] : null
+                        index < images.length ? images[index] : null,
+                        index
                       )
                     ),
                   );
@@ -164,29 +165,34 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
     );
   }
 
-  Widget imageInputCard(XFile? image) {
+  Widget imageInputCard(XFile? image, int index) {
     return Container(
-      width: 50,
-      height: 50,
       decoration: BoxDecoration(
         color: AppTheme.greyColor,
         borderRadius: BorderRadius.circular(12.0)
       ),
-      child: image != null ? Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(12.0)
+      child: image == null ? Icon(Icons.add, size: 32,) : ClipRRect(
+        borderRadius: BorderRadius.circular(12.0),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.file(
+              File(image.path),
+              fit: BoxFit.cover,
+            ),
+            Positioned(
+              left: 80,
+              child: IconButton(
+                icon: Icon(Icons.cancel), 
+                color: AppTheme.greyColor,
+                onPressed: () {
+                  removeImage(index);
+                },
+              )
+            )
+          ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12.0),
-          child: Image.file(
-            File(image.path),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ): Icon(Icons.add, size: 32,),
+      ),
     );
   }
 
