@@ -6,6 +6,7 @@ import 'package:connect/core/widgets/gender_selector/gender_selector.dart';
 import 'package:connect/core/widgets/interests/interests.dart';
 import 'package:connect/core/widgets/sexuality/sexuality.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -69,12 +70,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         curve: Curves.easeInOut
       );
     } else {
-      //code of submit profile will go here
-      print("User Gender is: ${genderController.text}");
-      print("User date of birth is: ${dateOfBirthController.text}");
-      print("User sexuality is: ${sexualityController.text}");
-      print(("User description is: ${descriptionController.text}"));
-      print("User interests are: $interests");
+      //first profile data sending function will call
+      //sendProfileData();
+
+      //navigate to upload images
+      context.pushReplacement("/image-input");
     }
   }
 
