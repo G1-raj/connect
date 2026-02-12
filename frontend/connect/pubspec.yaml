@@ -78,6 +78,11 @@ flutter:
     - lib/assets/gay.png
     - lib/assets/lesbian.png
     - lib/assets/asexual.png
+    - lib/assets/alcohol.png
+    - lib/assets/smoke.png
+    - lib/assets/pets.png
+    - lib/assets/kids.png
+    - lib/assets/exercise.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
