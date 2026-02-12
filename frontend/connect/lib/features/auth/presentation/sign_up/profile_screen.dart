@@ -1,5 +1,6 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
+import 'package:connect/core/widgets/selection_card/selection_card.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -66,6 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       //code of submit profile will go here
       print("User Gender is: ${genderController.text}");
       print("User date of birth is: ${dateOfBirthController.text}");
+      print("User sexuality is: ${sexualityController.text}");
     }
   }
 
@@ -183,51 +185,42 @@ class _GenderSelectorState extends State<GenderSelector> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            genderCard(label: "Male", image: _maleImage, width: screenWidth * 0.15),
-            genderCard(label: "Female", image: _femaleImage, width: screenWidth * 0.15),
+            SelectionCard(
+              label: "Male", 
+              image: _maleImage, 
+              width: screenWidth * 0.15, 
+              selected: selected,
+              onPress: () {
+                select("Male");
+              }
+            ),
+
+            SelectionCard(
+              label: "Female", 
+              image: _femaleImage, 
+              width: screenWidth * 0.15, 
+              selected: selected,
+              onPress: () {
+                select("Female");
+              }
+            ),
           ],
         ),
         
         SizedBox(
           height: screenHeight * 0.02,
         ),
-        
-        genderCard(label: "Other", image: _otherImage, width: screenWidth * 0.15),
+
+        SelectionCard(
+          label: "Other", 
+          image: _otherImage, 
+          width: screenWidth * 0.15, 
+          selected: selected,
+          onPress: () {
+            select("Other");
+          }
+        ),
       ],
-    );
-  }
-
-  Widget genderCard({required String label, required AssetImage image, required double width}) {
-
-    final isSelected = selected == label;
-
-    return GestureDetector(
-      onTap: () => select(label),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected ? AppTheme.themeRed : Colors.grey.shade300,
-            width: isSelected ? 3 : 1
-          ),
-          color: isSelected ? AppTheme.themeRed : Colors.white
-        ),
-        child: Column(
-          children: [
-            Image(
-              image: image,
-              width: width,
-            ),
-            const SizedBox(height: 8),
-            Text(label, style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: isSelected ? AppTheme.whiteBackground : Colors.black,
-            ),)
-          ],
-        ),
-      ),
     );
   }
 }
@@ -407,22 +400,34 @@ class _DateOfBirthState extends State<DateOfBirth> {
   }
 }
 
-class Sexuality extends StatelessWidget {
+class Sexuality extends StatefulWidget {
   final TextEditingController sexualityController;
-  Sexuality(
+  const Sexuality(
     {
       super.key,
       required this.sexualityController
     }
   );
 
-  final List<AssetImage> _sexualityImages = [
-    AssetImage("lib/assets/straight.png"),
-    AssetImage("lib/assets/gay.png"),
-    AssetImage("lib/assets/lesbian.png"),
-    AssetImage("lib/assets/asexual.png")
-  ];
+  @override
+  State<Sexuality> createState() => _SexualityState();
+}
 
+class _SexualityState extends State<Sexuality> {
+
+  final AssetImage _straight = AssetImage("lib/assets/straight.png");
+  final AssetImage _gay = AssetImage("lib/assets/gay.png");
+  final AssetImage _lesbian = AssetImage("lib/assets/lesbian.png");
+  final AssetImage _asexual = AssetImage("lib/assets/asexual.png");
+
+  String? selected;
+
+  void select(String value) {
+    setState(() {
+      selected = value;
+      widget.sexualityController.text = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -441,52 +446,62 @@ class Sexuality extends StatelessWidget {
           height: screenHeight * 0.02,
         ),
 
-        Container(
-          color: Colors.blue,
-          width: screenWidth,
-          height: screenHeight * 0.34,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    color: Colors.red,
-                    width: screenWidth * 0.35,
-                    height: screenHeight * 0.12,
-                  ),
-                  
-                  Container(
-                    color: Colors.red,
-                    width: screenWidth * 0.35,
-                    height: screenHeight * 0.12,
-                  ),
-                ],
-              ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SelectionCard(
+              label: "Straight", 
+              image: _straight, 
+              width: screenWidth * 0.18, 
+              selected: selected,
+              isSexuality: true,
+              onPress: () {
+                select("Straight");
+              }
+            ),
 
-              SizedBox(
-                height: screenHeight * 0.03,
-              ),
+            SelectionCard(
+              label: "Gay", 
+              image: _gay, 
+              width: screenWidth * 0.18, 
+              selected: selected,
+              isSexuality: true,
+              onPress: () {
+                select("Gay");
+              }
+            ),
+          ],
+        ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    color: Colors.red,
-                    width: screenWidth * 0.35,
-                    height: screenHeight * 0.12,
-                  ),
-                  
-                  Container(
-                    color: Colors.red,
-                    width: screenWidth * 0.35,
-                    height: screenHeight * 0.12,
-                  ),
-                ],
-              ),
-            ],
-          )
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SelectionCard(
+              label: "Lesbian", 
+              image: _lesbian, 
+              width: screenWidth * 0.18, 
+              selected: selected,
+              isSexuality: true,
+              onPress: () {
+                select("Lesbian");
+              }
+            ),
+
+            SelectionCard(
+              label: "Asexual", 
+              image: _asexual, 
+              width: screenWidth * 0.18, 
+              selected: selected,
+              isSexuality: true,
+              onPress: () {
+                select("Asexual");
+              }
+            ),
+          ],
         )
       ],
     );

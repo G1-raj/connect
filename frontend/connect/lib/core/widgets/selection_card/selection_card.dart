@@ -5,14 +5,18 @@ class SelectionCard extends StatefulWidget {
   final String label;
   final AssetImage image;
   final double width;
-  final String selected;
+  final String? selected;
+  final VoidCallback? onPress;
+  final bool? isSexuality;
   const SelectionCard(
     {
       super.key,
       required this.label,
       required this.image,
       required this.width,
-      required this.selected
+      required this.selected,
+      this.onPress,
+      this.isSexuality = false
     }
   );
 
@@ -22,18 +26,11 @@ class SelectionCard extends StatefulWidget {
 
 class _SelectionCardState extends State<SelectionCard> {
 
-  late bool isSelected;
-
-  @override
-  void initState() {
-   isSelected = widget.selected == widget.label;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final isSelected = widget.selected == widget.label;
     return GestureDetector(
-      onTap: () {},
+      onTap: widget.onPress,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         padding:  EdgeInsets.all(10),
@@ -52,10 +49,11 @@ class _SelectionCardState extends State<SelectionCard> {
               width: widget.width,
             ),
             const SizedBox(height: 8),
+            widget.isSexuality == false ?
             Text(widget.label, style: TextStyle(
               fontWeight: FontWeight.w600,
               color: isSelected ? AppTheme.whiteBackground : Colors.black,
-            ),)
+            ),) : SizedBox()
           ],
         ),
       ),
