@@ -146,7 +146,7 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
               child: AppButton(
                 width: screenWidth * 0.95,
                 height: screenHeight * 0.06,
-                text: "Verify",
+                text: "Upload",
                 buttonColor: AppTheme.themeRed,
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
@@ -179,6 +179,13 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
             Image.file(
               File(image.path),
               fit: BoxFit.cover,
+              frameBuilder: (context, child, frame, _) {
+                if(frame == null) {
+                  return Center(child: CircularProgressIndicator(color: AppTheme.textThemeRed,));
+                }
+
+                return child;
+              },
             ),
             Positioned(
               left: 80,

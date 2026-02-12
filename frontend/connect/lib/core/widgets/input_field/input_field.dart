@@ -7,6 +7,7 @@ class InputField extends StatefulWidget {
   final TextEditingController textController;
   final double width;
   final double height;
+  final String? Function(String?)? validator; 
   const InputField(
     {
       super.key,
@@ -15,7 +16,8 @@ class InputField extends StatefulWidget {
       this.isPassword = false,
       required this.textController,
       required this.width,
-      required this.height
+      required this.height,
+      this.validator
     }
   );
 
@@ -41,6 +43,7 @@ class _InputFieldState extends State<InputField> {
       child: TextFormField(
         controller: widget.textController,
         obscureText: _obscureText,
+        validator: widget.validator,
         decoration: InputDecoration(
           prefixIcon: widget.prefixIcon,
           suffixIcon: widget.isPassword ? GestureDetector(
