@@ -33,7 +33,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     _pages = [
       GenderSelector(genderController: genderController),
-      DateOfBirth(dateOfBirthController: dateOfBirthController)
+      DateOfBirth(dateOfBirthController: dateOfBirthController),
+      Sexuality(sexualityController: sexualityController)
     ];
   }
 
@@ -406,3 +407,88 @@ class _DateOfBirthState extends State<DateOfBirth> {
   }
 }
 
+class Sexuality extends StatelessWidget {
+  final TextEditingController sexualityController;
+  Sexuality(
+    {
+      super.key,
+      required this.sexualityController
+    }
+  );
+
+  final List<AssetImage> _sexualityImages = [
+    AssetImage("lib/assets/straight.png"),
+    AssetImage("lib/assets/gay.png"),
+    AssetImage("lib/assets/lesbian.png"),
+    AssetImage("lib/assets/asexual.png")
+  ];
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return Column(
+      children: [
+        Text("What's your sexuality", style: TextStyle(
+          fontWeight: FontWeight.w800,
+          fontSize: screenWidth * 0.05
+        ),),
+        
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+
+        Container(
+          color: Colors.blue,
+          width: screenWidth,
+          height: screenHeight * 0.34,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    color: Colors.red,
+                    width: screenWidth * 0.35,
+                    height: screenHeight * 0.12,
+                  ),
+                  
+                  Container(
+                    color: Colors.red,
+                    width: screenWidth * 0.35,
+                    height: screenHeight * 0.12,
+                  ),
+                ],
+              ),
+
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    color: Colors.red,
+                    width: screenWidth * 0.35,
+                    height: screenHeight * 0.12,
+                  ),
+                  
+                  Container(
+                    color: Colors.red,
+                    width: screenWidth * 0.35,
+                    height: screenHeight * 0.12,
+                  ),
+                ],
+              ),
+            ],
+          )
+        )
+      ],
+    );
+  }
+}
