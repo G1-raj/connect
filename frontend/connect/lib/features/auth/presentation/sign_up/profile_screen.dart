@@ -1,5 +1,6 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
+import 'package:connect/core/widgets/multiple_selection_card/multiple_selection_card.dart';
 import 'package:connect/core/widgets/selection_card/selection_card.dart';
 import 'package:flutter/material.dart';
 
@@ -654,19 +655,6 @@ class _InterestsState extends State<Interests> {
   ];
 
 
-  void select(String value) {
-    setState(() {
-      if(widget.selectedInterests.contains(value)) {
-        widget.selectedInterests.remove(value);
-      } else {
-        widget.selectedInterests.add(value);
-      }
-    });
-
-    widget.onChanged(widget.selectedInterests);
-  }
-
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -684,36 +672,13 @@ class _InterestsState extends State<Interests> {
         ),
 
         Expanded(
-          child: multipleSelectionCard(allInterests: _interests)
+          child: MultipleSelectionCard(
+            allInterests: _interests, 
+            selectedInterests: widget.selectedInterests,
+            onChanged: widget.onChanged,
+          )
         )
       ],
-    );
-  }
-
-  Widget multipleSelectionCard({required List<String> allInterests}) {
-    return SingleChildScrollView(
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: allInterests.map((interest) {
-          final isSelected = widget.selectedInterests.contains(interest);
-          return GestureDetector(
-            onTap: () {
-              select(interest);
-            },
-            child: Chip(
-              backgroundColor: isSelected ? AppTheme.themeRed : AppTheme.whiteBackground,
-              label: Text(
-                interest,
-                style: TextStyle(
-                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
-                  color: isSelected ? AppTheme.whiteBackground : AppTheme.blackBackground
-                ),
-              ),
-            ),
-          );
-        }).toList(),
-      ),
     );
   }
 }
