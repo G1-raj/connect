@@ -19,25 +19,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController latitudeController = TextEditingController();
   final TextEditingController longitudeController = TextEditingController();
-  final List<TextEditingController> interestsController = [];
+  List<String> interests = [];
   late PageController _pageController;
 
-  late List<Widget> _pages;
-
   int currentPage = 0;
+
+  List<Widget> get pages => [
+    GenderSelector(genderController: genderController),
+    DateOfBirth(dateOfBirthController: dateOfBirthController),
+    Sexuality(sexualityController: sexualityController),
+    Description(descriptionController: descriptionController),
+    Interests(
+      selectedInterests: interests,
+      onChanged: (list) {
+        interests = list;
+      },
+    )
+  ]; 
 
   @override
   void initState() {
     super.initState();
-    interestsController.add(TextEditingController());
     _pageController = PageController();
-
-    _pages = [
-      GenderSelector(genderController: genderController),
-      DateOfBirth(dateOfBirthController: dateOfBirthController),
-      Sexuality(sexualityController: sexualityController),
-      Description(descriptionController: descriptionController)
-    ];
   }
 
   @override
@@ -52,14 +55,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     _pageController.dispose();
 
-    for(final i in interestsController) {
-      i.dispose();
-    }
     super.dispose();
   }
 
   void changePage() {
-    if(currentPage < _pages.length - 1) {
+    if(currentPage < pages.length - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300), 
         curve: Curves.easeInOut
@@ -70,6 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print("User date of birth is: ${dateOfBirthController.text}");
       print("User sexuality is: ${sexualityController.text}");
       print(("User description is: ${descriptionController.text}"));
+      print("User interests are: $interests");
     }
   }
 
@@ -101,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 child: PageView.builder(
                   controller: _pageController,
-                  itemCount: _pages.length,
+                  itemCount: pages.length,
                   physics: const NeverScrollableScrollPhysics(),
                   onPageChanged: (index) {
                     setState(() {
@@ -109,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     });
                   },
                   itemBuilder: (context, index) {
-                    return _pages[index];
+                    return pages[index];
                   },
                 ),
               ),
@@ -553,6 +554,166 @@ class Description extends StatelessWidget {
           )
         )
       ],
+    );
+  }
+}
+
+class Interests extends StatefulWidget {
+  final List<String> selectedInterests;
+  final ValueChanged<List<String>> onChanged;
+  const Interests(
+    {
+      super.key,
+      required this.selectedInterests,
+      required this.onChanged
+    }
+  );
+
+  @override
+  State<Interests> createState() => _InterestsState();
+}
+
+class _InterestsState extends State<Interests> {
+
+  final List<String> _interests = [
+    // Entertainment
+    "Movies",
+    "Music",
+    "TV Shows",
+    "Anime",
+    "Gaming",
+    "Podcasts",
+    "Stand-up Comedy",
+
+    // Lifestyle
+    "Travel",
+    "Fitness",
+    "Yoga",
+    "Gym",
+    "Running",
+    "Cycling",
+    "Meditation",
+
+    // Food & Drink
+    "Food",
+    "Cooking",
+    "Baking",
+    "Coffee",
+    "Tea",
+    "Street Food",
+    "Fine Dining",
+
+    // Social & Fun
+    "Parties",
+    "Clubbing",
+    "Dancing",
+    "Karaoke",
+    "Board Games",
+
+    // Creative
+    "Reading",
+    "Writing",
+    "Photography",
+    "Painting",
+    "Drawing",
+    "Design",
+
+    // Tech & Learning
+    "Technology",
+    "Programming",
+    "AI",
+    "Startups",
+    "Finance",
+    "Investing",
+
+    // Outdoors
+    "Hiking",
+    "Camping",
+    "Trekking",
+    "Nature",
+    "Beach",
+    "Mountains",
+
+    // Animals
+    "Pets",
+    "Dogs",
+    "Cats",
+
+    // Sports
+    "Cricket",
+    "Football",
+    "Basketball",
+    "Badminton",
+    "Swimming",
+
+    // Culture
+    "Fashion",
+    "Shopping",
+    "Spirituality",
+    "Volunteering"
+  ];
+
+
+  void select(String value) {
+    setState(() {
+      if(widget.selectedInterests.contains(value)) {
+        widget.selectedInterests.remove(value);
+      } else {
+        widget.selectedInterests.add(value);
+      }
+    });
+
+    widget.onChanged(widget.selectedInterests);
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return Column(
+      children: [
+        Text("What are your interests", style: TextStyle(
+          fontWeight: FontWeight.w800,
+          fontSize: screenWidth * 0.05
+        ),),
+        
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+
+        Expanded(
+          child: multipleSelectionCard(allInterests: _interests)
+        )
+      ],
+    );
+  }
+
+  Widget multipleSelectionCard({required List<String> allInterests}) {
+    return SingleChildScrollView(
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: allInterests.map((interest) {
+          final isSelected = widget.selectedInterests.contains(interest);
+          return GestureDetector(
+            onTap: () {
+              select(interest);
+            },
+            child: Chip(
+              backgroundColor: isSelected ? AppTheme.themeRed : AppTheme.whiteBackground,
+              label: Text(
+                interest,
+                style: TextStyle(
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
+                  color: isSelected ? AppTheme.whiteBackground : AppTheme.blackBackground
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 }
