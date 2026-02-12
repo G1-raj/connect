@@ -11,6 +11,8 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -31,23 +33,11 @@ class LoginScreen extends StatelessWidget {
                   height: screenHeight * 0.04,
                 ),
                 //Logo
-                Container(
-                  width: screenWidth * 0.4,
-                  height: screenWidth * 0.35,
-                  decoration: BoxDecoration(
-                     color: AppTheme.themeRed,
-                     shape: BoxShape.circle
-                  ),
-          
-                  child: Center(
-                    child: Text(
-                      "M",
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.08,
-                        color: AppTheme.greyColor,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
+                Hero(
+                  tag: "logo",
+                  child: Image(
+                    image: AssetImage("lib/assets/logo.png"),
+                    width: 180,
                   ),
                 ),
           

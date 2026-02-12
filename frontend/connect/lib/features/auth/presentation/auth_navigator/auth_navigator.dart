@@ -38,9 +38,12 @@ class AuthNavigationScreen extends StatelessWidget {
           Positioned(
             left: screenWidth * 0.3,
             top: screenHeight * 0.1,
-            child: Image(
-              image: AssetImage("lib/assets/logo.png"),
-              width: 180,
+            child: Hero(
+              tag: "logo",
+              child: Image(
+                image: AssetImage("lib/assets/logo.png"),
+                width: 180,
+              ),
             )
           ),
 
