@@ -26,6 +26,13 @@ class UserCreate(BaseModel):
     longitude: float
     interests: List[str]
 
+class UserQuestionCreate(BaseModel):
+    alcohol: bool
+    smoke: bool
+    pets: bool
+    kids: bool
+    exercise: bool
+
 class ImageData(BaseModel):
     public_id: str
     image_url: str
@@ -43,6 +50,12 @@ class UserOut(BaseModel):
     longitude: float
     interests: List[str]
     images: List[ImageData]
+    alcohol: bool
+    smoke: bool
+    pets: bool
+    kids: bool
+    exercise: bool
+
 
     @computed_field
     def age(self) -> int:
