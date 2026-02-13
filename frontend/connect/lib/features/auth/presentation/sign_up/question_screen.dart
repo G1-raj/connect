@@ -11,22 +11,13 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionScreenState extends State<QuestionScreen> {
 
-  final TextEditingController alcoholController = TextEditingController();
-  final TextEditingController smokeController = TextEditingController();
-  final TextEditingController petsController = TextEditingController();
-  final TextEditingController kidsController = TextEditingController();
-  final TextEditingController exerciseController = TextEditingController();
+  final List<bool> answers = List.generate(5, (_) => false);
+
 
   int currentPage = 0;
 
   late PageController _pagesController;
-  List<Widget> get _pages => [
-    AlchoholQuestion(textController: alcoholController,),
-    SmokeQuestion(textController: smokeController),
-    PetsQuestion(textController: petsController),
-    KidsQuestion(textController: kidsController),
-    ExerciseQuestion(textController: exerciseController)
-  ];
+
 
   @override
   void initState() {
@@ -36,11 +27,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   void dispose() {
-    alcoholController.dispose();
-    smokeController.dispose();
-    petsController.dispose();
-    kidsController.dispose();
-    exerciseController.dispose();
+    _pagesController.dispose();
     super.dispose();
   }
 
@@ -69,6 +56,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
             VisualStepIndicator(
               steps: 5,
+              stepsCompleted: 3,
             ),
 
             SizedBox(height: MediaQuery.of(context).size.height * 0.02,)
@@ -81,10 +69,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
 class VisualStepIndicator extends StatefulWidget {
   final int steps;
+  final int stepsCompleted;
   const VisualStepIndicator(
     {
       super.key, 
-      required this.steps
+      required this.steps,
+      required this.stepsCompleted
     }
   );
 
@@ -97,14 +87,14 @@ class _VisualStepIndicatorState extends State<VisualStepIndicator> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(widget.steps, (_) {
+      children: List.generate(widget.steps, (index) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
             width: 20,
             height: 20,
             decoration: BoxDecoration(
-              color: AppTheme.greyColor,
+              color: widget.stepsCompleted > index ? AppTheme.themeRed : AppTheme.greyColor,
               shape: BoxShape.circle
             ),
           ),
@@ -114,15 +104,22 @@ class _VisualStepIndicatorState extends State<VisualStepIndicator> {
   }
 }
 
-class AlchoholQuestion extends StatelessWidget {
-  final TextEditingController textController;
-  const AlchoholQuestion(
+class Question extends StatefulWidget {
+  final AssetImage questionImage;
+  final TextEditingController controller;
+  const Question(
     {
       super.key,
-      required this.textController
+      required this.questionImage,
+      required this.controller
     }
   );
 
+  @override
+  State<Question> createState() => _QuestionState();
+}
+
+class _QuestionState extends State<Question> {
   @override
   Widget build(BuildContext context) {
 
@@ -131,11 +128,11 @@ class AlchoholQuestion extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(
+         SizedBox(
           width: screenWidth,
           height: screenHeight * 0.45,
           child: Image(
-            image: AssetImage("lib/assets/alcohol.png"),
+            image: widget.questionImage,
           ),
         ),
 
@@ -145,97 +142,8 @@ class AlchoholQuestion extends StatelessWidget {
         SizedBox(
           height: screenHeight * 0.06,
         ),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            AppButton(
-              height: screenHeight * 0.05, 
-              width: screenWidth * 0.35, 
-              text: "Yes", 
-              buttonColor: AppTheme.themeRed, 
-              textColor: AppTheme.whiteBackground, 
-              fontSize: screenWidth * 0.05,
-              borderRadius: 18.0,
-            ),
-
-            AppButton(
-              height: screenHeight * 0.05, 
-              width: screenWidth * 0.35, 
-              text: "No", 
-              buttonColor: AppTheme.whiteBackground, 
-              textColor: AppTheme.themeRed, 
-              fontSize: screenWidth * 0.05,
-              borderRadius: 18.0,
-            ),
-          ],
-        ),
-
-        SizedBox(
-          height: screenHeight * 0.02,
-        )
       ],
     );
   }
 }
 
-class SmokeQuestion extends StatelessWidget {
-  final TextEditingController textController;
-  const SmokeQuestion(
-    {
-      super.key,
-      required this.textController
-    }
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class PetsQuestion extends StatelessWidget {
-  final TextEditingController textController;
-  const PetsQuestion(
-    {
-      super.key,
-      required this.textController
-    }
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class KidsQuestion extends StatelessWidget {
-  final TextEditingController textController;
-  const KidsQuestion(
-    {
-      super.key,
-      required this.textController
-    }
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-
-class ExerciseQuestion extends StatelessWidget {
-  final TextEditingController textController;
-  const ExerciseQuestion(
-    {
-      super.key,
-      required this.textController
-    }
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
