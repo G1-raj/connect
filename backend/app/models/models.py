@@ -48,6 +48,7 @@ class User(Base):
 
     email_otps = relationship("EmailOtp", back_populates="owner", cascade="all, delete-orphan")
     user_images = relationship("UserImages", back_populates="owner", cascade="all, delete-orphan")
+    user_profile_questions = relationship("UserProfileQuestions", back_populates="owner", cascade="add, delete-orphan")
 
 
 class EmailOtp(Base):
@@ -85,5 +86,31 @@ class UserImages(Base):
 
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     owner = relationship("User", back_populates="user_images")
+
+
+class UserProfileQuestions(Base):
+    __tablename__ = "user_profile_questions"
+
+    id = Column(Integer, primary_key=True)
+
+    alcohol = Column(Boolean, default=False)
+    smoke = Column(Boolean, default=False)
+    pets = Column(Boolean, default=False)
+    kids = Column(Boolean, default=False)
+    exercise = Column(Boolean, default=False)
+
+    created_at = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc)
+    )
+
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    owner = relationship("User", back_populates="user_profile_questions")
 
 
