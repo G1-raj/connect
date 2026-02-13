@@ -30,8 +30,8 @@ class User(Base):
 
     email_otps = relationship("EmailOtp", back_populates="owner", cascade="all, delete-orphan")
     user_images = relationship("UserImages", back_populates="owner", cascade="all, delete-orphan")
-    user_profile = relationship("UserProfile", back_populates="owner", cascade="all, delete-orphan")
-    user_profile_questions = relationship("UserProfileQuestions", back_populates="owner", cascade="add, delete-orphan")
+    user_profile = relationship("UserProfile", back_populates="owner", cascade="all, delete-orphan", uselist=False)
+    user_profile_questions = relationship("UserProfileQuestions", back_populates="owner", cascade="add, delete-orphan", uselist=False)
 
 
 class EmailOtp(Base):
@@ -68,7 +68,7 @@ class UserProfile(Base):
     )
     sexuality = Column(
         SQLEnum(UserSexuality),
-        default=UserSexuality.straignt
+        default=UserSexuality.straight
     )
     longitude = Column(Float, nullable=True)
     latitude = Column(Float, nullable=True)
@@ -87,7 +87,7 @@ class UserProfile(Base):
         nullable=False
     )
 
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False, index=True)
     owner = relationship("User", back_populates="user_profile")
 
 class UserImages(Base):
@@ -133,7 +133,7 @@ class UserProfileQuestions(Base):
         onupdate=lambda: datetime.now(timezone.utc)
     )
 
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False, index=True)
     owner = relationship("User", back_populates="user_profile_questions")
 
 

@@ -7,7 +7,7 @@ class UserGender(str, Enum):
 
 
 class UserSexuality(str, Enum):
-    straignt = "straight"
+    straight = "straight"
     gay = "gay"
     lesbian = "lesbian"
     asexual = "asexual"
