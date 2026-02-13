@@ -16,6 +16,7 @@ from app.schemas.user import (
     VerifyOtp, 
     PasswordCreate, 
     UserCreate, 
+    UserQuestionCreate,
     UserCreateResponse, 
     UserLogin, 
     LoginResponse, 
@@ -281,6 +282,9 @@ def delete_image(image_id: int, db: Session = Depends(get_db), current_user: mod
         "message": "Image deleted"
     }
 
+@router.post("/user-questions", response_model=UserCreateResponse, status_code=status.HTTP_200_OK)
+def add_user_questions(user_questions: UserQuestionCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    pass
 
 
 
