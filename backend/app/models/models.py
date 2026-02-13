@@ -12,27 +12,9 @@ class User(Base):
     email = Column(String, unique=True, nullable=False, index=True)
     full_name = Column(String, nullable=False)
     hashed_password = Column(String, nullable=True)
-    description = Column(String, nullable=True)
-    date_of_birth = Column(
-        Date,
-        nullable=True
-    )
-    # age = Column(Integer, nullable=True)
-    gender = Column(
-        SQLEnum(UserGender),
-        nullable=True
-    )
-    sexuality = Column(
-        SQLEnum(UserSexuality),
-        default=UserSexuality.straignt
-    )
     is_email_verified = Column(Boolean, nullable=False, default=False)
-    longitude = Column(Float, nullable=True)
-    latitude = Column(Float, nullable=True)
-    interests = Column(JSON, nullable=True)
     is_profile_created = Column(Boolean, default=False)
     hashed_refresh_token = Column(String, nullable=True)
-
     created_at = Column(
         DateTime(timezone=True),
         default= lambda: datetime.now(timezone.utc),
@@ -48,6 +30,7 @@ class User(Base):
 
     email_otps = relationship("EmailOtp", back_populates="owner", cascade="all, delete-orphan")
     user_images = relationship("UserImages", back_populates="owner", cascade="all, delete-orphan")
+    user_profile = relationship("UserProfile", back_populates="owner", cascade="all, delete-orphan")
     user_profile_questions = relationship("UserProfileQuestions", back_populates="owner", cascade="add, delete-orphan")
 
 
@@ -66,6 +49,46 @@ class EmailOtp(Base):
 
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     owner = relationship("User", back_populates="email_otps")
+
+
+class UserProfile(Base):
+    __tablename__ = "user_profile"
+
+    id = Column(Integer, primary_key=True)
+
+    description = Column(String, nullable=True)
+    date_of_birth = Column(
+        Date,
+        nullable=True
+    )
+    # age = Column(Integer, nullable=True)
+    gender = Column(
+        SQLEnum(UserGender),
+        nullable=True
+    )
+    sexuality = Column(
+        SQLEnum(UserSexuality),
+        default=UserSexuality.straignt
+    )
+    longitude = Column(Float, nullable=True)
+    latitude = Column(Float, nullable=True)
+    interests = Column(JSON, nullable=True)
+
+    created_at = Column(
+        DateTime(timezone=True),
+        default= lambda: datetime.now(timezone.utc),
+        nullable=False
+    )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        default= lambda: datetime.now(timezone.utc),
+        onupdate= lambda: datetime.now(timezone.utc),
+        nullable=False
+    )
+
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    owner = relationship("User", back_populates="user_profile")
 
 class UserImages(Base):
     __tablename__ = "user_images"
