@@ -10,6 +10,7 @@ class AppButton extends StatelessWidget {
   final Color textColor;
   final double fontSize;
   bool? isButtonTransparent;
+  double? borderRadius;
   final VoidCallback? onPress;
   AppButton(
     {
@@ -21,7 +22,8 @@ class AppButton extends StatelessWidget {
       required this.textColor,
       required this.fontSize,
       this.onPress,
-      this.isButtonTransparent = false
+      this.isButtonTransparent = false,
+      this.borderRadius = 0
     }
   );
 
@@ -36,7 +38,7 @@ class AppButton extends StatelessWidget {
           backgroundColor: buttonColor,
           elevation: 4,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.circular(0),
+            borderRadius: borderRadius! > 0 ? BorderRadius.circular(borderRadius!): BorderRadius.circular(0),
             side: BorderSide(width: 1, color: isButtonTransparent! ? AppTheme.whiteBackground : buttonColor)
           )
         ).copyWith(

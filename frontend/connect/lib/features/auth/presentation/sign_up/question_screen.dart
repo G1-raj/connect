@@ -65,10 +65,51 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   return _pages[index];
                 },
               ),
-            )
+            ),
+
+            VisualStepIndicator(
+              steps: 5,
+            ),
+
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02,)
           ],
         ),
       ),
+    );
+  }
+}
+
+class VisualStepIndicator extends StatefulWidget {
+  final int steps;
+  const VisualStepIndicator(
+    {
+      super.key, 
+      required this.steps
+    }
+  );
+
+  @override
+  State<VisualStepIndicator> createState() => _VisualStepIndicatorState();
+}
+
+class _VisualStepIndicatorState extends State<VisualStepIndicator> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(widget.steps, (_) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              color: AppTheme.greyColor,
+              shape: BoxShape.circle
+            ),
+          ),
+        );
+      }),
     );
   }
 }
@@ -98,7 +139,12 @@ class AlchoholQuestion extends StatelessWidget {
           ),
         ),
 
-        Spacer(),
+
+        Text("Help us personalize your matches"),
+
+        SizedBox(
+          height: screenHeight * 0.06,
+        ),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -109,7 +155,8 @@ class AlchoholQuestion extends StatelessWidget {
               text: "Yes", 
               buttonColor: AppTheme.themeRed, 
               textColor: AppTheme.whiteBackground, 
-              fontSize: screenWidth * 0.05
+              fontSize: screenWidth * 0.05,
+              borderRadius: 18.0,
             ),
 
             AppButton(
@@ -118,7 +165,8 @@ class AlchoholQuestion extends StatelessWidget {
               text: "No", 
               buttonColor: AppTheme.whiteBackground, 
               textColor: AppTheme.themeRed, 
-              fontSize: screenWidth * 0.05
+              fontSize: screenWidth * 0.05,
+              borderRadius: 18.0,
             ),
           ],
         ),
