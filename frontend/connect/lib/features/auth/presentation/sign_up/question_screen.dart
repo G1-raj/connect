@@ -15,8 +15,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
 
   int currentPage = 0;
-
   late PageController _pagesController;
+  int stepsCompleted = 1;
+
+  final List<AssetImage> questionImage = [
+    AssetImage("lib/assets/alcohol.png"),
+    AssetImage("lib/assets/smoke.png"),
+    AssetImage("lib/assets/pets.png"),
+    AssetImage("lib/assets/kids.png"),
+    AssetImage("lib/assets/exercise.png"),
+  ];
 
 
   @override
@@ -31,6 +39,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
     super.dispose();
   }
 
+  void changePage() {
+    setState(() {
+      if(currentPage < questionImage.length - 1) {
+        _pagesController.nextPage(
+          duration: const Duration(milliseconds: 200), 
+          curve: Curves.easeInOut
+        );
+
+        stepsCompleted++;
+      } else {
+        print("$answers");
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +64,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
             Expanded(
               child: PageView.builder(
                 controller: _pagesController,
-                itemCount: _pages.length,
+                itemCount: answers.length,
                 physics: NeverScrollableScrollPhysics(),
                 onPageChanged: (index) {
                   setState(() {
@@ -49,14 +72,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   });
                 },
                 itemBuilder: (context, index) {
-                  return _pages[index];
+                  return Question(
+                    questionImage: questionImage[index], 
+                    onAnswered:(value) {
+                      answers[index] = value;
+                    }
+                  );
                 },
               ),
             ),
 
             VisualStepIndicator(
               steps: 5,
-              stepsCompleted: 3,
+              stepsCompleted: stepsCompleted,
             ),
 
             SizedBox(height: MediaQuery.of(context).size.height * 0.02,)
@@ -104,22 +132,17 @@ class _VisualStepIndicatorState extends State<VisualStepIndicator> {
   }
 }
 
-class Question extends StatefulWidget {
+class Question extends StatelessWidget {
   final AssetImage questionImage;
-  final TextEditingController controller;
+  final ValueChanged<bool> onAnswered;
   const Question(
     {
       super.key,
       required this.questionImage,
-      required this.controller
+      required this.onAnswered
     }
   );
 
-  @override
-  State<Question> createState() => _QuestionState();
-}
-
-class _QuestionState extends State<Question> {
   @override
   Widget build(BuildContext context) {
 
@@ -132,7 +155,7 @@ class _QuestionState extends State<Question> {
           width: screenWidth,
           height: screenHeight * 0.45,
           child: Image(
-            image: widget.questionImage,
+            image: questionImage,
           ),
         ),
 
@@ -142,6 +165,33 @@ class _QuestionState extends State<Question> {
         SizedBox(
           height: screenHeight * 0.06,
         ),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            AppButton(
+              width: screenWidth * 0.35,
+              height: screenHeight * 0.05,
+              borderRadius: 18.0,
+              buttonColor: AppTheme.themeRed,
+              text: "Yes",
+              textColor: AppTheme.whiteBackground,
+              fontSize: screenWidth * 0.05,
+              onPress: () => onAnswered(true),
+            ),
+
+            AppButton(
+              width: screenWidth * 0.35,
+              height: screenHeight * 0.05,
+              borderRadius: 18.0,
+              buttonColor: AppTheme.whiteBackground,
+              text: "No",
+              textColor: AppTheme.themeRed,
+              fontSize: screenWidth * 0.05,
+              onPress: () => onAnswered(false),
+            ),
+          ],
+        )
       ],
     );
   }
