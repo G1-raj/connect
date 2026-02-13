@@ -1,5 +1,6 @@
 import 'package:connect/features/auth/presentation/sign_up/image_input_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/profile_screen.dart';
+import 'package:connect/features/auth/presentation/sign_up/question_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:connect/features/auth/presentation/sign_up/password_screen.dart';
 import 'package:connect/features/auth/presentation/sign_up/signup_screen.dart';
@@ -43,6 +44,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: "/image-input",
       builder: (context, state) => ImageInputScreen(),
+    ),
+
+    GoRoute(
+      path: "/question",
+      builder: (context, state) => QuestionScreen(),
     )
   ]
 );

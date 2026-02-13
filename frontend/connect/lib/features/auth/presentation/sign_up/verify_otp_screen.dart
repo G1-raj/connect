@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 class VerifyOtpScreen extends StatelessWidget {
   VerifyOtpScreen({super.key});
 
-  String otp = "";
+  String checkOtp = "";
   @override
   Widget build(BuildContext context) {
 
@@ -42,7 +42,7 @@ class VerifyOtpScreen extends StatelessWidget {
 
               OtpField(
                 onChanged: (otp) {
-                  otp = otp;
+                  checkOtp = otp;
                   print("OTP is: $otp");
                 },
               ),
@@ -66,7 +66,8 @@ class VerifyOtpScreen extends StatelessWidget {
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
                 onPress: () {
-                  if(otp.isEmpty) {
+                  print("OTP is $checkOtp");
+                  if(checkOtp.isEmpty) {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

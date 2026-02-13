@@ -151,7 +151,15 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
                 onPress: () {
-                  
+                  if(images.length < 2) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: const Text("Minimum 2 pictures are required"))
+                    );
+                    return;
+                  }
+
+                  context.pushReplacement("/question");
                 },
               ),
             ),
