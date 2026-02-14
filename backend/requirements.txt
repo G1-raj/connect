@@ -9,3 +9,4 @@ pydantic
 email-validator
 cryptography
 cloudinary
+python-multipart

@@ -31,7 +31,7 @@ class User(Base):
     email_otps = relationship("EmailOtp", back_populates="owner", cascade="all, delete-orphan")
     user_images = relationship("UserImages", back_populates="owner", cascade="all, delete-orphan")
     user_profile = relationship("UserProfile", back_populates="owner", cascade="all, delete-orphan", uselist=False)
-    user_profile_questions = relationship("UserProfileQuestions", back_populates="owner", cascade="add, delete-orphan", uselist=False)
+    user_profile_questions = relationship("UserProfileQuestions", back_populates="owner", cascade="all, delete-orphan", uselist=False)
 
 
 class EmailOtp(Base):
