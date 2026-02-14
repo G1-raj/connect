@@ -1,7 +1,6 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
-import 'package:connect/features/auth/providers/auth_repository_provider.dart';
 import 'package:connect/features/auth/providers/login_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

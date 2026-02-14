@@ -4,7 +4,6 @@ import 'package:connect/features/auth/providers/auth_repository_provider.dart';
 import 'package:connect/shared/providers/storage_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginState {
   final bool loading;

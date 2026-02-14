@@ -105,7 +105,7 @@ class Data {
         "latitude": latitude,
         "longitude": longitude,
         "interests": interests.map((x) => x).toList(),
-        "images": images.map((x) => x?.toJson()).toList(),
+        "images": images.map((x) => x.toJson()).toList(),
         "alcohol": alcohol,
         "smoke": smoke,
         "pets": pets,
