@@ -1,9 +1,12 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
+import 'package:connect/features/auth/providers/auth_repository_provider.dart';
+import 'package:connect/features/auth/providers/login_controller_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
    LoginScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
@@ -14,8 +17,11 @@ class LoginScreen extends StatelessWidget {
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
+    final loginState = ref.watch(loginControllerProvider);
+    final loginCtrl = ref.read(loginControllerProvider.notifier);
+    
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
@@ -146,7 +152,7 @@ class LoginScreen extends StatelessWidget {
                   onPress: () {
                     if(_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      print("Login successful");
+                      loginCtrl.login(_emailController.text, _passwordController.text);
                     }
                   },
                 ),

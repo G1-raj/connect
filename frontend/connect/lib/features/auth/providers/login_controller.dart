@@ -37,7 +37,7 @@ class LoginController extends StateNotifier<LoginState> {
       final _storage = ref.read(storageProvider);
       final res = await repo.login(email, password);
 
-      if(res.data != null) {
+      if(res.data != null && res.token != null) {
         await _storage.write(key: "access_token", value: res.token!.accessToken);
         await _storage.write(key: "refresh_token", value: res.token!.refreshToken);
 
