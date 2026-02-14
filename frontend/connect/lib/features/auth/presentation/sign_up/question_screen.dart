@@ -16,7 +16,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   int currentPage = 0;
   late PageController _pagesController;
-  int stepsCompleted = 1;
+  int stepsCompleted = 0;
 
   final List<AssetImage> questionImage = [
     AssetImage("lib/assets/alcohol.png"),
@@ -40,18 +40,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   void changePage() {
-    setState(() {
-      if(currentPage < questionImage.length - 1) {
-        _pagesController.nextPage(
-          duration: const Duration(milliseconds: 200), 
-          curve: Curves.easeInOut
-        );
+    if(currentPage < questionImage.length - 1) {
+      _pagesController.nextPage(
+        duration: const Duration(milliseconds: 200), 
+        curve: Curves.easeInOut
+      );
 
+      setState(() {
         stepsCompleted++;
-      } else {
-        print("$answers");
-      }
-    });
+      });
+    } else {
+      print("$answers");
+    }
+
   }
 
   @override
@@ -76,6 +77,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     questionImage: questionImage[index], 
                     onAnswered:(value) {
                       answers[index] = value;
+                      changePage();
                     }
                   );
                 },
@@ -118,9 +120,11 @@ class _VisualStepIndicatorState extends State<VisualStepIndicator> {
       children: List.generate(widget.steps, (index) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
+          child: AnimatedContainer(
             width: 20,
             height: 20,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
             decoration: BoxDecoration(
               color: widget.stepsCompleted > index ? AppTheme.themeRed : AppTheme.greyColor,
               shape: BoxShape.circle
