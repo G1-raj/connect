@@ -145,11 +145,11 @@ class LoginScreen extends ConsumerWidget {
                 AppButton(
                   width: screenWidth * 0.95,
                   height: screenHeight * 0.06,
-                  text: "Login",
+                  text: loginState.loading ? "Please wait...." : "Login",
                   buttonColor: AppTheme.themeRed,
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
-                  onPress: () {
+                  onPress: loginState.loading ? null : () {
                     if(_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       loginCtrl.login(_emailController.text, _passwordController.text);
