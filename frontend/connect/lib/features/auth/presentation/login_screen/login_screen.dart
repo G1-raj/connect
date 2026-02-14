@@ -25,6 +25,12 @@ class LoginScreen extends ConsumerWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
+    ref.listen(loginControllerProvider, (prev, next) {
+      if(next.error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
+
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
 
