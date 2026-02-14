@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:connect/features/auth/providers/auth_repository_provider.dart';
+import 'package:connect/shared/providers/storage_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginState {
   final bool loading;
@@ -30,8 +34,17 @@ class LoginController extends StateNotifier<LoginState> {
     try {
 
       final repo = ref.read(authRepositoryProvider);
-
+      final _storage = ref.read(storageProvider);
       final res = await repo.login(email, password);
+
+      if(res.data != null) {
+        await _storage.write(key: "access_token", value: res.token!.accessToken);
+        await _storage.write(key: "refresh_token", value: res.token!.refreshToken);
+
+        await _storage.write(key: "connect_user", value: jsonEncode(res.data));
+      }
+
+      
 
       state = state.copyWith(loading: false);
       
