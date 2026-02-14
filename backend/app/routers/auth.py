@@ -308,11 +308,11 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         .first()
     )
     
-    # if not existing_user or not verify_hash(user.password, existing_user.hashed_password):
-    #     raise HTTPException(
-    #         status_code=status.HTTP_401_UNAUTHORIZED,
-    #         detail="Invalid credentials"
-    #     )
+    if not existing_user or not verify_hash(user.password, existing_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials"
+        )
     
     access_token = create_access_token(
         data = { "sub": str(existing_user.id) }
