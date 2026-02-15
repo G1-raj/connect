@@ -17,6 +17,7 @@ abstract class AuthRepository {
       DateTime dateOfBirth, 
       double longitude, 
       double latitude, 
-      List<String> interests
+      List<String> interests,
+      String onboardingToken
     );
 }

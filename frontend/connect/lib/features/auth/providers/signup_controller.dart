@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:connect/features/auth/providers/auth_repository_provider.dart';
 import 'package:connect/shared/providers/storage_provider.dart';
-import 'package:flutter_riverpod/experimental/persist.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
@@ -81,6 +80,37 @@ class SignupController extends StateNotifier<SignupState> {
       final onboardingToken = await storage.read(key: "onboarding_token");
 
       final res = await repo.createPassword(password, onboardingToken!);
+
+      if(res.message!.isNotEmpty) {
+
+      }
+      
+    } catch (e) {
+      state = state.copyWith(
+        loading: false,
+        error: "Failed to verify the otp"
+      );
+    }
+  }
+
+  Future<void> createProfile(
+    String gender, 
+    String description, 
+    String sexuality, 
+    DateTime dateOfBirth, 
+    double longitude, 
+    double latitude, 
+    List<String> interests,
+    String onboardingToken
+  ) async {
+    try {
+
+      final repo = ref.read(authRepositoryProvider);
+      final storage = ref.read(storageProvider);
+
+      final onboardingToken = await storage.read(key: "onboarding_token");
+
+      final res = repo.createProfile(gender, description, sexuality, dateOfBirth, longitude, latitude, interests, onboardingToken!);
       
     } catch (e) {
       state = state.copyWith(

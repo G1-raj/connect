@@ -59,7 +59,8 @@ class AuthRepositoryImpl implements AuthRepository {
     DateTime dateOfBirth, 
     double longitude, 
     double latitude, 
-    List<String> interests
+    List<String> interests,
+    String onboardingToken
   ) async  {
     final res = await api.createProfile(
       CreateProfileRequest(
@@ -69,8 +70,9 @@ class AuthRepositoryImpl implements AuthRepository {
         dateOfBirth: dateOfBirth, 
         longitude: longitude, 
         latitude: latitude, 
-        interests: interests
-      )
+        interests: interests, 
+      ),
+      onboardingToken
     );
 
     return res;

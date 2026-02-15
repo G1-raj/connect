@@ -53,10 +53,15 @@ class AuthApiService {
     return MessageResponse.fromJson(response.data);
   }
 
-  Future<MessageResponse> createProfile(CreateProfileRequest request) async {
+  Future<MessageResponse> createProfile(CreateProfileRequest request, String onboardingToken) async {
     final response = await dio.post(
       "/auth/create-profile",
-      data: request.toJson()
+      data: request.toJson(),
+      options: Options(
+        headers: {
+          "Authorizarion": "Bearer $onboardingToken"
+        }
+      )
     );
 
     return MessageResponse.fromJson(response.data);
