@@ -39,10 +39,15 @@ class AuthApiService {
     return OtpResponse.fromJson(response.data);
   }
 
-  Future<MessageResponse> createPassword(PasswordRequest request) async {
+  Future<MessageResponse> createPassword(PasswordRequest request, String onboardingToken) async {
     final response = await dio.post(
       "/auth/create-password",
-      data: request.toJson()
+      data: request.toJson(),
+      options: Options(
+        headers: {
+          "Authorization": "Bearer $onboardingToken"
+        }
+      )
     );
 
     return MessageResponse.fromJson(response.data);

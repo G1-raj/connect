@@ -59,7 +59,7 @@ class SignupController extends StateNotifier<SignupState> {
       final res = await repo.verifyOtp(email, otp);
 
       if(res.message!.isNotEmpty) {
-        storage.write(key: "onboarding_token", value: jsonEncode(res.onboardingToken));
+        await storage.write(key: "onboarding_token", value: jsonEncode(res.onboardingToken));
       }
       
     } catch (e) {
@@ -69,4 +69,25 @@ class SignupController extends StateNotifier<SignupState> {
       );
     }
   }
+
+  Future<void> createPassword(String password) async {
+    state = state.copyWith(loading: true, error:  null);
+
+    try {
+
+      final repo = ref.read(authRepositoryProvider);
+      final storage = ref.read(storageProvider);
+
+      final onboardingToken = await storage.read(key: "onboarding_token");
+
+      final res = await repo.createPassword(password, onboardingToken!);
+      
+    } catch (e) {
+      state = state.copyWith(
+        loading: false,
+        error: "Failed to verify the otp"
+      );
+    }
+  }
+
 }

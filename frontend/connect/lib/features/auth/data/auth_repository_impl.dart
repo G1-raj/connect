@@ -44,7 +44,8 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<MessageResponse> createPassword(String password, String onboardingToken) async {
     final res = await api.createPassword(
-      PasswordRequest(password: password)
+      PasswordRequest(password: password),
+      onboardingToken
     );
 
     return res;
