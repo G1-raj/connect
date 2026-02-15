@@ -2,10 +2,12 @@ import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
 import 'package:connect/core/widgets/pop_up_dialog/pop_up_dialog.dart';
+import 'package:connect/features/auth/providers/signup_controller_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends ConsumerWidget {
   SignupScreen({super.key});
 
   final TextEditingController _emailController = TextEditingController();
@@ -15,7 +17,10 @@ class SignupScreen extends StatelessWidget {
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    final signupState = ref.watch(signupControllerProvider);
+    final signupCtrl = ref.read(signupControllerProvider.notifier);
 
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -176,6 +181,7 @@ class SignupScreen extends StatelessWidget {
                           body: "Confirm your email address",
                           email: _emailController.text,
                           onConfirm: () {
+                            signupCtrl.signup(_emailController.text, _nameController.text);
                             context.push("/verify-otp");    
                           },
                         ),

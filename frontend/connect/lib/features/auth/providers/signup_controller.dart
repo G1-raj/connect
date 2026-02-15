@@ -110,7 +110,9 @@ class SignupController extends StateNotifier<SignupState> {
 
       final onboardingToken = await storage.read(key: "onboarding_token");
 
-      final res = repo.createProfile(gender, description, sexuality, dateOfBirth, longitude, latitude, interests, onboardingToken!);
+      final res = await repo.createProfile(gender, description, sexuality, dateOfBirth, longitude, latitude, interests, onboardingToken!);
+
+      if(res.message!.isNotEmpty) {}
       
     } catch (e) {
       state = state.copyWith(
