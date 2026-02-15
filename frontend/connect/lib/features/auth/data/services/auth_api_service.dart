@@ -1,6 +1,12 @@
 import 'package:connect/core/network/dio_client.dart';
 import 'package:connect/features/auth/data/models/login/login_request.dart';
 import 'package:connect/features/auth/data/models/login/login_response.dart';
+import 'package:connect/features/auth/data/models/signup/request/create_profile_request.dart';
+import 'package:connect/features/auth/data/models/signup/request/otp_request.dart';
+import 'package:connect/features/auth/data/models/signup/request/password_request.dart';
+import 'package:connect/features/auth/data/models/signup/request/signup_request.dart';
+import 'package:connect/features/auth/data/models/signup/response/message_response.dart';
+import 'package:connect/features/auth/data/models/signup/response/otp_response.dart';
 import 'package:dio/dio.dart';
 
 class AuthApiService {
@@ -13,5 +19,41 @@ class AuthApiService {
     );
 
     return LoginResponse.fromJson(response.data);
+  }
+
+  Future<MessageResponse> signup(SignupRequest request) async {
+    final response = await dio.post(
+      "/auth/signup",
+      data: request.toJson()
+    );
+
+    return MessageResponse.fromJson(response.data);
+  }
+
+  Future<OtpResponse> verifyOtp(OtpRequest request) async {
+    final response = await dio.post(
+      "/auth/verify-otp",
+      data: request.toJson()
+    );
+
+    return OtpResponse.fromJson(response.data);
+  }
+
+  Future<MessageResponse> createPassword(PasswordRequest request) async {
+    final response = await dio.post(
+      "/auth/create-password",
+      data: request.toJson()
+    );
+
+    return MessageResponse.fromJson(response.data);
+  }
+
+  Future<MessageResponse> createProfile(CreateProfileRequest request) async {
+    final response = await dio.post(
+      "/auth/create-profile",
+      data: request.toJson()
+    );
+
+    return MessageResponse.fromJson(response.data);
   }
 }
