@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:connect/features/auth/data/models/login/login_request.dart';
 import 'package:connect/features/auth/data/models/login/login_response.dart';
 import 'package:connect/features/auth/data/models/signup/request/create_profile_request.dart';
