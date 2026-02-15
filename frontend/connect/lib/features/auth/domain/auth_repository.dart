@@ -9,7 +9,7 @@ abstract class AuthRepository {
     //signup
     Future<MessageResponse> signup(String email, String fullName);
     Future<OtpResponse> verifyOtp(String email, String otp);
-    Future<MessageResponse> createPassword(String password);
+    Future<MessageResponse> createPassword(String password, String onboardingToken);
     Future<MessageResponse> createProfile(
       String gender, 
       String description, 
