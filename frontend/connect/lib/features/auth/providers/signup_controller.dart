@@ -36,8 +36,11 @@ class SignupController extends StateNotifier<SignupState> {
       final repo = ref.read(authRepositoryProvider);
       final res = await repo.signup(email, fullName);
 
-      if(res.message!.isEmpty) {
-        state = state.copyWith(loading: false, error: null);
+      if(res.message!.isNotEmpty) {
+        state = state.copyWith(
+          loading: false,
+          error: null
+        );
       }
       
     } catch (e) {
