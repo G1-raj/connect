@@ -86,10 +86,15 @@ class SignupController extends StateNotifier<SignupState> {
 
       final onboardingToken = await storage.read(key: "onboarding_token");
 
+      if(onboardingToken == null) throw Exception("No onboarding token");
+
       final res = await repo.createPassword(password, onboardingToken!);
 
       if(res.message!.isNotEmpty) {
-
+        state = state.copyWith(
+          loading: false,
+          error: null
+        );
       }
       
     } catch (e) {
