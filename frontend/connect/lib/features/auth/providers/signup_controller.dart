@@ -61,7 +61,11 @@ class SignupController extends StateNotifier<SignupState> {
       final res = await repo.verifyOtp(email, otp);
 
       if(res.message!.isNotEmpty) {
-        await storage.write(key: "onboarding_token", value: jsonEncode(res.onboardingToken));
+        await storage.write(key: "onboarding_token", value:res.onboardingToken);
+        state = state.copyWith(
+          loading: false,
+          error: null
+        );
       }
       
     } catch (e) {
