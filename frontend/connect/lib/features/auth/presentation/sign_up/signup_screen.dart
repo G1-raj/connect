@@ -190,7 +190,7 @@ class SignupScreen extends ConsumerWidget {
                                 //   context.push("/verify-otp");    
                                 // }
 
-                                context.push("/verify-otp"); 
+                                context.push("/verify-otp", extra: _emailController.text); 
                               },
                             ),
                           );

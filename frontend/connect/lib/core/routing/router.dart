@@ -28,7 +28,10 @@ final GoRouter router = GoRouter(
 
     GoRoute(
       path: "/verify-otp",
-      builder: (context, state) => VerifyOtpScreen()
+      builder: (context, state) {
+        final email = state.extra as String;
+         return VerifyOtpScreen(email: email);
+      }
     ),
 
     GoRoute(

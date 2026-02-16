@@ -8,7 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class VerifyOtpScreen extends ConsumerStatefulWidget {
-  const VerifyOtpScreen({super.key});
+  final String email;
+  const VerifyOtpScreen({super.key, required this.email});
 
   @override
   ConsumerState<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
@@ -119,7 +120,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
                 buttonColor: AppTheme.themeRed,
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
-                onPress: () {
+                onPress: () async {
                   print("OTP is $checkOtp");
                   if(checkOtp.isEmpty) {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -130,7 +131,20 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
                       )
                     );
                   } else {
-                     context.push("/password");
+
+                    final isSuccess = await verifyOtpCtrl.verifyOtp(widget.email, checkOtp);
+
+                    if(isSuccess && context.mounted) {
+                      context.push("/password");
+                    } else {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          content: const Text("Failed to verify the otp")
+                        )
+                      );
+                    }
                   }
                 },
               ),
