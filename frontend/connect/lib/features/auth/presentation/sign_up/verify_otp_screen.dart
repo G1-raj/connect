@@ -1,24 +1,27 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-// ignore: must_be_immutable
-class VerifyOtpScreen extends StatelessWidget {
-  VerifyOtpScreen({super.key});
+class VerifyOtpScreen extends ConsumerStatefulWidget {
+  const VerifyOtpScreen({super.key});
 
+  @override
+  ConsumerState<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
+}
+
+class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
   String checkOtp = "";
+  bool isTimeCompleted = false;
+
   @override
   Widget build(BuildContext context) {
-
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-
     return Scaffold(
-
       backgroundColor: AppTheme.whiteBackground,
-
       body: SafeArea(
         child: Center(
           child: Column(
@@ -42,7 +45,9 @@ class VerifyOtpScreen extends StatelessWidget {
 
               OtpField(
                 onChanged: (otp) {
-                  checkOtp = otp;
+                  setState(() {
+                    checkOtp = otp;
+                  });
                   print("OTP is: $otp");
                 },
               ),
@@ -51,10 +56,16 @@ class VerifyOtpScreen extends StatelessWidget {
                 height: screenHeight * 0.04,
               ),
 
-              Text("Retry in 45s", style: TextStyle(
-                color: AppTheme.themeRed,
-                fontWeight: FontWeight.w600
-              ),),
+              TextButton(onPressed: isTimeCompleted ? () {} : 
+                () {
+                  print("Resend OTP");
+                }, 
+                child: Text(
+                  isTimeCompleted ? "Resend OTP" : "Retry in 45s", 
+                  style: TextStyle(
+                    color: AppTheme.themeRed,
+                    fontWeight: FontWeight.w600
+              ),)),
 
               Spacer(),
 
