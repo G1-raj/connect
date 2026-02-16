@@ -7,7 +7,9 @@ import 'package:connect/features/auth/data/models/signup/request/password_reques
 import 'package:connect/features/auth/data/models/signup/request/signup_request.dart';
 import 'package:connect/features/auth/data/models/signup/response/message_response.dart';
 import 'package:connect/features/auth/data/models/signup/response/otp_response.dart';
+import 'package:connect/shared/providers/storage_provider.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthApiService {
   final Dio dio = DioClient.dio;
@@ -54,6 +56,7 @@ class AuthApiService {
   }
 
   Future<MessageResponse> createProfile(CreateProfileRequest request, String onboardingToken) async {
+
     final response = await dio.post(
       "/auth/create-profile",
       data: request.toJson(),

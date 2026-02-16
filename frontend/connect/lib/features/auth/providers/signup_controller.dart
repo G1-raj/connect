@@ -27,7 +27,7 @@ class SignupController extends StateNotifier<SignupState> {
   
   SignupController(this.ref) : super(const SignupState());
 
-  Future<void> signup(String email, String fullName) async {
+  Future<bool> signup(String email, String fullName) async {
 
     state = state.copyWith(loading: true, error: null);
 
@@ -42,6 +42,8 @@ class SignupController extends StateNotifier<SignupState> {
           error: null
         );
       }
+
+      return true;
       
     } catch (e) {
       state = state.copyWith(
@@ -49,6 +51,8 @@ class SignupController extends StateNotifier<SignupState> {
         error: "Failed to signup"
       );
     }
+
+    return false;
   }
 
   Future<void> verifyOtp(String email, String otp) async {
