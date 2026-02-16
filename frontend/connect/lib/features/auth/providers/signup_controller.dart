@@ -126,6 +126,8 @@ class SignupController extends StateNotifier<SignupState> {
         loading: false,
         error: "Failed to verify the otp"
       );
+
+      return false;
     }
   }
 

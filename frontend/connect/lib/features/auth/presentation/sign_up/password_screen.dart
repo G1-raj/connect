@@ -1,10 +1,12 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
+import 'package:connect/features/auth/providers/signup_controller_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class PasswordScreen extends StatelessWidget {
+class PasswordScreen extends ConsumerWidget {
   PasswordScreen({super.key});
 
   final formKey = GlobalKey<FormState>();
@@ -12,7 +14,10 @@ class PasswordScreen extends StatelessWidget {
   final TextEditingController _cnfPasswordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    final passwordState = ref.watch(signupControllerProvider);
+    final passwordCtrl = ref.read(signupControllerProvider.notifier);
 
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -130,10 +135,21 @@ class PasswordScreen extends StatelessWidget {
                   buttonColor: AppTheme.themeRed,
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
-                  onPress: () {
+                  onPress: () async{
                     if(formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      context.push("/profile");
+                      final isSuccess = await passwordCtrl.createPassword(_passwordController.text);
+                      if(isSuccess && context.mounted) {
+                        context.push("/profile");
+                      } else {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            content: const Text("Failed to create password")
+                          ) );
+                      // context.push("/profile");
+                      }
                     } 
                   },
                 ),
