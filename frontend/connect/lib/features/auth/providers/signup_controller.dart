@@ -131,7 +131,7 @@ class SignupController extends StateNotifier<SignupState> {
     }
   }
 
-  Future<void> createProfile(
+  Future<bool> createProfile(
     String gender, 
     String description, 
     String sexuality, 
@@ -150,13 +150,29 @@ class SignupController extends StateNotifier<SignupState> {
 
       final res = await repo.createProfile(gender, description, sexuality, dateOfBirth, longitude, latitude, interests, onboardingToken!);
 
-      if(res.message!.isNotEmpty) {}
+      if(res.message!.isNotEmpty) {
+        state = state.copyWith(
+          loading: false,
+          error: null
+        );
+
+        return true;
+      }
+
+      state = state.copyWith(
+        loading: false,
+        error: "Failed to create profile"
+      );
+
+      return false;
       
     } catch (e) {
       state = state.copyWith(
         loading: false,
         error: "Failed to verify the otp"
       );
+
+      return false;
     }
   }
 
