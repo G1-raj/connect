@@ -99,7 +99,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
               } : 
                 null, 
                 child: Text(
-                  isTimeCompleted ? "Resend OTP" : "Retry in 45s", 
+                  isTimeCompleted ? "Resend OTP" : "Retry in $secondsLeft seconds", 
                   style: TextStyle(
                     color: AppTheme.themeRed,
                     fontWeight: FontWeight.w600
