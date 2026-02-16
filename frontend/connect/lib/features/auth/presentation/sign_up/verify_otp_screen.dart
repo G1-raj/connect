@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,41 @@ class VerifyOtpScreen extends ConsumerStatefulWidget {
 class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
   String checkOtp = "";
   bool isTimeCompleted = false;
+  int secondsLeft = 600;
+  Timer? timer;
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+
+  void startTimer() {
+
+    secondsLeft = 600;
+    isTimeCompleted = false;
+
+    timer?.cancel();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if(secondsLeft == 0) {
+        setState(() {
+          isTimeCompleted = true;
+        });
+        timer.cancel();
+      } else {
+        setState(() {
+          secondsLeft--;
+        });
+      }
+    });
+  }
+  
+  @override
+  void dispose() {
+    super.dispose();
+
+    timer?.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +93,11 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
                 height: screenHeight * 0.04,
               ),
 
-              TextButton(onPressed: isTimeCompleted ? () {} : 
-                () {
-                  print("Resend OTP");
-                }, 
+              TextButton(onPressed: isTimeCompleted ? () {
+                print("Resend OTP");
+                startTimer();
+              } : 
+                null, 
                 child: Text(
                   isTimeCompleted ? "Resend OTP" : "Retry in 45s", 
                   style: TextStyle(
