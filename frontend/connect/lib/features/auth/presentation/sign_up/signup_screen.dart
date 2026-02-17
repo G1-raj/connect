@@ -183,14 +183,14 @@ class SignupScreen extends ConsumerWidget {
                               body: "Confirm your email address",
                               email: _emailController.text,
                               onConfirm: () async {
-                                // final isSuccess = await signupCtrl.signup(_emailController.text, _nameController.text);
+                                final isSuccess = await signupCtrl.signup(_emailController.text, _nameController.text);
                                 
             
-                                // if(isSuccess && context.mounted) {
-                                //   context.push("/verify-otp");    
-                                // }
+                                if(isSuccess && context.mounted) {
+                                  context.push("/verify-otp");    
+                                }
 
-                                context.push("/verify-otp", extra: _emailController.text); 
+                                // context.push("/verify-otp", extra: _emailController.text); 
                               },
                             ),
                           );

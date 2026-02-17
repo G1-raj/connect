@@ -63,6 +63,35 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
+    ref.listen(signupControllerProvider, (prev, next) {
+      if(next.loading == true) {
+        showDialog(
+          context: context, 
+          builder: (_) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: AppTheme.textThemeRed,
+              ),
+            );
+          }
+        );
+      }
+
+      if(prev?.loading == true && next.loading == false) {
+        context.pop();
+      }
+
+
+      if (next.error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(next.error!)
+          ),
+        );
+      }
+    });
+
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
       body: SafeArea(

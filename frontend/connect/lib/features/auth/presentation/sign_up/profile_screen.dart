@@ -92,8 +92,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final profileState = ref.read(signupControllerProvider);
     final profileCtrl = ref.read(signupControllerProvider.notifier);
 
-    final profileState = ref.read(signupControllerProvider);
-    final profileCtrl = ref.read(signupControllerProvider.notifier);
 
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
