@@ -36,6 +36,11 @@ class PasswordScreen extends ConsumerWidget {
         context.pop();
       }
 
+      if(next.success && context.mounted) {
+        context.pop();
+        context.push("/profile");
+      }
+
 
       if (next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -163,18 +168,16 @@ class PasswordScreen extends ConsumerWidget {
                   onPress: () async{
                     if(formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      final isSuccess = await passwordCtrl.createPassword(_passwordController.text);
-                      if(isSuccess && context.mounted) {
-                        context.push("/profile");
-                      } else {
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.red,
-                            content: const Text("Failed to create password")
-                          ) );
-                      // context.push("/profile");
-                      }
+                        await passwordCtrl.createPassword(_passwordController.text);
+
+                        if(passwordState.loading == false) {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.red,
+                              content: const Text("Failed to create password")
+                            ) );
+                        }
                     } 
                   },
                 ),
