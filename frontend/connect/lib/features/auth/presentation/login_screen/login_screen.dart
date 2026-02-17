@@ -1,6 +1,7 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
+import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
 import 'package:connect/features/auth/providers/login_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,8 +26,26 @@ class LoginScreen extends ConsumerWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     ref.listen(loginControllerProvider, (prev, next) {
-      if(next.error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(next.error!)));
+      if(next.loading == true) {
+        showDialog(
+          context: context, 
+          barrierDismissible: false,
+          barrierColor: AppTheme.loaderBackground,
+          builder: (_) => const ImageLoaderDialog());
+      }
+
+      if(prev?.loading == true && next.loading == false) {
+        Navigator.pop(context);
+      }
+
+
+      if (next.error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(next.error!)
+          ),
+        );
       }
     });
 

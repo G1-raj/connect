@@ -1,6 +1,7 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
+import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
 import 'package:connect/core/widgets/pop_up_dialog/pop_up_dialog.dart';
 import 'package:connect/features/auth/providers/signup_controller_provider.dart';
 import 'package:flutter/material.dart';
@@ -31,13 +32,7 @@ class SignupScreen extends ConsumerWidget {
           context: context, 
           barrierDismissible: false,
           barrierColor: AppTheme.loaderBackground,
-          builder: (_) {
-            return Center(
-              child: Image(
-                image: AssetImage("lib/assets/loader.png"),
-              ),
-            );
-          });
+          builder: (_) => const ImageLoaderDialog());
       }
 
       if(prev?.loading == true && next.loading == false) {

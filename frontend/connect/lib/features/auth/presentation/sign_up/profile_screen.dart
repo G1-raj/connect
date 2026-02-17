@@ -4,6 +4,7 @@ import 'package:connect/core/widgets/date_of_birth/date_of_birth.dart';
 import 'package:connect/core/widgets/description/description.dart';
 import 'package:connect/core/widgets/gender_selector/gender_selector.dart';
 import 'package:connect/core/widgets/interests/interests.dart';
+import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
 import 'package:connect/core/widgets/sexuality/sexuality.dart';
 import 'package:connect/features/auth/providers/signup_controller_provider.dart';
 import 'package:flutter/material.dart';
@@ -102,13 +103,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           context: context, 
           barrierDismissible: false,
           barrierColor: AppTheme.loaderBackground,
-          builder: (_) {
-            return Center(
-              child: Image(
-                image: AssetImage("lib/assets/loader.png"),
-              ),
-            );
-          });
+          builder: (_) => const ImageLoaderDialog());
       }
 
       if(prev?.loading == true && next.loading == false) {
