@@ -39,10 +39,8 @@ class SignupScreen extends ConsumerWidget {
         context.pop();
       }
 
-      if(next.success) {
-        if(context.mounted) {
-          context.push("/verify-otp", extra: _emailController.text);
-        }
+      if(next.success && context.mounted) {
+        context.push("/verify-otp", extra: _emailController.text);
       }
 
 

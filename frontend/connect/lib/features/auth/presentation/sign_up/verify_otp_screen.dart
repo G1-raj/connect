@@ -78,8 +78,12 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
           });
       }
 
-      if(prev?.loading == true && next.loading == false) {
+      if(prev?.loading == true && next.loading == false && context.mounted) {
         context.pop();
+      }
+
+      if(next.success && context.mounted) {
+        context.push("/password");
       }
 
 
@@ -162,19 +166,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
                     );
                   } else {
 
-                    final isSuccess = await verifyOtpCtrl.verifyOtp(widget.email, checkOtp);
-
-                    if(isSuccess && context.mounted) {
-                      context.push("/password");
-                    } else {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: Colors.red,
-                          content: const Text("Failed to verify the otp")
-                        )
-                      );
-                    }
+                    await verifyOtpCtrl.verifyOtp(widget.email, checkOtp);
                   }
                 },
               ),
