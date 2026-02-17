@@ -8,16 +8,19 @@ import 'package:flutter_riverpod/legacy.dart';
 class SignupState {
   final bool loading;
   final String? error;
+  final bool success;
 
   const SignupState({
     this.loading = false,
-    this.error
+    this.error,
+    this.success = false
   });
 
-  SignupState copyWith({bool? loading, String? error}) {
+  SignupState copyWith({bool? loading, String? error, bool? success}) {
     return SignupState(
       loading: loading ?? this.loading,
-      error: error
+      error: error,
+      success: success ?? this.success
     );
   }
 }
@@ -39,7 +42,8 @@ class SignupController extends StateNotifier<SignupState> {
       if(res.message!.isNotEmpty) {
         state = state.copyWith(
           loading: false,
-          error: null
+          error: null,
+          success: true
         );
       }
 
@@ -48,15 +52,16 @@ class SignupController extends StateNotifier<SignupState> {
     } catch (e) {
       state = state.copyWith(
         loading: false,
-        error: "Failed to signup"
+        error: "Failed to signup",
+        success: false
       );
     }
 
     return false;
   }
 
-  Future<bool> verifyOtp(String email, String otp) async {
-    state = state.copyWith(loading: true, error: null);
+  Future<void> verifyOtp(String email, String otp) async {
+    state = state.copyWith(loading: true, error: null, success: false);
 
     try {
 
@@ -68,26 +73,24 @@ class SignupController extends StateNotifier<SignupState> {
         await storage.write(key: "onboarding_token", value:res.onboardingToken);
         state = state.copyWith(
           loading: false,
-          error: null
+          error: null,
+          success: true
         );
-
-        return true;
       }
 
       state = state.copyWith(
         loading: false,
-        error: "Failed to verify the otp"
+        error: "Failed to verify the otp",
+        success: false
       );
-
-      return false;
       
     } catch (e) {
       state = state.copyWith(
         loading: false,
-        error: "Failed to verify the otp"
+        error: "Failed to verify the otp",
+        success: false
       );
 
-      return false;
     }
   }
 

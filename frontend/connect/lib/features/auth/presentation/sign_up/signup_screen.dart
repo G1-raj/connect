@@ -39,6 +39,12 @@ class SignupScreen extends ConsumerWidget {
         context.pop();
       }
 
+      if(next.success) {
+        if(context.mounted) {
+          context.push("/verify-otp", extra: _emailController.text);
+        }
+      }
+
 
       if (next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -208,10 +214,10 @@ class SignupScreen extends ConsumerWidget {
                           onConfirm: () async {
                             final isSuccess = await signupCtrl.signup(_emailController.text, _nameController.text);
                             
-        
-                            if(isSuccess && context.mounted) {
-                              context.push("/verify-otp");    
+                            if(context.mounted) {
+                              context.pop();
                             }
+                            print("Is Success: $isSuccess");
         
                             // context.push("/verify-otp", extra: _emailController.text); 
                           },
