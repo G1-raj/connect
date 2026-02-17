@@ -67,14 +67,15 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
       if(next.loading == true) {
         showDialog(
           context: context, 
+          barrierDismissible: false,
+          barrierColor: AppTheme.loaderBackground,
           builder: (_) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: AppTheme.textThemeRed,
+            return Center(
+              child: Image(
+                image: AssetImage("lib/assets/loader.png"),
               ),
             );
-          }
-        );
+          });
       }
 
       if(prev?.loading == true && next.loading == false) {

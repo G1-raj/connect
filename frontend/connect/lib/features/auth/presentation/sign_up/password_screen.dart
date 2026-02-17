@@ -22,6 +22,36 @@ class PasswordScreen extends ConsumerWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
+    ref.listen(signupControllerProvider, (prev, next) {
+      if(next.loading == true) {
+        showDialog(
+          context: context, 
+          barrierDismissible: false,
+          barrierColor: AppTheme.loaderBackground,
+          builder: (_) {
+            return Center(
+              child: Image(
+                image: AssetImage("lib/assets/loader.png"),
+              ),
+            );
+          });
+      }
+
+      if(prev?.loading == true && next.loading == false) {
+        context.pop();
+      }
+
+
+      if (next.error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(next.error!)
+          ),
+        );
+      }
+    });
+
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
       body: SafeArea(
