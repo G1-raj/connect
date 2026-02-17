@@ -115,7 +115,7 @@ class SignupController extends StateNotifier<SignupState> {
         state = state.copyWith(
           loading: false,
           error: null,
-          success: false
+          success: true
         );
 
         return;

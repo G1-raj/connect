@@ -168,16 +168,7 @@ class PasswordScreen extends ConsumerWidget {
                   onPress: () async{
                     if(formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                        await passwordCtrl.createPassword(_passwordController.text);
-
-                        if(passwordState.loading == false) {
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Colors.red,
-                              content: const Text("Failed to create password")
-                            ) );
-                        }
+                      await passwordCtrl.createPassword(_passwordController.text);
                     } 
                   },
                 ),
