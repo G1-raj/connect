@@ -83,6 +83,7 @@ flutter:
     - lib/assets/pets.png
     - lib/assets/kids.png
     - lib/assets/exercise.png
+    - lib/assets/loader.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
