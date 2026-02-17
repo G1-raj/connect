@@ -97,8 +97,8 @@ class SignupController extends StateNotifier<SignupState> {
     }
   }
 
-  Future<bool> createPassword(String password) async {
-    state = state.copyWith(loading: true, error:  null);
+  Future<void> createPassword(String password) async {
+    state = state.copyWith(loading: true, error:  null, success: false);
 
     try {
 
@@ -114,26 +114,26 @@ class SignupController extends StateNotifier<SignupState> {
       if(res.message!.isNotEmpty) {
         state = state.copyWith(
           loading: false,
-          error: null
+          error: null,
+          success: false
         );
 
-        return true;
+        return;
       }
 
       state = state.copyWith(
         loading: false,
-        error: "Failed to create password"
+        error: "Failed to create password",
+        success: false
       );
-
-      return false;
       
     } catch (e) {
       state = state.copyWith(
         loading: false,
-        error: "Failed to verify the otp"
+        error: "Failed to create password",
+        success: false
       );
 
-      return false;
     }
   }
 
