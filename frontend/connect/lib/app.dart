@@ -1,4 +1,5 @@
 import 'package:connect/core/routing/router.dart';
+import 'package:connect/core/widgets/loader/loader.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -6,11 +7,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      routerConfig: router,
+      home: Scaffold(
+        body: Loader(),
+      ),
     );
+    // return MaterialApp.router(
+    //   debugShowCheckedModeBanner: false,
+    //   theme: ThemeData.light(),
+    //   routerConfig: router,
+    // );
   }
 }
 

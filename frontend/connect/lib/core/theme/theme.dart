@@ -10,4 +10,6 @@ class AppTheme {
 
   static const optionsHighlight = Color.fromRGBO(246, 246, 246, 1);
   static const greyColor = Color.fromRGBO(217, 217, 217, 1);
+
+  static const loaderBackground = Color.fromRGBO(251, 227, 232, 1);
 }
