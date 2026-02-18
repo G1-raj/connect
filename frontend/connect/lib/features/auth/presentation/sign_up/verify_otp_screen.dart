@@ -18,7 +18,7 @@ class VerifyOtpScreen extends ConsumerStatefulWidget {
 class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
   String checkOtp = "";
   bool isTimeCompleted = false;
-  int secondsLeft = 600;
+  int secondsLeft = 120;
   Timer? timer;
 
   @override
@@ -28,7 +28,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
   }
 
   void startTimer() {
-    secondsLeft = 600;
+    secondsLeft = 120;
     isTimeCompleted = false;
 
     timer?.cancel();
@@ -214,7 +214,9 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
 
         Text(
           isTimeCompleted ? "send again" : "retry in $secondsLeft seconds",
-          style: TextStyle(color: AppTheme.textThemeRed),
+          style: TextStyle(
+            color: isTimeCompleted ? AppTheme.themeRed : AppTheme.textThemeRed,
+          ),
         ),
       ],
     );
