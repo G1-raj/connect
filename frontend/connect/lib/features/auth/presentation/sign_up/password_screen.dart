@@ -2,7 +2,7 @@ import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
 import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
-import 'package:connect/features/auth/providers/signup_controller_provider.dart';
+import 'package:connect/shared/providers/password_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,12 +16,12 @@ class PasswordScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final passwordCtrl = ref.read(signupControllerProvider.notifier);
+    final passwordCtrl = ref.read(passwordControllerProvider.notifier);
 
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    ref.listen(signupControllerProvider, (prev, next) {
+    ref.listen(passwordControllerProvider, (prev, next) {
       if (next.loading == true) {
         showDialog(
           context: context,
