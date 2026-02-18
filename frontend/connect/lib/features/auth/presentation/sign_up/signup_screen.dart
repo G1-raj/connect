@@ -18,7 +18,6 @@ class SignupScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final signupState = ref.watch(signupControllerProvider);
     final signupCtrl = ref.read(signupControllerProvider.notifier);
 
     final double screenHeight = MediaQuery.of(context).size.height;
@@ -198,7 +197,7 @@ class SignupScreen extends ConsumerWidget {
                           body: "Confirm your email address",
                           email: _emailController.text,
                           onConfirm: () async {
-                            final isSuccess = await signupCtrl.signup(
+                            await signupCtrl.signup(
                               _emailController.text,
                               _nameController.text,
                             );

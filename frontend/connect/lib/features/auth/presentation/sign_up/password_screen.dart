@@ -16,38 +16,33 @@ class PasswordScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    final passwordState = ref.watch(signupControllerProvider);
     final passwordCtrl = ref.read(signupControllerProvider.notifier);
 
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
     ref.listen(signupControllerProvider, (prev, next) {
-      if(next.loading == true) {
+      if (next.loading == true) {
         showDialog(
-          context: context, 
+          context: context,
           barrierDismissible: false,
           barrierColor: AppTheme.loaderBackground,
-          builder: (_) => const ImageLoaderDialog());
+          builder: (_) => const ImageLoaderDialog(),
+        );
       }
 
-      if(prev?.loading == true && next.loading == false) {
+      if (prev?.loading == true && next.loading == false) {
         context.pop();
       }
 
-      if(next.success && context.mounted) {
+      if (next.success && context.mounted) {
         context.pop();
         context.push("/profile");
       }
 
-
       if (next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(next.error!)
-          ),
+          SnackBar(backgroundColor: Colors.red, content: Text(next.error!)),
         );
       }
     });
@@ -61,36 +56,35 @@ class PasswordScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: screenHeight * 0.04,
-                ),
-                
+                SizedBox(height: screenHeight * 0.04),
+
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.only(left: screenWidth * 0.06),
-                    child: Text("Create Password", style: TextStyle(
-                      fontSize: screenWidth * 0.05,
-                      fontWeight: FontWeight.w700
-                    ),),
+                    child: Text(
+                      "Create Password",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: screenHeight * 0.01,
-                ),
+                SizedBox(height: screenHeight * 0.01),
                 InputField(
-                  hintText: "Password", 
+                  hintText: "Password",
                   prefixIcon: Icon(Icons.lock),
-                  isPassword: true, 
+                  isPassword: true,
                   textController: _passwordController,
                   width: screenWidth * 0.85,
                   height: screenHeight * 0.07,
                   validator: (value) {
-                    if(value == null || value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return "Please provide the password";
                     }
 
-                    if(value.length < 6 || value.length > 12) {
+                    if (value.length < 6 || value.length > 12) {
                       return "Password length must between 6 to 12 characters";
                     }
 
@@ -118,65 +112,64 @@ class PasswordScreen extends ConsumerWidget {
                     return null;
                   },
                 ),
-          
-                SizedBox(
-                  height: screenHeight * 0.04,
-                ),
-          
+
+                SizedBox(height: screenHeight * 0.04),
+
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.only(left: screenWidth * 0.06),
-                    child: Text("Confirm Password", style: TextStyle(
-                      fontSize: screenWidth * 0.05,
-                      fontWeight: FontWeight.w700
-                    ),),
+                    child: Text(
+                      "Confirm Password",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: screenHeight * 0.01,
-                ),
+                SizedBox(height: screenHeight * 0.01),
                 InputField(
-                  hintText: "Confirm Password", 
+                  hintText: "Confirm Password",
                   prefixIcon: Icon(Icons.lock),
-                  isPassword: true, 
+                  isPassword: true,
                   textController: _cnfPasswordController,
                   width: screenWidth * 0.85,
                   height: screenHeight * 0.07,
                   validator: (value) {
-                    if(value == null || value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return "Please provide the confirmation password";
                     }
 
-                    if(_passwordController.text != _cnfPasswordController.text) {
+                    if (_passwordController.text !=
+                        _cnfPasswordController.text) {
                       return "Password and Confirmation password should be same";
                     }
 
                     return null;
                   },
                 ),
-          
+
                 Spacer(),
-          
-                 AppButton(
+
+                AppButton(
                   width: screenWidth * 0.95,
                   height: screenHeight * 0.06,
                   text: "Create Password",
                   buttonColor: AppTheme.themeRed,
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
-                  onPress: () async{
-                    if(formKey.currentState!.validate()) {
+                  onPress: () async {
+                    if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      await passwordCtrl.createPassword(_passwordController.text);
-                    } 
+                      await passwordCtrl.createPassword(
+                        _passwordController.text,
+                      );
+                    }
                   },
                 ),
-          
-                SizedBox(
-                  height: screenHeight * 0.02,
-                )
-                
+
+                SizedBox(height: screenHeight * 0.02),
               ],
             ),
           ),

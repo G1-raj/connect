@@ -7,64 +7,50 @@ import 'package:connect/features/auth/data/models/signup/request/password_reques
 import 'package:connect/features/auth/data/models/signup/request/signup_request.dart';
 import 'package:connect/features/auth/data/models/signup/response/message_response.dart';
 import 'package:connect/features/auth/data/models/signup/response/otp_response.dart';
-import 'package:connect/shared/providers/storage_provider.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthApiService {
   final Dio dio = DioClient.dio;
 
   Future<LoginResponse> login(LoginRequest request) async {
-    final response = await dio.post(
-      "/auth/login",
-      data: request.toJson()
-    );
+    final response = await dio.post("/auth/login", data: request.toJson());
 
     return LoginResponse.fromJson(response.data);
   }
 
   Future<MessageResponse> signup(SignupRequest request) async {
-    final response = await dio.post(
-      "/auth/signup",
-      data: request.toJson()
-    );
+    final response = await dio.post("/auth/signup", data: request.toJson());
 
     return MessageResponse.fromJson(response.data);
   }
 
   Future<OtpResponse> verifyOtp(OtpRequest request) async {
-    final response = await dio.post(
-      "/auth/verify-otp",
-      data: request.toJson()
-    );
+    final response = await dio.post("/auth/verify-otp", data: request.toJson());
 
     return OtpResponse.fromJson(response.data);
   }
 
-  Future<MessageResponse> createPassword(PasswordRequest request, String onboardingToken) async {
+  Future<MessageResponse> createPassword(
+    PasswordRequest request,
+    String onboardingToken,
+  ) async {
     final response = await dio.post(
       "/auth/create-password",
       data: request.toJson(),
-      options: Options(
-        headers: {
-          "Authorization": "Bearer $onboardingToken"
-        }
-      )
+      options: Options(headers: {"Authorization": "Bearer $onboardingToken"}),
     );
 
     return MessageResponse.fromJson(response.data);
   }
 
-  Future<MessageResponse> createProfile(CreateProfileRequest request, String onboardingToken) async {
-
+  Future<MessageResponse> createProfile(
+    CreateProfileRequest request,
+    String onboardingToken,
+  ) async {
     final response = await dio.post(
       "/auth/create-profile",
       data: request.toJson(),
-      options: Options(
-        headers: {
-          "Authorizarion": "Bearer $onboardingToken"
-        }
-      )
+      options: Options(headers: {"Authorizarion": "Bearer $onboardingToken"}),
     );
 
     return MessageResponse.fromJson(response.data);

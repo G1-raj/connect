@@ -55,7 +55,6 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final verifyOtpState = ref.watch(signupControllerProvider);
     final verifyOtpCtrl = ref.read(signupControllerProvider.notifier);
 
     final double screenHeight = MediaQuery.of(context).size.height;
