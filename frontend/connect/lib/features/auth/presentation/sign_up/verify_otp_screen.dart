@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
+import 'package:connect/features/auth/controllers/verify_otp_controller.dart';
 import 'package:connect/shared/providers/verify_otp_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,7 +61,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    ref.listen(verifyOtpControllerProvider, (prev, next) {
+    ref.listen<VerifyOtpState>(verifyOtpControllerProvider, (prev, next) {
       if (next.loading == true) {
         showDialog(
           context: context,

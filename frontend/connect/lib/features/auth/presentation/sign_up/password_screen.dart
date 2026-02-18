@@ -2,6 +2,7 @@ import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
 import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
+import 'package:connect/features/auth/controllers/password_controller.dart';
 import 'package:connect/shared/providers/password_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +22,7 @@ class PasswordScreen extends ConsumerWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    ref.listen(passwordControllerProvider, (prev, next) {
+    ref.listen<PasswordState>(passwordControllerProvider, (prev, next) {
       if (next.loading == true) {
         showDialog(
           context: context,

@@ -1,7 +1,5 @@
-import 'package:connect/features/auth/providers/password_controller.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:connect/features/auth/controllers/password_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final passwordControllerProvider =
-    StateNotifierProvider<PasswordController, PasswordState>(
-      (ref) => PasswordController(ref),
-    );
+    NotifierProvider<PasswordController, PasswordState>(PasswordController.new);

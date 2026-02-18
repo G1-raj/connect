@@ -1,7 +1,6 @@
-import 'package:connect/features/auth/providers/auth_repository_provider.dart';
+import 'package:connect/shared/providers/auth_repository_provider.dart';
 import 'package:connect/shared/providers/storage_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 class PasswordState {
   final bool loading;
@@ -19,10 +18,11 @@ class PasswordState {
   }
 }
 
-class PasswordController extends StateNotifier<PasswordState> {
-  final Ref ref;
-
-  PasswordController(this.ref) : super(PasswordState());
+class PasswordController extends Notifier<PasswordState> {
+  @override
+  PasswordState build() {
+    return const PasswordState();
+  }
 
   Future<void> createPassword(String password) async {
     state = state.copyWith(loading: true, error: null, success: false);
