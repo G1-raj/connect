@@ -32,9 +32,9 @@ class PasswordScreen extends ConsumerWidget {
         );
       }
 
-      // if (prev?.loading == true && next.loading == false) {
-      //   context.pop();
-      // }
+      if (prev?.loading == true && next.loading == false) {
+        context.pop();
+      }
 
       if (next.success && context.mounted) {
         context.go("/profile");

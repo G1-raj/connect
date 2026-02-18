@@ -6,6 +6,7 @@ import 'package:connect/core/widgets/gender_selector/gender_selector.dart';
 import 'package:connect/core/widgets/interests/interests.dart';
 import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
 import 'package:connect/core/widgets/sexuality/sexuality.dart';
+import 'package:connect/features/auth/controllers/profile_controller.dart';
 import 'package:connect/features/auth/data/services/location_service.dart';
 import 'package:connect/shared/providers/profile_controller_provider.dart';
 import 'package:flutter/material.dart';
@@ -87,21 +88,40 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         return;
       }
       //first profile data sending function will call
-      //sendProfileData();
-
-      //navigate to upload images
-      context.pushReplacement("/image-input");
+      sendProfileData();
     }
+  }
+
+  Future<void> sendProfileData() async {
+    final profileCtrl = ref.read(profileControllerProvider.notifier);
+
+    await profileCtrl.createProfile(
+      genderController.text,
+      descriptionController.text,
+      sexualityController.text,
+      parseDob(dateOfBirthController.text),
+      longitude,
+      latitude,
+      interests,
+    );
+  }
+
+  DateTime parseDob(String text) {
+    final parts = text.split('-'); // [2000,1,18]
+
+    return DateTime(
+      int.parse(parts[0]),
+      int.parse(parts[1]),
+      int.parse(parts[2]),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final profileCtrl = ref.read(profileControllerProvider.notifier);
-
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    ref.listen(profileControllerProvider, (prev, next) {
+    ref.listen<ProfileState>(profileControllerProvider, (prev, next) {
       if (next.loading == true) {
         showDialog(
           context: context,
@@ -113,6 +133,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
       if (prev?.loading == true && next.loading == false && context.mounted) {
         context.pop();
+      }
+
+      if (next.success == true && context.mounted) {
+        context.go("/image-input");
       }
 
       if (next.error != null) {

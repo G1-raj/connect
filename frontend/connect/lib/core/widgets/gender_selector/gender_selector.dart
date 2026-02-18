@@ -3,19 +3,13 @@ import 'package:flutter/material.dart';
 
 class GenderSelector extends StatefulWidget {
   final TextEditingController genderController;
-  const GenderSelector(
-    {
-      super.key,
-      required this.genderController
-    }
-  );
+  const GenderSelector({super.key, required this.genderController});
 
   @override
   State<GenderSelector> createState() => _GenderSelectorState();
 }
 
 class _GenderSelectorState extends State<GenderSelector> {
-
   final AssetImage _maleImage = AssetImage("lib/assets/male_gender.png");
   final AssetImage _femaleImage = AssetImage("lib/assets/female_gender.png");
   final AssetImage _otherImage = AssetImage("lib/assets/other_gender.png");
@@ -31,58 +25,56 @@ class _GenderSelectorState extends State<GenderSelector> {
 
   @override
   Widget build(BuildContext context) {
-
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Column(
       children: [
-        Text("Select your gender", style: TextStyle(
-          fontWeight: FontWeight.w800,
-          fontSize: screenWidth * 0.05
-        ),),
-        
-        SizedBox(
-          height: screenHeight * 0.02,
+        Text(
+          "Select your gender",
+          style: TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: screenWidth * 0.05,
+          ),
         ),
-        
+
+        SizedBox(height: screenHeight * 0.02),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             SelectionCard(
-              label: "Male", 
-              image: _maleImage, 
-              width: screenWidth * 0.15, 
+              label: "male",
+              image: _maleImage,
+              width: screenWidth * 0.15,
               selected: selected,
               onPress: () {
-                select("Male");
-              }
+                select("male");
+              },
             ),
 
             SelectionCard(
-              label: "Female", 
-              image: _femaleImage, 
-              width: screenWidth * 0.15, 
+              label: "female",
+              image: _femaleImage,
+              width: screenWidth * 0.15,
               selected: selected,
               onPress: () {
-                select("Female");
-              }
+                select("female");
+              },
             ),
           ],
         ),
-        
-        SizedBox(
-          height: screenHeight * 0.02,
-        ),
+
+        SizedBox(height: screenHeight * 0.02),
 
         SelectionCard(
-          label: "Other", 
-          image: _otherImage, 
-          width: screenWidth * 0.15, 
+          label: "others",
+          image: _otherImage,
+          width: screenWidth * 0.15,
           selected: selected,
           onPress: () {
-            select("Other");
-          }
+            select("others");
+          },
         ),
       ],
     );

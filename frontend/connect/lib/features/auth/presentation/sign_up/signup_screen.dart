@@ -3,7 +3,8 @@ import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:connect/core/widgets/input_field/input_field.dart';
 import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
 import 'package:connect/core/widgets/pop_up_dialog/pop_up_dialog.dart';
-import 'package:connect/features/auth/providers/signup_controller_provider.dart';
+import 'package:connect/features/auth/controllers/signup_controller.dart';
+import 'package:connect/shared/providers/signup_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,7 +24,7 @@ class SignupScreen extends ConsumerWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    ref.listen(signupControllerProvider, (prev, next) {
+    ref.listen<SignupState>(signupControllerProvider, (prev, next) {
       if (next.loading == true) {
         showDialog(
           context: context,

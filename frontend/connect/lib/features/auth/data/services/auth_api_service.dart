@@ -50,7 +50,7 @@ class AuthApiService {
     final response = await dio.post(
       "/auth/create-profile",
       data: request.toJson(),
-      options: Options(headers: {"Authorizarion": "Bearer $onboardingToken"}),
+      options: Options(headers: {"Authorization": "Bearer $onboardingToken"}),
     );
 
     return MessageResponse.fromJson(response.data);

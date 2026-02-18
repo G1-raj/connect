@@ -32,7 +32,6 @@ class ProfileController extends Notifier<ProfileState> {
     double longitude,
     double latitude,
     List<String> interests,
-    String onboardingToken,
   ) async {
     state = state.copyWith(loading: true, error: null, success: false);
 
@@ -63,7 +62,7 @@ class ProfileController extends Notifier<ProfileState> {
 
       state = state.copyWith(loading: false, error: "Failed to create profile");
     } catch (e) {
-      state = state.copyWith(loading: false, error: "Failed to verify the otp");
+      state = state.copyWith(loading: false, error: "Failed to create profile");
     }
   }
 }
