@@ -31,13 +31,12 @@ class PasswordScreen extends ConsumerWidget {
         );
       }
 
-      if (prev?.loading == true && next.loading == false) {
-        context.pop();
-      }
+      // if (prev?.loading == true && next.loading == false) {
+      //   context.pop();
+      // }
 
       if (next.success && context.mounted) {
-        context.pop();
-        context.push("/profile");
+        context.go("/profile");
       }
 
       if (next.error != null) {

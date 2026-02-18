@@ -26,8 +26,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController sexualityController = TextEditingController();
   final TextEditingController dateOfBirthController = TextEditingController();
-  final TextEditingController latitudeController = TextEditingController();
-  final TextEditingController longitudeController = TextEditingController();
+
+  double latitude = 0.0;
+  double longitude = 0.0;
+
   List<String> interests = [];
   late PageController _pageController;
 
@@ -59,8 +61,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     descriptionController.dispose();
     sexualityController.dispose();
     dateOfBirthController.dispose();
-    latitudeController.dispose();
-    longitudeController.dispose();
 
     _pageController.dispose();
 
@@ -69,8 +69,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Future<void> getLoaction() async {
     final pos = await LocationService.getCurrentLocation();
-    latitudeController.text = pos.latitude as String;
-    longitudeController.text = pos.longitude as String;
+    latitude = pos.latitude;
+    longitude = pos.longitude;
   }
 
   void changePage() {
@@ -112,7 +112,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         );
       }
 
-      if (prev?.loading == true && next.loading == false) {
+      if (prev?.loading == true && next.loading == false && context.mounted) {
         context.pop();
       }
 

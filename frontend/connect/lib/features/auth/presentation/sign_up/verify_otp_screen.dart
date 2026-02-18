@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
-import 'package:connect/features/auth/providers/signup_controller_provider.dart';
+import 'package:connect/shared/providers/verify_otp_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -55,12 +55,12 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final verifyOtpCtrl = ref.read(signupControllerProvider.notifier);
+    final verifyOtpCtrl = ref.read(verifyOtpControllerProvider.notifier);
 
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    ref.listen(signupControllerProvider, (prev, next) {
+    ref.listen(verifyOtpControllerProvider, (prev, next) {
       if (next.loading == true) {
         showDialog(
           context: context,
@@ -138,7 +138,6 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
                 onPress: () async {
-                  print("OTP is $checkOtp");
                   if (checkOtp.length < 6) {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(

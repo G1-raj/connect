@@ -51,38 +51,6 @@ class SignupController extends StateNotifier<SignupState> {
     }
   }
 
-  Future<void> verifyOtp(String email, String otp) async {
-    state = state.copyWith(loading: true, error: null, success: false);
-
-    try {
-      final repo = ref.read(authRepositoryProvider);
-      final storage = ref.read(storageProvider);
-      final res = await repo.verifyOtp(email, otp);
-
-      if (res.message!.isNotEmpty) {
-        await storage.write(
-          key: "onboarding_token",
-          value: res.onboardingToken,
-        );
-        state = state.copyWith(loading: false, error: null, success: true);
-
-        return;
-      }
-
-      state = state.copyWith(
-        loading: false,
-        error: "Failed to verify the otp",
-        success: false,
-      );
-    } catch (e) {
-      state = state.copyWith(
-        loading: false,
-        error: "Failed to verify the otp",
-        success: false,
-      );
-    }
-  }
-
   Future<void> createPassword(String password) async {
     state = state.copyWith(loading: true, error: null, success: false);
 
