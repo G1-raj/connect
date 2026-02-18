@@ -8,7 +8,6 @@ import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
 import 'package:connect/core/widgets/sexuality/sexuality.dart';
 import 'package:connect/features/auth/data/services/location_service.dart';
 import 'package:connect/shared/providers/profile_controller_provider.dart';
-import 'package:connect/shared/providers/signup_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -102,7 +101,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    ref.listen(signupControllerProvider, (prev, next) {
+    ref.listen(profileControllerProvider, (prev, next) {
       if (next.loading == true) {
         showDialog(
           context: context,
