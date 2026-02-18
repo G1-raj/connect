@@ -1,7 +1,6 @@
-import 'package:connect/features/auth/providers/auth_repository_provider.dart';
+import 'package:connect/shared/providers/auth_repository_provider.dart';
 import 'package:connect/shared/providers/storage_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 class VerifyOtpState {
   final bool loading;
@@ -23,10 +22,11 @@ class VerifyOtpState {
   }
 }
 
-class VerifyOtpController extends StateNotifier<VerifyOtpState> {
-  final Ref ref;
-
-  VerifyOtpController(this.ref) : super(VerifyOtpState());
+class VerifyOtpController extends Notifier<VerifyOtpState> {
+  @override
+  VerifyOtpState build() {
+    return const VerifyOtpState();
+  }
 
   Future<void> verifyOtp(String email, String otp) async {
     state = state.copyWith(loading: true, error: null, success: false);

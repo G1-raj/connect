@@ -1,7 +1,7 @@
-import 'package:connect/features/auth/providers/verify_otp_controller.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:connect/features/auth/controllers/verify_otp_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final verifyOtpControllerProvider =
-    StateNotifierProvider<VerifyOtpController, VerifyOtpState>(
-      (ref) => VerifyOtpController(ref),
+    NotifierProvider<VerifyOtpController, VerifyOtpState>(
+      VerifyOtpController.new,
     );
