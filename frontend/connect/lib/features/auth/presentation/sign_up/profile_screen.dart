@@ -6,6 +6,7 @@ import 'package:connect/core/widgets/gender_selector/gender_selector.dart';
 import 'package:connect/core/widgets/interests/interests.dart';
 import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
 import 'package:connect/core/widgets/sexuality/sexuality.dart';
+import 'package:connect/features/auth/data/services/location_service.dart';
 import 'package:connect/features/auth/providers/signup_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,13 +43,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       onChanged: (list) {
         interests = list;
       },
-    )
-  ]; 
+    ),
+  ];
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    getLoaction();
   }
 
   @override
@@ -60,23 +62,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     latitudeController.dispose();
     longitudeController.dispose();
 
-
     _pageController.dispose();
 
     super.dispose();
   }
 
+  Future<void> getLoaction() async {
+    final pos = await LocationService.getCurrentLocation();
+    latitudeController.text = pos.latitude as String;
+    longitudeController.text = pos.longitude as String;
+  }
+
   void changePage() {
-    if(currentPage < pages.length - 1) {
+    if (currentPage < pages.length - 1) {
       _pageController.nextPage(
-        duration: const Duration(milliseconds: 300), 
-        curve: Curves.easeInOut
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
       );
     } else {
-
-      if(
-        genderController.text.isEmpty || dateOfBirthController.text.isEmpty || sexualityController.text.isEmpty || descriptionController.text.isEmpty
-      ) {
+      if (genderController.text.isEmpty ||
+          dateOfBirthController.text.isEmpty ||
+          sexualityController.text.isEmpty ||
+          descriptionController.text.isEmpty) {
         return;
       }
       //first profile data sending function will call
@@ -89,41 +96,36 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final profileState = ref.read(signupControllerProvider);
     final profileCtrl = ref.read(signupControllerProvider.notifier);
-
 
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
     ref.listen(signupControllerProvider, (prev, next) {
-      if(next.loading == true) {
+      if (next.loading == true) {
         showDialog(
-          context: context, 
+          context: context,
           barrierDismissible: false,
           barrierColor: AppTheme.loaderBackground,
-          builder: (_) => const ImageLoaderDialog());
+          builder: (_) => const ImageLoaderDialog(),
+        );
       }
 
-      if(prev?.loading == true && next.loading == false) {
+      if (prev?.loading == true && next.loading == false) {
         context.pop();
       }
 
-
       if (next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(next.error!)
-          ),
+          SnackBar(backgroundColor: Colors.red, content: Text(next.error!)),
         );
       }
     });
 
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
-      
+
       body: SafeArea(
         child: Center(
           child: Column(
@@ -131,14 +133,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               SizedBox(
                 width: screenWidth,
                 height: screenHeight * 0.35,
-                child: Image(
-                  image: mascott,
-                ),
+                child: Image(image: mascott),
               ),
 
-              SizedBox(
-                height: screenHeight * 0.04,
-              ),
+              SizedBox(height: screenHeight * 0.04),
 
               Expanded(
                 child: PageView.builder(
@@ -156,9 +154,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
               ),
 
-              SizedBox(
-                height: screenHeight * 0.02,
-              ),
+              SizedBox(height: screenHeight * 0.02),
 
               AppButton(
                 width: screenWidth * 0.95,
@@ -167,12 +163,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 buttonColor: AppTheme.themeRed,
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
-                onPress: changePage
+                onPress: changePage,
               ),
-        
-              SizedBox(
-                height: screenHeight * 0.02,
-              )
+
+              SizedBox(height: screenHeight * 0.02),
             ],
           ),
         ),
@@ -180,12 +174,3 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
