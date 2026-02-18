@@ -1,7 +1,6 @@
 import 'package:connect/shared/providers/auth_repository_provider.dart';
 import 'package:connect/shared/providers/storage_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 class ProfileState {
   final bool loading;
@@ -19,10 +18,11 @@ class ProfileState {
   }
 }
 
-class ProfileController extends StateNotifier<ProfileState> {
-  final Ref ref;
-
-  ProfileController(this.ref) : super(ProfileState());
+class ProfileController extends Notifier<ProfileState> {
+  @override
+  ProfileState build() {
+    return const ProfileState();
+  }
 
   Future<void> createProfile(
     String gender,

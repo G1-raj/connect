@@ -1,4 +1,5 @@
-import 'package:connect/features/auth/providers/signup_controller.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:connect/features/auth/controllers/signup_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final signupControllerProvider = StateNotifierProvider<SignupController, SignupState>((ref) => SignupController(ref));
+final signupControllerProvider =
+    NotifierProvider<SignupController, SignupState>(SignupController.new);

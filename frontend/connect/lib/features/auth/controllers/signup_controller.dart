@@ -1,6 +1,5 @@
 import 'package:connect/shared/providers/auth_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 class SignupState {
   final bool loading;
@@ -18,10 +17,11 @@ class SignupState {
   }
 }
 
-class SignupController extends StateNotifier<SignupState> {
-  final Ref ref;
-
-  SignupController(this.ref) : super(const SignupState());
+class SignupController extends Notifier<SignupState> {
+  @override
+  SignupState build() {
+    return const SignupState();
+  }
 
   Future<void> signup(String email, String fullName) async {
     state = state.copyWith(loading: true, error: null);

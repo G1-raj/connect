@@ -1,6 +1,6 @@
-import 'package:connect/features/auth/providers/login_controller.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:connect/features/auth/controllers/login_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final loginControllerProvider = StateNotifierProvider<LoginController, LoginState>((ref) {
-  return LoginController(ref);
-});
+final loginControllerProvider = NotifierProvider<LoginController, LoginState>(
+  LoginController.new,
+);
