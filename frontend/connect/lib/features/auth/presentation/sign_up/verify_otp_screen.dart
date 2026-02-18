@@ -28,13 +28,12 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
   }
 
   void startTimer() {
-
     secondsLeft = 600;
     isTimeCompleted = false;
 
     timer?.cancel();
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if(secondsLeft == 0) {
+      if (secondsLeft == 0) {
         setState(() {
           isTimeCompleted = true;
         });
@@ -46,7 +45,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
       }
     });
   }
-  
+
   @override
   void dispose() {
     super.dispose();
@@ -56,7 +55,6 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final verifyOtpState = ref.watch(signupControllerProvider);
     final verifyOtpCtrl = ref.read(signupControllerProvider.notifier);
 
@@ -64,86 +62,72 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     ref.listen(signupControllerProvider, (prev, next) {
-      if(next.loading == true) {
+      if (next.loading == true) {
         showDialog(
-          context: context, 
+          context: context,
           barrierDismissible: false,
           barrierColor: AppTheme.loaderBackground,
           builder: (_) {
             return Center(
-              child: Image(
-                image: AssetImage("lib/assets/loader.png"),
-              ),
+              child: Image(image: AssetImage("lib/assets/loader.png")),
             );
-          });
+          },
+        );
       }
 
-      if(prev?.loading == true && next.loading == false && context.mounted) {
+      if (prev?.loading == true && next.loading == false && context.mounted) {
         context.pop();
       }
 
-      if(next.success && context.mounted) {
+      if (next.success && context.mounted) {
         context.push("/password");
       }
 
-
       if (next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(next.error!)
-          ),
+          SnackBar(backgroundColor: Colors.red, content: Text(next.error!)),
         );
       }
     });
 
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
+
+      appBar: AppBar(elevation: 0, backgroundColor: AppTheme.whiteBackground),
+
       body: SafeArea(
         child: Center(
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.05, top: screenHeight * 0.04),
-                  child: Text("Verify Otp", style: TextStyle(
-                    color: AppTheme.blackBackground,
-                    fontWeight: FontWeight.w800,
-                    fontSize: screenWidth * 0.06,
-                    letterSpacing: 0.5
-                  ),),
-                ),
-              ),
+              SizedBox(height: screenHeight * 0.02),
 
-              SizedBox(
-                height: screenHeight * 0.06,
-              ),
+              _banner(screenWidth, screenHeight, widget.email),
+
+              SizedBox(height: screenHeight * 0.06),
 
               OtpField(
                 onChanged: (otp) {
                   setState(() {
                     checkOtp = otp;
                   });
-                  print("OTP is: $otp");
                 },
               ),
 
-              SizedBox(
-                height: screenHeight * 0.04,
-              ),
+              SizedBox(height: screenHeight * 0.04),
 
-              TextButton(onPressed: isTimeCompleted ? () {
-                print("Resend OTP");
-                startTimer();
-              } : 
-                null, 
-                child: Text(
-                  isTimeCompleted ? "Resend OTP" : "Retry in $secondsLeft seconds", 
-                  style: TextStyle(
-                    color: AppTheme.themeRed,
-                    fontWeight: FontWeight.w600
-              ),)),
+              GestureDetector(
+                onTap: isTimeCompleted
+                    ? () {
+                        startTimer();
+                      }
+                    : null,
+                child: resendMailButton(
+                  screenWidth,
+                  screenHeight,
+                  isTimeCompleted,
+                  secondsLeft,
+                ),
+              ),
 
               Spacer(),
 
@@ -156,28 +140,83 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
                 fontSize: screenWidth * 0.04,
                 onPress: () async {
                   print("OTP is $checkOtp");
-                  if(checkOtp.isEmpty) {
+                  if (checkOtp.length < 6) {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         backgroundColor: Colors.red,
-                        content: const Text("Please provide the otp")
-                      )
+                        content: const Text("Please provide the valid otp"),
+                      ),
                     );
                   } else {
-
                     await verifyOtpCtrl.verifyOtp(widget.email, checkOtp);
                   }
                 },
               ),
-        
-              SizedBox(
-                height: screenHeight * 0.02,
-              )
+
+              SizedBox(height: screenHeight * 0.02),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _banner(double screenWidth, double screenHeight, String email) {
+    return Column(
+      children: [
+        Text(
+          "Please enter the code",
+          style: TextStyle(
+            color: AppTheme.primaryText,
+            fontWeight: FontWeight.w700,
+            fontSize: screenWidth * 0.08,
+          ),
+        ),
+
+        SizedBox(
+          width: screenWidth * 0.85,
+          child: Text(
+            "We sent an email to $email",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              // color: AppColors.darkThemePrimaryColor,
+              fontSize: screenWidth * 0.04,
+            ),
+          ),
+        ),
+
+        SizedBox(height: screenHeight * 0.02),
+
+        Icon(Icons.mail, size: 50, color: AppTheme.themeRed),
+      ],
+    );
+  }
+
+  Widget resendMailButton(
+    double screenWidth,
+    double screenHeight,
+    bool isTimeCompleted,
+    int secondsLeft,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Didn't get a mail?",
+          style: TextStyle(
+            color: AppTheme.primaryText,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+
+        SizedBox(width: screenWidth * 0.01),
+
+        Text(
+          isTimeCompleted ? "send again" : "retry in $secondsLeft seconds",
+          style: TextStyle(color: AppTheme.textThemeRed),
+        ),
+      ],
     );
   }
 }
@@ -191,27 +230,29 @@ class OtpField extends StatefulWidget {
 }
 
 class _OtpFieldState extends State<OtpField> {
-
-  final List<TextEditingController> controllers = List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> controllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
 
   @override
   void dispose() {
-    for(final c in controllers) {
+    for (final c in controllers) {
       c.dispose();
     }
-    for(final f in focusNodes) {
+    for (final f in focusNodes) {
       f.dispose();
     }
     super.dispose();
   }
 
   void _onChanged(int index, String value) {
-    if(value.isNotEmpty && index < 5) {
+    if (value.isNotEmpty && index < 5) {
       focusNodes[index + 1].requestFocus();
     }
 
-    if(value.isEmpty && index > 0) {
+    if (value.isEmpty && index > 0) {
       focusNodes[index - 1].requestFocus();
     }
 
@@ -221,7 +262,6 @@ class _OtpFieldState extends State<OtpField> {
 
   @override
   Widget build(BuildContext context) {
-
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Row(
@@ -235,28 +275,25 @@ class _OtpFieldState extends State<OtpField> {
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             maxLength: 1,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold
-            ),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
 
             decoration: InputDecoration(
               counterText: "",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.0),
-                borderSide: BorderSide(color: AppTheme.themeRed)
-              ),
+              // border: OutlineInputBorder(
+              //   borderRadius: BorderRadius.circular(12.0),
+              //   borderSide: BorderSide(color: AppTheme.themeRed),
+              // ),
 
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.0),
-                borderSide: BorderSide(color: AppTheme.themeRed)
-              ),
+              // focusedBorder: OutlineInputBorder(
+              //   borderRadius: BorderRadius.circular(12.0),
+              //   borderSide: BorderSide(color: AppTheme.themeRed),
+              // ),
             ),
 
             onChanged: (value) => _onChanged(index, value),
           ),
         );
-      })
+      }),
     );
   }
 }

@@ -16,10 +16,8 @@ class SignupScreen extends ConsumerWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final signupState = ref.watch(signupControllerProvider);
     final signupCtrl = ref.read(signupControllerProvider.notifier);
 
@@ -27,29 +25,26 @@ class SignupScreen extends ConsumerWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     ref.listen(signupControllerProvider, (prev, next) {
-      if(next.loading == true) {
+      if (next.loading == true) {
         showDialog(
-          context: context, 
+          context: context,
           barrierDismissible: false,
           barrierColor: AppTheme.loaderBackground,
-          builder: (_) => const ImageLoaderDialog());
+          builder: (_) => const ImageLoaderDialog(),
+        );
       }
 
-      if(prev?.loading == true && next.loading == false) {
+      if (prev?.loading == true && next.loading == false) {
         context.pop();
       }
 
-      if(next.success && context.mounted) {
+      if (next.success && context.mounted) {
         context.push("/verify-otp", extra: _emailController.text);
       }
 
-
       if (next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(next.error!)
-          ),
+          SnackBar(backgroundColor: Colors.red, content: Text(next.error!)),
         );
       }
     });
@@ -62,9 +57,7 @@ class SignupScreen extends ConsumerWidget {
           child: Center(
             child: Column(
               children: [
-                SizedBox(
-                  height: screenHeight * 0.04,
-                ),
+                SizedBox(height: screenHeight * 0.04),
                 //Logo
                 Hero(
                   tag: "logo",
@@ -73,77 +66,78 @@ class SignupScreen extends ConsumerWidget {
                     width: 180,
                   ),
                 ),
-        
-                SizedBox(
-                  height: screenHeight * 0.01,
+
+                SizedBox(height: screenHeight * 0.01),
+
+                Text(
+                  "Signup",
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.06,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-          
-                Text("Signup", style: TextStyle(
-                  fontSize: screenWidth * 0.06,
-                  fontWeight: FontWeight.w600
-                ),),
-        
-                SizedBox(
-                  height: screenHeight * 0.05,
-                ),
-        
+
+                SizedBox(height: screenHeight * 0.05),
+
                 InputField(
-                  hintText: "Email", 
-                  prefixIcon: Icon(Icons.email), 
+                  hintText: "Email",
+                  prefixIcon: Icon(Icons.email),
                   textController: _emailController,
                   width: screenWidth * 0.85,
                   height: screenHeight * 0.07,
                   validator: (value) {
-                    if(value == null || value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return "Please provide the email";
                     }
-        
-                    if(!value.contains("@")) {
+
+                    if (!value.contains("@")) {
                       return "Please provide the valid gmail address";
                     }
-        
+
                     return null;
                   },
                 ),
-        
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-        
+
+                SizedBox(height: screenHeight * 0.02),
+
                 InputField(
-                  hintText: "Full Name", 
-                  prefixIcon: Icon(Icons.person), 
+                  hintText: "Full Name",
+                  prefixIcon: Icon(Icons.person),
                   textController: _nameController,
                   width: screenWidth * 0.85,
                   height: screenHeight * 0.07,
                   validator: (value) {
-                    if(value == null || value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return "Please provide your full name";
                     }
-        
+
                     return null;
                   },
                 ),
-        
-                SizedBox(
-                  height: screenHeight * 0.01,
-                ),
-        
+
+                SizedBox(height: screenHeight * 0.01),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Already have an account?"),
-                    TextButton(onPressed: () {
-                      context.pop();
-                    }, child: Text("Login", style: TextStyle(
-                      color: AppTheme.themeRed,
-                      fontWeight: FontWeight.bold
-                    ),))
+                    TextButton(
+                      onPressed: () {
+                        context.pop();
+                      },
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                          color: AppTheme.themeRed,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-        
+
                 Spacer(),
-        
+
                 SizedBox(
                   width: screenWidth * 0.85,
                   child: RichText(
@@ -152,56 +146,50 @@ class SignupScreen extends ConsumerWidget {
                       style: TextStyle(
                         color: AppTheme.blackBackground,
                         fontWeight: FontWeight.w500,
-                        wordSpacing: 0.6
+                        wordSpacing: 0.6,
                       ),
                       children: [
-                        TextSpan(
-                          text: "By continuing, you agree to our ",
-                        ),
-                  
+                        TextSpan(text: "By continuing, you agree to our "),
+
                         TextSpan(
                           text: "User Agreement",
                           style: TextStyle(
                             color: AppTheme.themeRed,
                             fontWeight: FontWeight.w700,
-                            decoration: TextDecoration.underline
-                          )
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
-                  
+
                         TextSpan(
-                          text: " and acknowledge that you understand the "
+                          text: " and acknowledge that you understand the ",
                         ),
-                  
+
                         TextSpan(
                           text: "Privacy Policy",
                           style: TextStyle(
                             color: AppTheme.themeRed,
                             fontWeight: FontWeight.w700,
-                            decoration: TextDecoration.underline
-                          )
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
-                  
-                  
-                      ]
+                      ],
                     ),
                   ),
                 ),
-        
-                SizedBox(
-                  height: screenHeight * 0.03,
-                ),
-          
+
+                SizedBox(height: screenHeight * 0.03),
+
                 AppButton(
                   width: screenWidth * 0.95,
                   height: screenHeight * 0.06,
-                  text: "Signup",
+                  text: "Continue",
                   buttonColor: AppTheme.themeRed,
                   textColor: AppTheme.whiteBackground,
                   fontSize: screenWidth * 0.04,
                   onPress: () {
-                    if(_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-        
+
                       showDialog(
                         context: context,
                         barrierDismissible: true,
@@ -210,29 +198,27 @@ class SignupScreen extends ConsumerWidget {
                           body: "Confirm your email address",
                           email: _emailController.text,
                           onConfirm: () async {
-                            final isSuccess = await signupCtrl.signup(_emailController.text, _nameController.text);
-                            
-                            if(context.mounted) {
+                            final isSuccess = await signupCtrl.signup(
+                              _emailController.text,
+                              _nameController.text,
+                            );
+
+                            if (context.mounted) {
                               context.pop();
                             }
-                            print("Is Success: $isSuccess");
-        
-                            // context.push("/verify-otp", extra: _emailController.text); 
                           },
                         ),
                       );
                     }
                   },
                 ),
-          
-                SizedBox(
-                  height: screenHeight * 0.02,
-                )
+
+                SizedBox(height: screenHeight * 0.02),
               ],
             ),
           ),
         ),
-      )
+      ),
     );
   }
 }
