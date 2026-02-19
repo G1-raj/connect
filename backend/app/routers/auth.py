@@ -65,6 +65,8 @@ def signup(user: UserSignUp, background_tasks: BackgroundTasks, db: Session = De
     otp = generate_otp()
     hashed_otp = create_hash(otp)
 
+    print(otp)
+
     new_otp = models.EmailOtp(
         user_id = user_obj.id,
         otp_hash = hashed_otp,
@@ -175,7 +177,7 @@ def create_password(user: PasswordCreate, db: Session = Depends(get_db), onboard
          "message": "Password set successfully"
      }
 
-@router.post("/create-profile", response_model=UserCreateResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/create-profile", response_model=MessageResponse, status_code=status.HTTP_201_CREATED)
 def create_profile(user: UserCreate, db: Session = Depends(get_db), onboarding_user: models.User = Depends(get_onboarding_user)):
     
     current_user = onboarding_user
@@ -191,22 +193,34 @@ def create_profile(user: UserCreate, db: Session = Depends(get_db), onboarding_u
             status_code=status.HTTP_409_CONFLICT,
             detail="Profile already created"
         )
-    
-    current_user.description = user.description
-    current_user.date_of_birth = user.date_of_birth
-    current_user.gender = user.gender
-    current_user.sexuality = user.sexuality
-    current_user.longitude = user.longitude
-    current_user.latitude = user.latitude
-    current_user.interests = user.interests
 
+    user_profile = (
+        db.query(models.UserProfile)
+        .filter(
+            models.UserProfile.user_id == current_user.id
+        )
+        .first()
+    )
 
+    if not user_profile:
+        user_profile = models.UserProfile(
+            description = user.description,
+            date_of_birth = user.date_of_birth,
+            gender = user.gender,
+            sexuality = user.sexuality,
+            longitude = user.longitude,
+            latitude = user.latitude,
+            user_id = current_user.id
+        )
+        db.add(user_profile)
+
+    current_user.is_profile_created = True
     db.commit()
-    db.refresh(current_user)
+    db.refresh(user_profile)
 
     return {
         "message": "Profile created successfully",
-        "data": current_user
+        # "data": current_user
     }
 
 
