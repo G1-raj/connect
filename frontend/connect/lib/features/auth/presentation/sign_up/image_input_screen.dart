@@ -3,33 +3,34 @@ import 'dart:io';
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ImageInputScreen extends StatefulWidget {
+class ImageInputScreen extends ConsumerStatefulWidget {
   const ImageInputScreen({super.key});
 
   @override
-  State<ImageInputScreen> createState() => _ImageInputScreenState();
+  ConsumerState<ImageInputScreen> createState() => _ImageInputScreenState();
 }
 
-class _ImageInputScreenState extends State<ImageInputScreen> {
-
+class _ImageInputScreenState extends ConsumerState<ImageInputScreen> {
   final ImagePicker _imagePicker = ImagePicker();
   List<XFile> images = [];
 
   Future<void> pickImageFromGallery() async {
     try {
+      final picked = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 85,
+      );
 
-      final picked = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 85);
-
-      if(picked == null) return;
+      if (picked == null) return;
       setState(() {
-        if(images.length < 6) {
+        if (images.length < 6) {
           images.add(picked);
         }
       });
-      
     } catch (e) {
       print("Failed to pick image from gallery and error is: $e");
     }
@@ -37,16 +38,17 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
 
   Future<void> pickImageFromCamera() async {
     try {
+      final picked = await _imagePicker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 85,
+      );
 
-      final picked = await _imagePicker.pickImage(source: ImageSource.camera, imageQuality: 85);
-      
-      if(picked == null)  return;
+      if (picked == null) return;
       setState(() {
-        if(images.length < 6) {
+        if (images.length < 6) {
           images.add(picked);
         }
       });
-      
     } catch (e) {
       print("Failed to pick image from camera and error is: $e");
     }
@@ -72,10 +74,11 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             Expanded(
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                ),
                 itemCount: 6,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -85,14 +88,15 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
                         showModalBottomSheet(
                           context: context,
                           shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(24),
+                            ),
                           ),
                           builder: (_) {
                             return SafeArea(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-
                                   const SizedBox(height: 12),
 
                                   Container(
@@ -112,7 +116,7 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
                                     onTap: () {
                                       context.pop();
                                       pickImageFromGallery();
-                                    }
+                                    },
                                   ),
 
                                   _bigTapOption(
@@ -121,7 +125,7 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
                                     onTap: () {
                                       context.pop();
                                       pickImageFromCamera();
-                                    }
+                                    },
                                   ),
 
                                   const SizedBox(height: 16),
@@ -133,14 +137,14 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
                       },
                       child: imageInputCard(
                         index < images.length ? images[index] : null,
-                        index
-                      )
+                        index,
+                      ),
                     ),
                   );
                 },
-            ),),
-           
-            
+              ),
+            ),
+
             Align(
               alignment: Alignment.bottomCenter,
               child: AppButton(
@@ -151,10 +155,12 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
                 textColor: AppTheme.whiteBackground,
                 fontSize: screenWidth * 0.04,
                 onPress: () {
-                  if(images.length < 2) {
+                  if (images.length < 2) {
                     ScaffoldMessenger.of(context).clearSnackBars();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: const Text("Minimum 2 pictures are required"))
+                      SnackBar(
+                        content: const Text("Minimum 2 pictures are required"),
+                      ),
                     );
                     return;
                   }
@@ -163,13 +169,11 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
                 },
               ),
             ),
-            
-            SizedBox(
-              height: screenHeight * 0.02,
-            )
+
+            SizedBox(height: screenHeight * 0.02),
           ],
         ),
-      )
+      ),
     );
   }
 
@@ -177,37 +181,43 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.greyColor,
-        borderRadius: BorderRadius.circular(12.0)
-      ),
-      child: image == null ? Icon(Icons.add, size: 32,) : ClipRRect(
         borderRadius: BorderRadius.circular(12.0),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.file(
-              File(image.path),
-              fit: BoxFit.cover,
-              frameBuilder: (context, child, frame, _) {
-                if(frame == null) {
-                  return Center(child: CircularProgressIndicator(color: AppTheme.textThemeRed,));
-                }
-
-                return child;
-              },
-            ),
-            Positioned(
-              left: 80,
-              child: IconButton(
-                icon: Icon(Icons.cancel), 
-                color: AppTheme.greyColor,
-                onPressed: () {
-                  removeImage(index);
-                },
-              )
-            )
-          ],
-        ),
       ),
+      child: image == null
+          ? Icon(Icons.add, size: 32)
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(12.0),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.file(
+                    File(image.path),
+                    fit: BoxFit.cover,
+                    frameBuilder: (context, child, frame, _) {
+                      if (frame == null) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: AppTheme.textThemeRed,
+                          ),
+                        );
+                      }
+
+                      return child;
+                    },
+                  ),
+                  Positioned(
+                    left: 80,
+                    child: IconButton(
+                      icon: Icon(Icons.cancel),
+                      color: AppTheme.greyColor,
+                      onPressed: () {
+                        removeImage(index);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -226,15 +236,11 @@ class _ImageInputScreenState extends State<ImageInputScreen> {
             const SizedBox(width: 18),
             Text(
               text,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
           ],
         ),
       ),
     );
   }
-
 }
