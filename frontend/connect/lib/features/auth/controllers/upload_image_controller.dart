@@ -1,9 +1,15 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 class UploadImageState {
   final bool loading;
   final String? error;
   final bool success;
 
-  UploadImageState({this.loading = false, this.error, this.success = false});
+  const UploadImageState({
+    this.loading = false,
+    this.error,
+    this.success = false,
+  });
 
   UploadImageState copyWith({bool? loading, String? error, bool? success}) {
     return UploadImageState(
@@ -14,4 +20,9 @@ class UploadImageState {
   }
 }
 
-class UploadImageController {}
+class UploadImageController extends Notifier<UploadImageState> {
+  @override
+  UploadImageState build() {
+    return const UploadImageState();
+  }
+}
