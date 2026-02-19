@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:connect/shared/providers/auth_repository_provider.dart';
+import 'package:connect/shared/providers/storage_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UploadImageState {
@@ -31,7 +33,27 @@ class UploadImageController extends Notifier<UploadImageState> {
   Future<void> uploadPictures(List<File> images) async {
     state = state.copyWith(loading: true, error: null, success: false);
 
-    try {} catch (e) {
+    try {
+      final res = ref.read(authRepositoryProvider);
+      final storage = ref.read(storageProvider);
+
+      final onboardingToken = await storage.read(key: "onboarding_token");
+
+      if (onboardingToken == null) throw Exception("Onboarding token missing");
+
+      final response = await res.uploadPictures(images, onboardingToken);
+
+      if (response.message!.isNotEmpty) {
+        state = state.copyWith(loading: false, error: null, success: true);
+        return;
+      }
+
+      state = state.copyWith(
+        loading: false,
+        error: "Failed to upload pictures",
+        success: false,
+      );
+    } catch (e) {
       state = state.copyWith(
         loading: false,
         error: "Failed to upload pictures",
