@@ -1,4 +1,5 @@
 import 'package:connect/core/network/dio_client.dart';
+import 'package:connect/features/auth/data/models/image_models/image_request.dart';
 import 'package:connect/features/auth/data/models/login/login_request.dart';
 import 'package:connect/features/auth/data/models/login/login_response.dart';
 import 'package:connect/features/auth/data/models/signup/request/create_profile_request.dart';
@@ -51,6 +52,31 @@ class AuthApiService {
       "/auth/create-profile",
       data: request.toJson(),
       options: Options(headers: {"Authorization": "Bearer $onboardingToken"}),
+    );
+
+    return MessageResponse.fromJson(response.data);
+  }
+
+  Future<MessageResponse> uploadPictures(
+    ImageRequest request,
+    String onboardingToken,
+  ) async {
+    FormData formData = FormData();
+
+    for (var image in request.images) {
+      formData.files.add(
+        MapEntry("files", await MultipartFile.fromFile(image.path)),
+      );
+    }
+    final response = await dio.post(
+      "/auth/upload-pictures",
+      data: formData,
+      options: Options(
+        headers: {
+          "Authorization": "Bearer $onboardingToken",
+          "Content-Type": "multipart/form-data",
+        },
+      ),
     );
 
     return MessageResponse.fromJson(response.data);
