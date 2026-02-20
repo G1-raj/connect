@@ -14,6 +14,11 @@ def get_user_profile(db: Session = Depends(get_db), current_user: models.User = 
 
     user = (
         db.query(models.User)
+        .options(
+            joinedload(models.UserProfile),
+            joinedload(models.UserImages),
+            joinedload(models.UserProfileQuestions)
+        )
         .filter(
             models.User.id == user_id,
             models.User.is_email_verified == True,
