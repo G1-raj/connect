@@ -168,7 +168,11 @@ class _ImageInputScreenState extends ConsumerState<ImageInputScreen> {
                     return;
                   }
 
-                  imageCtrl.uploadPictures(Path(images));
+                  final List<File> all_images = images.map((image) {
+                    return image as File;
+                  }).toList();
+
+                  imageCtrl.uploadPictures(all_images);
 
                   // context.pushReplacement("/question");
                 },
