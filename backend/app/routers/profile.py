@@ -35,5 +35,13 @@ def get_user_profile(db: Session = Depends(get_db), current_user: models.User = 
 
     return {
         "message": "User profile fetched successfully",
-        "data": user
+        "data": {
+            "id": user.id,
+            "email": user.email,
+            "full_name": user.full_name,
+
+            "profile": user.user_profile,
+            "images": user.user_images,
+            "questions": user.user_profile_questions
+        }
     }
