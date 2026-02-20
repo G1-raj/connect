@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import auth
+from app.routers import auth, profile
 from app.database.db import Base, engine
 
 app = FastAPI(
@@ -10,3 +10,4 @@ app = FastAPI(
 Base.metadata.create_all(bind=engine)
 
 app.include_router(auth.router)
+app.include_router(profile.router)

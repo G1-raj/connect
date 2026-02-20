@@ -224,7 +224,8 @@ def create_profile(user: UserCreate, db: Session = Depends(get_db), onboarding_u
     }
 
 
-@router.post("/upload-pictures", response_model=UserCreateResponse, status_code=status.HTTP_201_CREATED)
+#usercreateresponse
+@router.post("/upload-pictures", response_model=MessageResponse, status_code=status.HTTP_201_CREATED)
 def upload_profile_pictures(files: List[UploadFile] = File(...),db: Session = Depends(get_db), onboarding_user: models.User = Depends(get_onboarding_user)):
 
     current_user = onboarding_user
@@ -268,7 +269,10 @@ def upload_profile_pictures(files: List[UploadFile] = File(...),db: Session = De
 
     db.commit()
 
-    return current_user
+    # return current_user
+    return {
+        "message": "Image uploaded"
+    }
 
 
 @router.delete("/delete-image/{image_id}", response_model=MessageResponse, status_code=status.HTTP_200_OK)
@@ -296,9 +300,41 @@ def delete_image(image_id: int, db: Session = Depends(get_db), current_user: mod
         "message": "Image deleted"
     }
 
-@router.post("/user-questions", response_model=UserCreateResponse, status_code=status.HTTP_200_OK)
+# UserCreateResponse
+@router.post("/user-questions", response_model=MessageResponse, status_code=status.HTTP_200_OK)
 def add_user_questions(user_questions: UserQuestionCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
-    pass
+    existing_user = current_user
+
+    questions = (
+        db.query(models.UserProfileQuestions)
+        .filter(
+            models.UserProfileQuestions.user_id == existing_user.id
+        )
+        .first()
+    )
+
+    if questions:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Questions are already answered"
+        )
+
+    questions_answered = models.UserProfileQuestions(
+        alcohol = user_questions.alcohol,
+        smoke = user_questions.smoke,
+        kids = user_questions.kids,
+        exercise = user_questions.exercise,
+        pets = user_questions.pets,
+        user_id = existing_user.id
+    )
+
+    db.add(questions_answered)
+    db.commit()
+    db.refresh(questions)
+
+    return {
+        "message": "Answers noted"
+    }
 
 
 
