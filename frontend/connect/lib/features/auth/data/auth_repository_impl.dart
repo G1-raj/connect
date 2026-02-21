@@ -6,6 +6,7 @@ import 'package:connect/features/auth/data/models/login/login_response.dart';
 import 'package:connect/features/auth/data/models/signup/request/create_profile_request.dart';
 import 'package:connect/features/auth/data/models/signup/request/otp_request.dart';
 import 'package:connect/features/auth/data/models/signup/request/password_request.dart';
+import 'package:connect/features/auth/data/models/signup/request/questions_request.dart';
 import 'package:connect/features/auth/data/models/signup/request/signup_request.dart';
 import 'package:connect/features/auth/data/models/signup/response/message_response.dart';
 import 'package:connect/features/auth/data/models/signup/response/otp_response.dart';
@@ -90,6 +91,28 @@ class AuthRepositoryImpl implements AuthRepository {
       onboardingToken,
     );
 
+    return res;
+  }
+
+  @override
+  Future<MessageResponse> answerQuestions(
+    bool alcohol,
+    bool smoke,
+    bool kids,
+    bool pets,
+    bool exercise,
+    String onboardingToken,
+  ) async {
+    final res = await api.answerQuestions(
+      QuestionsRequest(
+        alcohol: alcohol,
+        smoke: smoke,
+        kids: kids,
+        pets: pets,
+        exercise: exercise,
+      ),
+      onboardingToken,
+    );
     return res;
   }
 }
