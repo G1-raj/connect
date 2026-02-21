@@ -81,4 +81,6 @@ class AuthApiService {
 
     return MessageResponse.fromJson(response.data);
   }
+
+  Future<MessageResponse> answerQuestions() async {}
 }
