@@ -5,6 +5,7 @@ import 'package:connect/features/auth/data/models/login/login_response.dart';
 import 'package:connect/features/auth/data/models/signup/request/create_profile_request.dart';
 import 'package:connect/features/auth/data/models/signup/request/otp_request.dart';
 import 'package:connect/features/auth/data/models/signup/request/password_request.dart';
+import 'package:connect/features/auth/data/models/signup/request/questions_request.dart';
 import 'package:connect/features/auth/data/models/signup/request/signup_request.dart';
 import 'package:connect/features/auth/data/models/signup/response/message_response.dart';
 import 'package:connect/features/auth/data/models/signup/response/otp_response.dart';
@@ -82,5 +83,21 @@ class AuthApiService {
     return MessageResponse.fromJson(response.data);
   }
 
-  Future<MessageResponse> answerQuestions() async {}
+  Future<MessageResponse> answerQuestions(
+    QuestionsRequest request,
+    String onboardingToken,
+  ) async {
+    final response = await dio.post(
+      "/auth/user-questions",
+      data: request.toJson(),
+      options: Options(
+        headers: {
+          "Authorization": "Bearer $onboardingToken",
+          "Content-Type": "multipart/form-data",
+        },
+      ),
+    );
+
+    return MessageResponse.fromJson(response.data);
+  }
 }
