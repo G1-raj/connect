@@ -330,7 +330,7 @@ def add_user_questions(user_questions: UserQuestionCreate, db: Session = Depends
 
     db.add(questions_answered)
     db.commit()
-    db.refresh(questions)
+    db.refresh(questions_answered)
 
     return {
         "message": "Answers noted"
