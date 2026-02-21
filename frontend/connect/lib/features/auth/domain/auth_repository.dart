@@ -29,4 +29,12 @@ abstract class AuthRepository {
     List<File> images,
     String onboardingToken,
   );
+  Future<MessageResponse> answerQuestions(
+    bool alcohol,
+    bool smoke,
+    bool kids,
+    bool pets,
+    bool exercise,
+    String onboardingToken,
+  );
 }
