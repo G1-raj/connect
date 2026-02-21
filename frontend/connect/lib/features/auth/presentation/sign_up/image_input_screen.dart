@@ -66,6 +66,8 @@ class _ImageInputScreenState extends ConsumerState<ImageInputScreen> {
 
     final imageCtrl = ref.read(uploadImageControllerProvider.notifier);
 
+    ref.listen(uploadImageControllerProvider, (prev, next) {});
+
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
       appBar: AppBar(
