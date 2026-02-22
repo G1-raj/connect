@@ -6,6 +6,8 @@ from app.utils.dependencies import get_current_user
 
 router = APIRouter(prefix="/profile", tags=["feed"])
 
+RADIUS_KM = 50
+
 @router.get("/feed", status_code=status.HTTP_200_OK)
 def generate_feed(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     users = (
