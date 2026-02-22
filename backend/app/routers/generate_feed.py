@@ -20,4 +20,6 @@ def generate_feed(db: Session = Depends(get_db), current_user: models.User = Dep
             models.User.is_email_verified == True,
             models.User.is_profile_created == True
         )
+        .limit(20)
+        .all()
     )
