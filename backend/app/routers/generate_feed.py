@@ -22,6 +22,10 @@ def generate_feed(db: Session = Depends(get_db), current_user: models.User = Dep
             models.User.id != current_user.id,
             models.User.is_email_verified == True,
             models.User.is_profile_created == True,
+            func.sqrt(
+                func.pow(models.UserProfile.latitude - current_user.profile.latitude, 2) +
+                func.pow(models.UserProfile.longitude - current_user.profile.longitude, 2)
+            ) < 0.5
         )
         .limit(20)
         .all()
