@@ -8,7 +8,7 @@ router = APIRouter(prefix="/profile", tags=["feed"])
 
 @router.get("/feed", status_code=status.HTTP_200_OK)
 def generate_feed(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
-    user = (
+    users = (
         db.query(models.User)
         .options(
             joinedload(models.UserProfile),
@@ -23,3 +23,8 @@ def generate_feed(db: Session = Depends(get_db), current_user: models.User = Dep
         .limit(20)
         .all()
     )
+
+    return {
+        "message": "Feed generated successfully",
+        "data": users
+    }
