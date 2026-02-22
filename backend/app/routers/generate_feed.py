@@ -15,4 +15,9 @@ def generate_feed(db: Session = Depends(get_db), current_user: models.User = Dep
             joinedload(models.UserImages),
             joinedload(models.UserProfileQuestions)
         )
+        .filter(
+            models.User.id != current_user.id,
+            models.User.is_email_verified == True,
+            models.User.is_profile_created == True
+        )
     )
