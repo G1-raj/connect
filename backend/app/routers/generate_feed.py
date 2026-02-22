@@ -12,8 +12,8 @@ RADIUS_KM = 50
 def generate_feed(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     users = (
         db.query(models.User)
+        .join(models.UserProfile)
         .options(
-            joinedload(models.UserProfile),
             joinedload(models.UserImages),
             joinedload(models.UserProfileQuestions)
         )
