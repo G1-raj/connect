@@ -11,6 +11,7 @@ router = APIRouter(prefix="/profile", tags=["feed"])
 RADIUS_KM = 50
 
 
+#feed router
 @router.get("/feed", status_code=status.HTTP_200_OK)
 def generate_feed(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     users = (
