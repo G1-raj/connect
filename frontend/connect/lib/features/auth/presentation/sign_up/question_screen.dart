@@ -5,6 +5,7 @@ import 'package:connect/features/auth/controllers/questions_controller.dart';
 import 'package:connect/shared/providers/questions_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class QuestionScreen extends ConsumerStatefulWidget {
   const QuestionScreen({super.key});
@@ -65,6 +66,10 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
           barrierColor: AppTheme.loaderBackground,
           builder: (_) => const ImageLoaderDialog(),
         );
+      }
+
+      if (prev?.loading == true && next.loading == false && context.mounted) {
+        context.pop();
       }
     });
 
