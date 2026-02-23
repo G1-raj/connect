@@ -1,5 +1,6 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
+import 'package:connect/shared/providers/questions_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -54,6 +55,8 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(questionsControllerProvider, (prev, next) {});
+
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
       body: SafeArea(
