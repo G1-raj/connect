@@ -72,6 +72,10 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
         context.pop();
       }
 
+      if (next.success == true && context.mounted) {
+        context.go("/auth-navigator");
+      }
+
       if (next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(backgroundColor: Colors.red, content: Text(next.error!)),
