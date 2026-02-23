@@ -1,5 +1,6 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
+import 'package:connect/core/widgets/loader_dialog/loader_dialog.dart';
 import 'package:connect/features/auth/controllers/questions_controller.dart';
 import 'package:connect/shared/providers/questions_controller_provider.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,16 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<QuestionState>(questionsControllerProvider, (prev, next) {});
+    ref.listen<QuestionState>(questionsControllerProvider, (prev, next) {
+      if (next.loading == true) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierColor: AppTheme.loaderBackground,
+          builder: (_) => const ImageLoaderDialog(),
+        );
+      }
+    });
 
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
