@@ -52,7 +52,7 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
         stepsCompleted++;
       });
     } else {
-      print("$answers");
+      final reference = ref.watch(questionsControllerProvider);
     }
   }
 
