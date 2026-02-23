@@ -52,7 +52,8 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
         stepsCompleted++;
       });
     } else {
-      final reference = ref.watch(questionsControllerProvider);
+      final reference = ref.read(questionsControllerProvider.notifier);
+      reference.answerQuestions(true, true, false, false, true);
     }
   }
 
