@@ -71,6 +71,12 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
       if (prev?.loading == true && next.loading == false && context.mounted) {
         context.pop();
       }
+
+      if (next.error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(backgroundColor: Colors.red, content: Text(next.error!)),
+        );
+      }
     });
 
     return Scaffold(
