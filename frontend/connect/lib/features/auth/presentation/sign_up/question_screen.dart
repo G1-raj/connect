@@ -1,18 +1,17 @@
 import 'package:connect/core/theme/theme.dart';
 import 'package:connect/core/widgets/app_button/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class QuestionScreen extends StatefulWidget {
+class QuestionScreen extends ConsumerStatefulWidget {
   const QuestionScreen({super.key});
 
   @override
-  State<QuestionScreen> createState() => _QuestionScreenState();
+  ConsumerState<QuestionScreen> createState() => _QuestionScreenState();
 }
 
-class _QuestionScreenState extends State<QuestionScreen> {
-
+class _QuestionScreenState extends ConsumerState<QuestionScreen> {
   final List<bool> answers = List.generate(5, (_) => false);
-
 
   int currentPage = 0;
   late PageController _pagesController;
@@ -25,7 +24,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
     AssetImage("lib/assets/kids.png"),
     AssetImage("lib/assets/exercise.png"),
   ];
-
 
   @override
   void initState() {
@@ -40,10 +38,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   void changePage() {
-    if(currentPage < questionImage.length - 1) {
+    if (currentPage < questionImage.length - 1) {
       _pagesController.nextPage(
-        duration: const Duration(milliseconds: 200), 
-        curve: Curves.easeInOut
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
       );
 
       setState(() {
@@ -52,7 +50,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
     } else {
       print("$answers");
     }
-
   }
 
   @override
@@ -74,22 +71,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 },
                 itemBuilder: (context, index) {
                   return Question(
-                    questionImage: questionImage[index], 
-                    onAnswered:(value) {
+                    questionImage: questionImage[index],
+                    onAnswered: (value) {
                       answers[index] = value;
                       changePage();
-                    }
+                    },
                   );
                 },
               ),
             ),
 
-            VisualStepIndicator(
-              steps: 5,
-              stepsCompleted: stepsCompleted,
-            ),
+            VisualStepIndicator(steps: 5, stepsCompleted: stepsCompleted),
 
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02,)
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           ],
         ),
       ),
@@ -100,13 +94,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
 class VisualStepIndicator extends StatefulWidget {
   final int steps;
   final int stepsCompleted;
-  const VisualStepIndicator(
-    {
-      super.key, 
-      required this.steps,
-      required this.stepsCompleted
-    }
-  );
+  const VisualStepIndicator({
+    super.key,
+    required this.steps,
+    required this.stepsCompleted,
+  });
 
   @override
   State<VisualStepIndicator> createState() => _VisualStepIndicatorState();
@@ -126,8 +118,10 @@ class _VisualStepIndicatorState extends State<VisualStepIndicator> {
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeInOut,
             decoration: BoxDecoration(
-              color: widget.stepsCompleted > index ? AppTheme.themeRed : AppTheme.greyColor,
-              shape: BoxShape.circle
+              color: widget.stepsCompleted > index
+                  ? AppTheme.themeRed
+                  : AppTheme.greyColor,
+              shape: BoxShape.circle,
             ),
           ),
         );
@@ -139,36 +133,28 @@ class _VisualStepIndicatorState extends State<VisualStepIndicator> {
 class Question extends StatelessWidget {
   final AssetImage questionImage;
   final ValueChanged<bool> onAnswered;
-  const Question(
-    {
-      super.key,
-      required this.questionImage,
-      required this.onAnswered
-    }
-  );
+  const Question({
+    super.key,
+    required this.questionImage,
+    required this.onAnswered,
+  });
 
   @override
   Widget build(BuildContext context) {
-
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
       children: [
-         SizedBox(
+        SizedBox(
           width: screenWidth,
           height: screenHeight * 0.45,
-          child: Image(
-            image: questionImage,
-          ),
+          child: Image(image: questionImage),
         ),
-
 
         Text("Help us personalize your matches"),
 
-        SizedBox(
-          height: screenHeight * 0.06,
-        ),
+        SizedBox(height: screenHeight * 0.06),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -195,9 +181,8 @@ class Question extends StatelessWidget {
               onPress: () => onAnswered(false),
             ),
           ],
-        )
+        ),
       ],
     );
   }
 }
-
