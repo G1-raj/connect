@@ -40,6 +40,14 @@ class UserProfileScreen extends StatelessWidget {
 
                 child: SizedBox(),
               ),
+
+              SizedBox(height: screenHeight * 0.02),
+
+              //description box
+              SizedBox(
+                width: screenWidth * 0.88,
+                child: Text("This is description box of user"),
+              ),
             ],
           ),
         ),
