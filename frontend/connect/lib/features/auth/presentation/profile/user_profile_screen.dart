@@ -12,6 +12,8 @@ class UserProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.whiteBackground,
 
+      drawer: Drawer(),
+
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
