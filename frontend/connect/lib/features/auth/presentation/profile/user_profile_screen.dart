@@ -13,10 +13,23 @@ class UserProfileScreen extends StatelessWidget {
       backgroundColor: AppTheme.whiteBackground,
 
       body: SingleChildScrollView(
-        child: SafeArea(child: Column(children: [
-              
+        child: SafeArea(
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: SizedBox(
+                    width: screenWidth * 0.55,
+                    height: screenHeight * 0.025,
+                    child: Text("Rebecca more"),
+                  ),
+                ),
+              ),
             ],
-          )),
+          ),
+        ),
       ),
     );
   }
