@@ -1,3 +1,4 @@
+import 'package:connect/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -5,6 +6,15 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: AppTheme.whiteBackground,
+
+      body: SingleChildScrollView(
+        child: SafeArea(child: Column(children: [
+              
+            ],
+          )),
+      ),
+    );
   }
 }
