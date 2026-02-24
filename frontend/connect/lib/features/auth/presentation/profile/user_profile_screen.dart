@@ -27,6 +27,19 @@ class UserProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
+              SizedBox(height: screenHeight * 0.02),
+
+              //profile image section
+              Container(
+                width: screenWidth * 0.88,
+                height: screenHeight * 0.85,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+
+                child: SizedBox(),
+              ),
             ],
           ),
         ),
